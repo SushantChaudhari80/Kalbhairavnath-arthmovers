@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<%@page import="com.sushant.live.Config"%>
+<%@page import="com.sushant.live.model.Vehicale"%>
+<%@page import="java.util.List"%>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -211,26 +214,18 @@
 
         <!-- Vehicles Grid -->
         <div class="vehicles-grid">
+        
+        <%
+        List<Vehicale> list = Config.getDatasource().findAll();
+        for (int i=0 ;  i<list.size();i++ ){
+        	Vehicale v = list.get(i);
+       
+        %>
             <div class="vehicle-card">
-                <h3>Vehicle 01</h3>
-                <p>Truck | Last Serviced: 2024-08-01</p>
-                <span class="vehicle-status status-active">Active</span>
+                <h3><% v.getMachineNumber(); %></h3>
+                <p><% v.getCompany(); %></p>
             </div>
-            <div class="vehicle-card">
-                <h3>Vehicle 02</h3>
-                <p>Van | Last Serviced: 2024-07-20</p>
-                <span class="vehicle-status status-maintenance">In Maintenance</span>
-            </div>
-            <div class="vehicle-card">
-                <h3>Vehicle 03</h3>
-                <p>Truck | Last Serviced: 2024-06-15</p>
-                <span class="vehicle-status status-unavailable">Unavailable</span>
-            </div>
-            <div class="vehicle-card">
-                <h3>Vehicle 04</h3>
-                <p>SUV | Last Serviced: 2024-08-10</p>
-                <span class="vehicle-status status-active">Active</span>
-            </div>
+           <% } %>
         </div>
 
         <!-- Modal for Vehicle Details -->

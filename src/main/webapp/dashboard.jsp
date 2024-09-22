@@ -179,6 +179,33 @@
             }
         }
     </style>
+    
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script>
+		    $(document).ready(function() {
+		        // Function to fetch customer data from server using AJAX
+		        function fetchCustomerData() {
+		            $.ajax({
+		                url: '/api/customers/get',  // URL for fetching the customer data
+		                type: 'GET',
+		                success: function(customer) {
+		                    // Update the UI with the customer data
+		                    $('#customer-name').text(customer.name);
+		                    if (customer.picture) {
+		                        var imageUrl = 'data:image/png;base64,' + customer.picture;
+		                        $('#customer-picture').attr('src', imageUrl);
+		                    }
+		                },
+		                error: function(xhr, status, error) {
+		                    console.error("Error fetching customer data:", error);
+		                }
+		            });
+		        }
+		
+		        // Call the function to load customer data when the page is ready
+		        fetchCustomerData();
+		    });
+		</script>
 </head>
 <body>
     <div class="dashboard-container">
@@ -202,18 +229,19 @@
         <!-- Main Content -->
         <div class="main-content">
             <!-- Header -->
+           
             <div class="header">
-                <div class="search-bar">
-                    <input type="text" placeholder="Search...">
-                </div>
-                <div class="user-section">
-                    <span>Ananda Darekar</span>
-                    <img src="https://via.placeholder.com/40" alt="User Profile">
-                </div>
-            </div>
+			    <div class="search-bar">
+			        <input type="text" placeholder="Search...">
+			    </div>
+			    <div class="user-section">
+			        <span id="customer-name">Loading....</span>
+			        <img id="customer-picture" src="https://via.placeholder.com/40" alt="User Profile">
+			    </div>
+			</div>
 
             <!-- Overview Section -->
-            <h1>Dashboard Overview</h1>
+            <h1 style="color: white;">Dashboard Overview</h1>
             <div class="overview">
                 <div class="card">
                     <h3>Total Orders</h3>

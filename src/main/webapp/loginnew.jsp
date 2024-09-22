@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.io.*, javax.servlet.*, javax.servlet.http.*, java.sql.*" %>
 
 <!DOCTYPE html>
 <html lang="en">
