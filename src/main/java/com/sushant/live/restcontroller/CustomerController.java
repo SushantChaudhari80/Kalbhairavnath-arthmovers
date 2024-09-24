@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sushant.live.model.Customer;
+import com.sushant.live.repository.VehicaleRepository;
 import com.sushant.live.service.CustomerService;
 import com.sushant.live.util.SessionManager;
 
@@ -19,6 +20,7 @@ public class CustomerController {
     
     @GetMapping("/get")
     public ResponseEntity<Customer> getCustomer() {
+    	System.out.println("CustomerController : getCustomer()");
         Customer customer = customerService.getCustomerById(SessionManager.getInstance().getUsername()); // Fetch customer by ID (example)
         return ResponseEntity.ok(customer);
     }

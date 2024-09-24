@@ -205,7 +205,7 @@
         <!-- Page Header -->
         <div class="page-header">
             <h1>Orders</h1>
-            <a href="#" class="btn">Add New Order</a>
+            <a href="addOrder.jsp" class="btn">Add New Order</a>
         </div>
 
         <!-- Filters Section -->
@@ -228,33 +228,14 @@
                     <th>Order ID</th>
                     <th>Customer Name</th>
                     <th>Status</th>
+                    <th>Vehicle Numbers</th>
                     <th>Delivery Date</th>
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>#001</td>
-                    <td>John Smith</td>
-                    <td><span class="status delivered">Delivered</span></td>
-                    <td>2024-09-18</td>
-                    <td class="actions"><button onclick="openModal()">View</button></td>
-                </tr>
-                <tr>
-                    <td>#002</td>
-                    <td>Jane Doe</td>
-                    <td><span class="status pending">Pending</span></td>
-                    <td>2024-09-20</td>
-                    <td class="actions"><button onclick="openModal()">View</button></td>
-                </tr>
-                <tr>
-                    <td>#003</td>
-                    <td>Bob Johnson</td>
-                    <td><span class="status canceled">Canceled</span></td>
-                    <td>2024-09-15</td>
-                    <td class="actions"><button onclick="openModal()">View</button></td>
-                </tr>
-            </tbody>
+            <tbody id="orderTableBody">
+            <!-- Dynamic content will be inserted here -->
+        </tbody>
         </table>
 
         <!-- Modal for Order Details -->
@@ -276,6 +257,7 @@
     </div>
 
     <!-- JavaScript for Modal -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function openModal() {
             document.getElementById('orderModal').style.display = 'flex';
@@ -284,6 +266,58 @@
         function closeModal() {
             document.getElementById('orderModal').style.display = 'none';
         }
+ 
+        $(document).ready(function() {
+            // Function to fetch order data from server using AJAX
+            function fetchOrders() {
+                $.ajax({
+                    url: '/api/order/getAll',  // Replace this with your actual API URL
+                    type: 'GET',
+                    success: function(orders) {
+                        $('#orderTableBody').empty(); // Clear the existing rows
+
+                        // Loop through the orders and append rows dynamically
+                        orders.forEach(function(order) {
+                            $('#orderTableBody').append(`
+                                <tr>
+                                    <td>${order.orderId}</td>
+                                    <td>${order.customerName}</td>
+                                    <td>${order.status}</td>
+                                    <td>${order.deliveryDate}</td>
+                                    <td>${order.machins}</td>
+                                    <td>
+                                        <button class="view-details-btn" data-id="${order.orderId}">View</button>
+                                        <button class="delete-order-btn" data-id="${order.orderId}">Delete</button>
+                                        <button class="update-order-btn" data-id="${order.orderId}">Update</button>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error fetching orders:", error);
+                    }
+                });
+            }
+
+            // Call the function to load order data when the page is ready
+            fetchOrders();
+
+            // Example: Adding event listener to handle button actions (View/Delete)
+            $(document).on('click', '.view-details-btn', function() {
+                var orderId = $(this).data('id');
+                alert('View details for order ID: ' + orderId);
+                // You can implement a modal or redirect logic here
+            });
+
+            $(document).on('click', '.delete-order-btn', function() {
+                var orderId = $(this).data('id');
+                alert('Delete order ID: ' + orderId);
+                // Add logic to delete the order via API
+            });
+        });
+  
+
     </script>
 
 </body>

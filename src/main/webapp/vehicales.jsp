@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-<%@page import="com.sushant.live.Config"%>
-<%@page import="com.sushant.live.model.Vehicale"%>
-<%@page import="java.util.List"%>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -106,9 +103,14 @@
         }
 
         .vehicle-card p {
-            color: #7f8c8d;
+            color: black;
             margin-bottom: 15px;
         }
+        .vehicle-card {
+		    border: 1px solid red;  /* Temporary border to see the vehicle cards */
+		    background-color: white;
+		}
+        
 
         .vehicle-status {
             padding: 5px 10px;
@@ -188,8 +190,58 @@
             .modal-content {
                 width: 90%;
             }
+           .machineNumberStyle {
+			    background-color: #f0ad4e;  /* Amber color for machine number */
+			    color: #fff;                /* White text to contrast */
+			    padding: 10px;              /* Padding around the text */
+			    border-radius: 5px;         /* Rounded corners */
+			    text-align: center;         /* Center the text */
+			}
+			
+			.companyStyle {
+			    background-color: #5bc0de;  /* Light blue background for company name */
+			    color: #fff;                /* White text to contrast */
+			    padding: 10px;              /* Padding around the text */
+			    border-radius: 5px;         /* Rounded corners */
+			    text-align: center;         /* Center the text */
+			}
+
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script>
+		    $(document).ready(function() {
+		        // Function to fetch customer data from server using AJAX
+		        function fetchVehicalesList() {
+		            $.ajax({
+		                url: '/api/vehicles/getAll',  // URL for fetching the customer data
+		                type: 'GET',
+		                success: function(vehicles) {
+		                	$('#vehicaleList').empty();
+		                    vehicles.forEach(function(vehicle) {
+		                    	var no =  vehicle.machineNumber.toString() ;
+			                    var company = vehicle.company.toString();
+			                    console.log( no, company);
+		                        $('#vehicaleList').append(`
+		                            <div class="vehicle-card">
+		                                <h3 class="machineNumberStyle">${no}</h3>  <!-- ${vehicle.machineNumber}-->
+		                                <p class="companyStyle">${company}</p>  <!--${vehicle.company || "Unknown Company"} -->
+		                            </div>
+		                        `);
+		                    });
+
+		                },
+		                error: function(xhr, status, error) {
+		                    console.error("Error fetching customer data:", error);
+		                }
+		            });
+		        }
+		
+		        // Call the function to load customer data when the page is ready
+		        fetchVehicalesList();
+		    });
+		    
+		</script>
 </head>
 <body>
 
@@ -197,7 +249,7 @@
         <!-- Page Header -->
         <div class="page-header">
             <h1>Vehicles</h1>
-            <a href="#" class="btn">Add New Vehicle</a>
+            <a href="addVehicale.jsp" class="btn">Add New Vehicle</a>
         </div>
 
         <!-- Filters Section -->
@@ -213,20 +265,14 @@
         </div>
 
         <!-- Vehicles Grid -->
-        <div class="vehicles-grid">
-        
-        <%
-        List<Vehicale> list = Config.getDatasource().findAll();
-        for (int i=0 ;  i<list.size();i++ ){
-        	Vehicale v = list.get(i);
-       
-        %>
-            <div class="vehicle-card">
-                <h3><% v.getMachineNumber(); %></h3>
-                <p><% v.getCompany(); %></p>
-            </div>
-           <% } %>
-        </div>
+        <div id="vehicaleList" class="vehicles-grid">
+		    <div class="vehicle-card">
+		            <h3 id="machinNumber">Loading..</h3>
+		            <p id="machinCompany">Loading..</p>
+		        </div>
+		   
+		</div>
+
 
         <!-- Modal for Vehicle Details -->
         <div class="modal" id="vehicleModal">
