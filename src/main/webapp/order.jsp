@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transport Orders Page</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
+	<%@ page import="com.sushant.live.service.OrderService" %>
+	<style>
         * {
             margin: 0;
             padding: 0;
@@ -198,6 +199,70 @@
             }
         }
     </style>
+	<!-- JavaScript for Modal -->
+	   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	   <script>
+	       function openModal() {
+	           document.getElementById('orderModal').style.display = 'flex';
+	       }
+
+	       function closeModal() {
+	           document.getElementById('orderModal').style.display = 'none';
+	       }
+
+	       $(document).ready(function() {
+	           // Function to fetch order data from server using AJAX
+	           fetchOrders();
+
+	           // Example: Adding event listener to handle button actions (View/Delete)
+	           $(document).on('click', '.view-details-btn', function() {
+	               var orderId = $(this).data('id');
+	               alert('View details for order ID: ' + orderId);
+	               // You can implement a modal or redirect logic here
+	           });
+
+	           $(document).on('click', '.delete-order-btn', function() {
+	               var orderId = $(this).data('id');
+	               alert('Delete order ID: ' + orderId);
+	               // Add logic to delete the order via API
+	           });
+	       });
+		   
+		   function fetchOrders() {
+		                  $.ajax({
+		                      url: '/api/order/getAll',  // Replace this with your actual API URL
+		                      type: 'GET',
+		                      success: function(orders) {
+		                          $('#orderTableBody').empty(); // Clear the existing rows
+		   					   console.log(typeof $);
+		   					   console.log(orders);
+
+		                          orders.forEach(function(order) {
+		   						console.log(order.id , order.customer_name);
+		                              $('#orderTableBody').append(`
+		                                  <tr>
+		                                      <td>${ order.id.toString()}</td>
+		                                      <td>${ order.customer_name.toString()}</td>
+		                                      <td>${ order.status}</td>
+		                                      <td>${ order.deliveryDate}</td>
+		                                      <td>${ order.machins}</td>
+		                                      <td>
+		                                          <button class="view-details-btn" data-id="${order.id}">View</button>
+		                                          <button class="delete-order-btn" data-id="${order.id}">Delete</button>
+		                                          <button class="update-order-btn" data-id="${order.id}">Update</button>
+		                                      </td>
+		                                  </tr>
+		                              `);
+		                          });
+		                      },
+		                      error: function(xhr, status, error) {
+		                          console.error("Error fetching orders:", error);
+		                      }
+		                  });
+		              }
+	 
+
+	   </script>
 </head>
 <body>
 
@@ -234,7 +299,8 @@
                 </tr>
             </thead>
             <tbody id="orderTableBody">
-            <!-- Dynamic content will be inserted here -->
+                 
+
         </tbody>
         </table>
 
@@ -255,70 +321,5 @@
         </div>
 
     </div>
-
-    <!-- JavaScript for Modal -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        function openModal() {
-            document.getElementById('orderModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('orderModal').style.display = 'none';
-        }
- 
-        $(document).ready(function() {
-            // Function to fetch order data from server using AJAX
-            function fetchOrders() {
-                $.ajax({
-                    url: '/api/order/getAll',  // Replace this with your actual API URL
-                    type: 'GET',
-                    success: function(orders) {
-                        $('#orderTableBody').empty(); // Clear the existing rows
-
-                        // Loop through the orders and append rows dynamically
-                        orders.forEach(function(order) {
-                            $('#orderTableBody').append(`
-                                <tr>
-                                    <td>${order.orderId}</td>
-                                    <td>${order.customerName}</td>
-                                    <td>${order.status}</td>
-                                    <td>${order.deliveryDate}</td>
-                                    <td>${order.machins}</td>
-                                    <td>
-                                        <button class="view-details-btn" data-id="${order.orderId}">View</button>
-                                        <button class="delete-order-btn" data-id="${order.orderId}">Delete</button>
-                                        <button class="update-order-btn" data-id="${order.orderId}">Update</button>
-                                    </td>
-                                </tr>
-                            `);
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error fetching orders:", error);
-                    }
-                });
-            }
-
-            // Call the function to load order data when the page is ready
-            fetchOrders();
-
-            // Example: Adding event listener to handle button actions (View/Delete)
-            $(document).on('click', '.view-details-btn', function() {
-                var orderId = $(this).data('id');
-                alert('View details for order ID: ' + orderId);
-                // You can implement a modal or redirect logic here
-            });
-
-            $(document).on('click', '.delete-order-btn', function() {
-                var orderId = $(this).data('id');
-                alert('Delete order ID: ' + orderId);
-                // Add logic to delete the order via API
-            });
-        });
-  
-
-    </script>
-
 </body>
 </html>

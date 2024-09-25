@@ -7,24 +7,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Transport Management System</title>
     <style>
-    .spinner {
-            display: none;
-            position: fixed;
-            z-index: 999;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 16px solid #f3f3f3;
-            border-top: 16px solid #3498db;
-            border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+		.spinner-container {
+		    display: none; /* Hidden by default; show it when needed */
+		    position: fixed;
+		    top: 0;
+		    left: 0;
+		    width: 100%;
+		    height: 100%;
+		    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+		    backdrop-filter: blur(5px); /* Blur effect */
+		    z-index: 999; /* Above other elements */
+		    justify-content: center; /* Center spinner horizontally */
+		    align-items: center; /* Center spinner vertically */
+		}
+
+		.spinner {
+			position: fixed;
+			z-index: 999;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			border: 5px solid #f3f3f3;
+			border-top: 5px solid #3498db;
+			border-radius: 50%;
+			width: 30px;
+			height: 30px;
+			animation: spin 1s linear infinite;
+		}
+
+		@keyframes spin {
+		    0% { transform: rotate(0deg); }
+		    100% { transform: rotate(360deg); }
+		}
+
         
         body {
             background-color: #f4f4f4;
@@ -75,10 +90,10 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 	$(document).ready(function() {
-		$('#spinner').hide();
+		$('.spinner-container').hide();
 	});
 	    function loginMeth(event){
-	    	$('#spinner').show();
+	    	$('.spinner-container').show();
 	        event.preventDefault(); // Prevent form submission
 
 	        var email = document.getElementsByName('email')[0].value;
@@ -89,7 +104,7 @@
 	            type: 'GET',
 	            dataType: 'json',
 	            success: function(response) {
-	            	$('#spinner').hide();
+	            	$('.spinner-container').hide();
 	                if(response.message === "success"){
 						window.location.href = 'dashboard.jsp'; 
 						}else{
@@ -105,8 +120,10 @@
 	</script>
 	</head>
 	<body style="background-image: url('img/bk4.jpg'); background-position: center;">
-	 <!-- Spinner -->
-    <div class="spinner" id="spinner"></div>
+		<div class="spinner-container">
+		    <div class="spinner"></div>
+		</div>
+
 	    <div class="container" style="background-image: url('img/bk4.jpg'); background-position: center;">
 	        <h2>Login</h2>
 
