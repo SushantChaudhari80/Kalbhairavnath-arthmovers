@@ -177,10 +177,74 @@
             .main-content {
                 padding: 10px;
             }
+			.spinner-container {
+					    display: none; /* Hidden by default; show it when needed */
+					    position: fixed;
+					    top: 0;
+					    left: 0;
+					    width: 100%;
+					    height: 100%;
+					    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+					    backdrop-filter: blur(5px); /* Blur effect */
+					    z-index: 999; /* Above other elements */
+					    justify-content: center; /* Center spinner horizontally */
+					    align-items: center; /* Center spinner vertically */
+					}
+
+					.spinner {
+						position: fixed;
+						z-index: 999;
+						top: 50%;
+						left: 50%;
+						transform: translate(-50%, -50%);
+						border: 5px solid #f3f3f3;
+						border-top: 5px solid #3498db;
+						border-radius: 50%;
+						width: 30px;
+						height: 30px;
+						animation: spin 1s linear infinite;
+					}
+
+					@keyframes spin {
+					    0% { transform: rotate(0deg); }
+					    100% { transform: rotate(360deg); }
+					}
         }
     </style>
+    
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script>
+		    $(document).ready(function() {
+				$('.spinner-container').show();
+		        // Function to fetch customer data from server using AJAX
+		        function fetchCustomerData() {
+		            $.ajax({
+		                url: '/api/customers/get',  // URL for fetching the customer data
+		                type: 'GET',
+		                success: function(customer) {
+		                    // Update the UI with the customer data
+		                    $('#customer-name').text(customer.name);
+		                    if (customer.picture) {
+		                        var imageUrl = 'data:image/png;base64,' + customer.picture;
+		                        $('#customer-picture').attr('src', imageUrl);
+		                    }
+							$('.spinner-container').hide();
+		                },
+		                error: function(xhr, status, error) {
+		                    console.error("Error fetching customer data:", error);
+		                }
+		            });
+		        }
+		
+		        // Call the function to load customer data when the page is ready
+		        fetchCustomerData();
+		    });
+		</script>
 </head>
 <body>
+	<div class="spinner-container">
+			    <div class="spinner"></div>
+			</div>
     <div class="dashboard-container">
         <!-- Sidebar -->
         <div class="sidebar">
@@ -202,18 +266,19 @@
         <!-- Main Content -->
         <div class="main-content">
             <!-- Header -->
+           
             <div class="header">
-                <div class="search-bar">
-                    <input type="text" placeholder="Search...">
-                </div>
-                <div class="user-section">
-                    <span>Ananda Darekar</span>
-                    <img src="https://via.placeholder.com/40" alt="User Profile">
-                </div>
-            </div>
+			    <div class="search-bar">
+			        <input type="text" placeholder="Search...">
+			    </div>
+			    <div class="user-section">
+			        <span id="customer-name">Loading....</span>
+			        <img id="customer-picture" src="https://via.placeholder.com/40" alt="User Profile">
+			    </div>
+			</div>
 
             <!-- Overview Section -->
-            <h1>Dashboard Overview</h1>
+            <h1 style="color: white;">Dashboard Overview</h1>
             <div class="overview">
                 <div class="card">
                     <h3>Total Orders</h3>

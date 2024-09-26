@@ -103,9 +103,14 @@
         }
 
         .vehicle-card p {
-            color: #7f8c8d;
+            color: black;
             margin-bottom: 15px;
         }
+        .vehicle-card {
+		    border: 1px solid red;  /* Temporary border to see the vehicle cards */
+		    background-color: white;
+		}
+        
 
         .vehicle-status {
             padding: 5px 10px;
@@ -185,16 +190,122 @@
             .modal-content {
                 width: 90%;
             }
+           .machineNumberStyle {
+			    background-color: #f0ad4e;  /* Amber color for machine number */
+			    color: #fff;                /* White text to contrast */
+			    padding: 10px;              /* Padding around the text */
+			    border-radius: 5px;         /* Rounded corners */
+			    text-align: center;         /* Center the text */
+			}
+			
+			.companyStyle {
+			    background-color: #5bc0de;  /* Light blue background for company name */
+			    color: #fff;                /* White text to contrast */
+			    padding: 10px;              /* Padding around the text */
+			    border-radius: 5px;         /* Rounded corners */
+			    text-align: center;         /* Center the text */
+			}
+			.spinner-container {
+											    display: none; /* Hidden by default; show it when needed */
+											    position: fixed;
+											    top: 0;
+											    left: 0;
+											    width: 100%;
+											    height: 100%;
+											    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+											    backdrop-filter: blur(5px); /* Blur effect */
+											    z-index: 999; /* Above other elements */
+											    justify-content: center; /* Center spinner horizontally */
+											    align-items: center; /* Center spinner vertically */
+											}
+
+											.spinner {
+												position: fixed;
+												z-index: 999;
+												top: 50%;
+												left: 50%;
+												transform: translate(-50%, -50%);
+												border: 5px solid #f3f3f3;
+												border-top: 5px solid #3498db;
+												border-radius: 50%;
+												width: 30px;
+												height: 30px;
+												animation: spin 1s linear infinite;
+											}
+
+											@keyframes spin {
+											    0% { transform: rotate(0deg); }
+											    100% { transform: rotate(360deg); }
+											}
+
         }
     </style>
+	<!-- Include jQuery -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<!-- Include DataTables CSS -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+
+	<!-- Include DataTables JavaScript -->
+	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
+	<script>
+	    $(document).ready(function() {
+	        $('.spinner-container').show();
+
+	        // Initialize DataTable when the document is ready
+	        const table = $('#vehicleTable').DataTable({
+	            columns: [
+	                { title: "ID" },
+	                { title: "Vehicle Number" },
+	                { title: "Company" },
+	                { title: "Drivers" }
+	            ]
+	        });
+
+	        // Function to fetch vehicle data from server using AJAX
+	        function fetchVehiclesList() {
+	            $.ajax({
+	                url: '/api/vehicles/getAll', // URL for fetching vehicle data
+	                type: 'GET',
+	                success: function(vehicles) {
+	                    table.clear(); // Clear existing rows
+	                    console.log(vehicles);
+
+	                    // Loop through each vehicle and add it to the DataTable
+	                    vehicles.forEach(function(vehicle) {
+	                        table.row.add([
+	                            vehicle.id || '',              // Ensure fallback value if undefined
+	                            vehicle.machineNumber || '',   // Replace with the correct property name if different
+	                            vehicle.company || '',
+	                             'N/A'       // Use 'N/A' or another placeholder if undefined
+	                        ]);
+	                    });
+
+	                    table.draw(false); // Draw the table once all rows are added
+	                    $('.spinner-container').hide(); // Hide the spinner
+	                },
+	                error: function(xhr, status, error) {
+	                    console.error("Error fetching vehicle data:", error);
+	                    $('.spinner-container').hide(); // Hide the spinner on error as well
+	                }
+	            });
+	        }
+
+	        // Call the function to load vehicle data when the page is ready
+	        fetchVehiclesList();
+	    });
+	</script>
 </head>
 <body>
-
+	<div class="spinner-container">
+					    <div class="spinner"></div>
+					</div>
     <div class="container">
         <!-- Page Header -->
         <div class="page-header">
             <h1>Vehicles</h1>
-            <a href="#" class="btn">Add New Vehicle</a>
+            <a href="addVehicale.jsp" class="btn">Add New Vehicle</a>
         </div>
 
         <!-- Filters Section -->
@@ -209,30 +320,21 @@
             <button>Apply Filters</button>
         </div>
 
-        <!-- Vehicles Grid -->
-        <div class="vehicles-grid">
-            <div class="vehicle-card">
-                <h3>Vehicle 01</h3>
-                <p>Truck | Last Serviced: 2024-08-01</p>
-                <span class="vehicle-status status-active">Active</span>
-            </div>
-            <div class="vehicle-card">
-                <h3>Vehicle 02</h3>
-                <p>Van | Last Serviced: 2024-07-20</p>
-                <span class="vehicle-status status-maintenance">In Maintenance</span>
-            </div>
-            <div class="vehicle-card">
-                <h3>Vehicle 03</h3>
-                <p>Truck | Last Serviced: 2024-06-15</p>
-                <span class="vehicle-status status-unavailable">Unavailable</span>
-            </div>
-            <div class="vehicle-card">
-                <h3>Vehicle 04</h3>
-                <p>SUV | Last Serviced: 2024-08-10</p>
-                <span class="vehicle-status status-active">Active</span>
-            </div>
-        </div>
-
+		<!-- Table HTML structure -->
+		<table id="vehicleTable" class="display">
+		    <thead>
+		        <tr>
+		            <th>ID</th>
+		            <th>Vehicle Number</th>
+		            <th>Company</th>
+		            <th>Drivers</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <!-- Rows will be dynamically added here -->
+		    </tbody>
+		</table>
+		
         <!-- Modal for Vehicle Details -->
         <div class="modal" id="vehicleModal">
             <div class="modal-content">
