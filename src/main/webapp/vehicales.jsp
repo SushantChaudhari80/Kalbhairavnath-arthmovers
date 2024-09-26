@@ -11,6 +11,43 @@
             padding: 0;
             box-sizing: border-box;
         }
+        
+        /* Orders Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        table thead {
+            background-color: #2980b9;
+            color: white;
+        }
+
+        table th, table td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table tbody tr:hover {
+            background-color: #f4f4f4;
+            cursor: pointer;
+        }
+
+        table .status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 14px;
+        }
 
         body, html {
             font-family: 'Poppins', sans-serif;
@@ -197,42 +234,7 @@
 			    border-radius: 5px;         /* Rounded corners */
 			    text-align: center;         /* Center the text */
 			}
-			 /* Orders Table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-
-        table thead {
-            background-color: #2980b9;
-            color: white;
-        }
-
-        table th, table td {
-            padding: 15px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-
-        table tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        table tbody tr:hover {
-            background-color: #f4f4f4;
-            cursor: pointer;
-        }
-
-        table .status {
-            padding: 5px 10px;
-            border-radius: 4px;
-            text-align: center;
-            font-size: 14px;
-        }
+		
 			
 			
 			.companyStyle {

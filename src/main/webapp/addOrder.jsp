@@ -128,11 +128,10 @@
         <div class="form-group inline">
             <div>
                 <label for="machine_number">Customer Name</label>
-                <input type="text" id="customer_name" name="customer_name" placeholder="Enter machine number">
+                <input type="text" id="customer_name" name="customer_name" placeholder="Enter Customer Name">
             </div>
-            <div>
-                <label for="company">Machine</label>
-                <input type="text" id="Machine" name="Machine" placeholder="Enter company name">
+            <div id="vehicleContainer">
+			       
             </div>
         </div>
 
@@ -150,12 +149,62 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+	
+	$(document).ready(function() {
+	    // Function to fetch vehicle data from server using AJAX
+	    function fetchVehiclesList() {
+	        $.ajax({
+	            url: '/api/vehicles/getAll', // URL for fetching vehicle data
+	            type: 'GET',
+	            success: function(vehicles) {
+	            	const vehicleContainer = document.getElementById('vehicleContainer'); // Get the container div
+	                vehicleContainer.innerHTML = '';
+	                console.log(vehicles);
+	                vehicles.forEach(function(vehicle) {
+	                	 // Create a label element
+	                    const label = document.createElement('label');
+
+	                    // Create a checkbox input element
+	                    const checkbox = document.createElement('input');
+	                    checkbox.type = 'checkbox';
+	                    checkbox.name = 'vehicle';
+	                    checkbox.value = vehicle.machineNumber;
+
+	                    // Append the checkbox to the label
+	                    label.appendChild(checkbox);
+
+	                    // Add the text after the checkbox
+	                    const textNode = document.createTextNode(vehicle.machineNumber);
+	                    label.appendChild(textNode);
+
+	                    // Create a <br> element for line break
+	                    const br = document.createElement('br');
+
+	                    // Append the label and the <br> to the container
+	                    vehicleContainer.appendChild(label);
+	                    vehicleContainer.appendChild(br);
+	                });
+	            },
+	            error: function(xhr, status, error) {
+	                console.error("Error fetching vehicle data:", error);
+	                $('.spinner-container').hide(); // Hide the spinner on error as well
+	            }
+	        });
+	    }
+	    fetchVehiclesList();
+	});
+   
+    
     // Simple JavaScript to handle form submission (placeholder, adjust as needed)
     document.getElementById('addOrderForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent form from submitting normally
 
     const machineNumber = document.getElementById('customer_name').value;
-    const company = document.getElementById('Machine').value;
+    const interests = $('input[name="interest"]:checked').map(function() {
+        return this.value; // Get checked values
+    }).get();
+    const interestsString = interests.join(',');
+    console.log(interests);
 
     $.ajax({
         url: '/api/order/add',  // URL for adding the vehicle
@@ -163,7 +212,7 @@
         contentType: 'application/json',
         data: JSON.stringify({
             machineNumber: machineNumber,
-            company: company
+            company: interestsString
         }),
         success: function(msg) {
             if (msg === "Order added successfully!") {
