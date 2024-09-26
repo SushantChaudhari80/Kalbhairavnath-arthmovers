@@ -205,46 +205,102 @@
 			    border-radius: 5px;         /* Rounded corners */
 			    text-align: center;         /* Center the text */
 			}
+			.spinner-container {
+											    display: none; /* Hidden by default; show it when needed */
+											    position: fixed;
+											    top: 0;
+											    left: 0;
+											    width: 100%;
+											    height: 100%;
+											    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+											    backdrop-filter: blur(5px); /* Blur effect */
+											    z-index: 999; /* Above other elements */
+											    justify-content: center; /* Center spinner horizontally */
+											    align-items: center; /* Center spinner vertically */
+											}
+
+											.spinner {
+												position: fixed;
+												z-index: 999;
+												top: 50%;
+												left: 50%;
+												transform: translate(-50%, -50%);
+												border: 5px solid #f3f3f3;
+												border-top: 5px solid #3498db;
+												border-radius: 50%;
+												width: 30px;
+												height: 30px;
+												animation: spin 1s linear infinite;
+											}
+
+											@keyframes spin {
+											    0% { transform: rotate(0deg); }
+											    100% { transform: rotate(360deg); }
+											}
 
         }
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-		<script>
-		    $(document).ready(function() {
-		        // Function to fetch customer data from server using AJAX
-		        function fetchVehicalesList() {
-		            $.ajax({
-		                url: '/api/vehicles/getAll',  // URL for fetching the customer data
-		                type: 'GET',
-		                success: function(vehicles) {
-		                	$('#vehicaleList').empty();
-		                    vehicles.forEach(function(vehicle) {
-		                    	var no =  vehicle.machineNumber.toString() ;
-			                    var company = vehicle.company.toString();
-			                    console.log( no, company);
-		                        $('#vehicaleList').append(`
-		                            <div class="vehicle-card">
-		                                <h3 class="machineNumberStyle">${no}</h3>  <!-- ${vehicle.machineNumber}-->
-		                                <p class="companyStyle">${company}</p>  <!--${vehicle.company || "Unknown Company"} -->
-		                            </div>
-		                        `);
-		                    });
+	<!-- Include jQuery -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-		                },
-		                error: function(xhr, status, error) {
-		                    console.error("Error fetching customer data:", error);
-		                }
-		            });
-		        }
-		
-		        // Call the function to load customer data when the page is ready
-		        fetchVehicalesList();
-		    });
-		    
-		</script>
+	<!-- Include DataTables CSS -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+
+	<!-- Include DataTables JavaScript -->
+	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
+	<script>
+	    $(document).ready(function() {
+	        $('.spinner-container').show();
+
+	        // Initialize DataTable when the document is ready
+	        const table = $('#vehicleTable').DataTable({
+	            columns: [
+	                { title: "ID" },
+	                { title: "Vehicle Number" },
+	                { title: "Company" },
+	                { title: "Drivers" }
+	            ]
+	        });
+
+	        // Function to fetch vehicle data from server using AJAX
+	        function fetchVehiclesList() {
+	            $.ajax({
+	                url: '/api/vehicles/getAll', // URL for fetching vehicle data
+	                type: 'GET',
+	                success: function(vehicles) {
+	                    table.clear(); // Clear existing rows
+	                    console.log(vehicles);
+
+	                    // Loop through each vehicle and add it to the DataTable
+	                    vehicles.forEach(function(vehicle) {
+	                        table.row.add([
+	                            vehicle.id || '',              // Ensure fallback value if undefined
+	                            vehicle.machineNumber || '',   // Replace with the correct property name if different
+	                            vehicle.company || '',
+	                             'N/A'       // Use 'N/A' or another placeholder if undefined
+	                        ]);
+	                    });
+
+	                    table.draw(false); // Draw the table once all rows are added
+	                    $('.spinner-container').hide(); // Hide the spinner
+	                },
+	                error: function(xhr, status, error) {
+	                    console.error("Error fetching vehicle data:", error);
+	                    $('.spinner-container').hide(); // Hide the spinner on error as well
+	                }
+	            });
+	        }
+
+	        // Call the function to load vehicle data when the page is ready
+	        fetchVehiclesList();
+	    });
+	</script>
 </head>
 <body>
-
+	<div class="spinner-container">
+					    <div class="spinner"></div>
+					</div>
     <div class="container">
         <!-- Page Header -->
         <div class="page-header">
@@ -264,16 +320,21 @@
             <button>Apply Filters</button>
         </div>
 
-        <!-- Vehicles Grid -->
-        <div id="vehicaleList" class="vehicles-grid">
-		    <div class="vehicle-card">
-		            <h3 id="machinNumber">Loading..</h3>
-		            <p id="machinCompany">Loading..</p>
-		        </div>
-		   
-		</div>
-
-
+		<!-- Table HTML structure -->
+		<table id="vehicleTable" class="display">
+		    <thead>
+		        <tr>
+		            <th>ID</th>
+		            <th>Vehicle Number</th>
+		            <th>Company</th>
+		            <th>Drivers</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <!-- Rows will be dynamically added here -->
+		    </tbody>
+		</table>
+		
         <!-- Modal for Vehicle Details -->
         <div class="modal" id="vehicleModal">
             <div class="modal-content">

@@ -197,10 +197,48 @@
             .modal-content {
                 width: 90%;
             }
+			.spinner-container {
+								    display: none; /* Hidden by default; show it when needed */
+								    position: fixed;
+								    top: 0;
+								    left: 0;
+								    width: 100%;
+								    height: 100%;
+								    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+								    backdrop-filter: blur(5px); /* Blur effect */
+								    z-index: 999; /* Above other elements */
+								    justify-content: center; /* Center spinner horizontally */
+								    align-items: center; /* Center spinner vertically */
+								}
+
+								.spinner {
+									position: fixed;
+									z-index: 999;
+									top: 50%;
+									left: 50%;
+									transform: translate(-50%, -50%);
+									border: 5px solid #f3f3f3;
+									border-top: 5px solid #3498db;
+									border-radius: 50%;
+									width: 30px;
+									height: 30px;
+									animation: spin 1s linear infinite;
+								}
+
+								@keyframes spin {
+								    0% { transform: rotate(0deg); }
+								    100% { transform: rotate(360deg); }
+								}
         }
     </style>
-	<!-- JavaScript for Modal -->
+	
 	   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	   <!-- Include DataTables CSS -->
+	   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+
+	   <!-- Include DataTables JavaScript -->
+	   <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 	   <script>
 	       function openModal() {
 	           document.getElementById('orderModal').style.display = 'flex';
@@ -211,6 +249,18 @@
 	       }
 
 	       $(document).ready(function() {
+			$('.spinner-container').show();
+			// Initialize DataTable when the document is ready
+			        const table = $('#orderTable').DataTable({
+						columns: [
+						               { title: "ID" },
+						               { title: "Customer Name" },
+						               { title: "Status" },
+						               { title: "Delivery Date" },
+						               { title: "Machines" },
+						               { title: "Actions" }
+						           ]
+			        });
 	           // Function to fetch order data from server using AJAX
 	           fetchOrders();
 
@@ -228,43 +278,45 @@
 	           });
 	       });
 		   
+		  
 		   function fetchOrders() {
-		                  $.ajax({
-		                      url: '/api/order/getAll',  // Replace this with your actual API URL
-		                      type: 'GET',
-		                      success: function(orders) {
-		                          $('#orderTableBody').empty(); // Clear the existing rows
-		   					   console.log(typeof $);
-		   					   console.log(orders);
-
-		                          orders.forEach(function(order) {
-		   						console.log(order.id , order.customer_name);
-		                              $('#orderTableBody').append(`
-		                                  <tr>
-		                                      <td>${ order.id.toString()}</td>
-		                                      <td>${ order.customer_name.toString()}</td>
-		                                      <td>${ order.status}</td>
-		                                      <td>${ order.deliveryDate}</td>
-		                                      <td>${ order.machins}</td>
-		                                      <td>
-		                                          <button class="view-details-btn" data-id="${order.id}">View</button>
-		                                          <button class="delete-order-btn" data-id="${order.id}">Delete</button>
-		                                          <button class="update-order-btn" data-id="${order.id}">Update</button>
-		                                      </td>
-		                                  </tr>
-		                              `);
-		                          });
-		                      },
-		                      error: function(xhr, status, error) {
-		                          console.error("Error fetching orders:", error);
-		                      }
+		          $.ajax({
+		              url: '/api/order/getAll', // Replace with your actual API URL
+		              type: 'GET',
+		              success: function (orders) {
+		                  const table = $('#orderTable').DataTable(); // Ensure the DataTable is initialized
+		                  table.clear(); // Clear existing rows
+                        console.log(orders);
+		                  orders.forEach(function (order) {
+							// Ensure these properties exist in each order object
+							                   table.row.add([
+							                       order.id || '', // Ensure fallback value if undefined
+							                       order.customer_name || '',
+							                       order.status || '',
+							                       order.deliveryDate || '',
+							                       order.machins || '',
+							                       `<button class="view-details-btn" data-id="${order.id}">View</button>
+							                        <button class="delete-order-btn" data-id="${order.id}">Delete</button>
+							                        <button class="update-order-btn" data-id="${order.id}">Update</button>`
+							                   ]);
 		                  });
+
+		                  table.draw(false); // Draw the table once all rows are added
+		                  $('.spinner-container').hide(); // Hide the spinner
+		              },
+		              error: function (xhr, status, error) {
+		                  console.error("Error fetching orders:", error);
 		              }
+		          });
+		      }
 	 
 
 	   </script>
 </head>
 <body>
+	<div class="spinner-container">
+				    <div class="spinner"></div>
+				</div>
 
     <div class="container">
         <!-- Page Header -->
@@ -287,7 +339,7 @@
         </div>
 
         <!-- Orders Table -->
-        <table>
+        <table id="orderTable" class="display">
             <thead>
                 <tr>
                     <th>Order ID</th>

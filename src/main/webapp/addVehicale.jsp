@@ -166,6 +166,7 @@
             company: company
         }),
         success: function(msg) {
+			console.log(msg);
             if (msg === "Vehicle added successfully!") {
                 // Display success message
                 document.getElementById('successMessage').style.display = 'block';

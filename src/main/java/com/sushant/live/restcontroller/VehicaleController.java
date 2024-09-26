@@ -34,7 +34,7 @@ public class VehicaleController {
         boolean isAdded = vehicaleService.addVehicale(newVehicale);
 
         if (isAdded) {
-            return ResponseEntity.ok("Order added successfully!");
+            return ResponseEntity.ok("Vehicle added successfully!");
         } else {
             System.out.println("Failed to add vehicle. Please try again.");
             return ResponseEntity.status(500).body("Failed to add vehicle. Please try again.");
