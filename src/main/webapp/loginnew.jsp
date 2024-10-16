@@ -100,7 +100,7 @@
 	        var pass  = document.getElementsByName('password')[0].value;
 
 	        $.ajax({
-	            url: 'http://localhost:8084/login/user?email='+email+'&pass='+pass,
+	            url: '/login/user?email='+email+'&pass='+pass,
 	            type: 'GET',
 	            dataType: 'json',
 	            success: function(response) {
