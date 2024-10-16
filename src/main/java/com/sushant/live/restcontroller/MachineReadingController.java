@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sushant.live.service.MachineReadingService;
+//import com.sushant.live.service.MachineReadingService;
 
 import java.io.IOException;
 
@@ -12,8 +12,8 @@ import java.io.IOException;
 @RequestMapping("/upload")
 public class MachineReadingController {
 
-    @Autowired
-    private MachineReadingService machineReadingService;
+//    @Autowired
+//    private MachineReadingService machineReadingService;
 
     @PostMapping
     public String handleFormSubmit(
@@ -24,13 +24,13 @@ public class MachineReadingController {
             @RequestParam("photo") MultipartFile photo) {
         try {
             // Process photo to extract numbers using OCR (e.g., Tesseract)
-            String extractedText = machineReadingService.extractTextFromImage(photo);
-
-            // Save form data to the database
-            machineReadingService.saveReading(driverMobile, ownerMobile, machineNumber, readingTypes, extractedText);
+//            String extractedText = machineReadingService.extractTextFromImage(photo);
+//
+//            // Save form data to the database
+//            machineReadingService.saveReading(driverMobile, ownerMobile, machineNumber, readingTypes, extractedText);
             
             return "Machine reading submitted successfully!";
-        } catch (IOException e) {
+        } catch (Exception e) {
             return "Error processing the form: " + e.getMessage();
         }
     }

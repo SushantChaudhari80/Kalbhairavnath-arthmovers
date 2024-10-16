@@ -10,7 +10,8 @@ public class ConnectionProvider {
     public static Connection getConnection() {
     	 Connection con = null;
 		try {
-			con = DriverManager.getConnection("jdbc:mysql://sql12.freesqldatabase.com:3306/sql12732560","sql12732560","Yzm77EHwDN");
+			con = DriverManager.getConnection("jdbc:mysql://root:STBTbMioppKqvJePNHgKKCXLtKQDbtXo@junction.proxy.rlwy.net:39140/railway","root","STBTbMioppKqvJePNHgKKCXLtKQDbtXo");
+			//mysql://root:STBTbMioppKqvJePNHgKKCXLtKQDbtXo@junction.proxy.rlwy.net:39140/railway
 			System.out.println("Connection object"+con);
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -11,7 +11,7 @@
 	<groupId>com.sushant.live</groupId>
 	<artifactId>bhairavnath-arthmovers</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>bhairavnath-arthmovers</name>
 	<description>Bhairavnath Arthmovers</description>
 	<url/>
