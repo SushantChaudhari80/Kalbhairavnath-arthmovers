@@ -18,5 +18,8 @@ public class JobManagerControllar {
 	public String addCustomer() {
 		return "addCustomer";
 	}
-	
+	@GetMapping("/reading")
+	public String addReading() {
+		return "captureReading";
+	}
 }

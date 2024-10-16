@@ -243,9 +243,9 @@
 </head>
 <body>
 	<div class="spinner-container">
-			    <div class="spinner"></div>
-			</div>
-    <div class="dashboard-container">
+        <div class="spinner"></div>
+	</div>
+   <div class="dashboard-container">
         <!-- Sidebar -->
         <div class="sidebar">
             <div>

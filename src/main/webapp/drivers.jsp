@@ -12,6 +12,43 @@
             box-sizing: border-box;
         }
 
+        /* Orders Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        table thead {
+            background-color: #2980b9;
+            color: white;
+        }
+
+        table th, table td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table tbody tr:hover {
+            background-color: #f4f4f4;
+            cursor: pointer;
+        }
+
+        table .status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 14px;
+        }
+       
         body, html {
             font-family: 'Poppins', sans-serif;
             background-color: #f4f6f9;
@@ -195,6 +232,71 @@
             }
         }
     </style>
+    	<!-- Include jQuery -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<!-- Include DataTables CSS -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+
+	<!-- Include DataTables JavaScript -->
+	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
+	<script>
+	    $(document).ready(function() {
+	       // $('.spinner-container').show();
+
+	        // Initialize DataTable when the document is ready
+	        const table = $('#driverTable').DataTable({
+	            columns: [
+	                { title: "ID" },
+	                { title: "Driver Name" },
+	                { title: "Driver Mobile" },
+	                { title: "Driver Address" },
+	                { title: "Driver Aadhar" }
+	                
+	            ]
+	        });
+
+	        // Function to fetch vehicle data from server using AJAX
+	        function fetchVehiclesList() {
+	            $.ajax({
+	                url: '/api/driver/getAll', // URL for fetching vehicle data
+	                type: 'GET',
+	                success: function(drivers) {
+	                    table.clear(); // Clear existing rows
+	                    console.log(drivers);
+
+	                    // Loop through each vehicle and add it to the DataTable
+	                    drivers.forEach(function(driver) {
+	                        table.row.add([
+	                            driver.id || '',              // Ensure fallback value if undefined
+	                            driver.driverName || '',   // Replace with the correct property name if different
+	                            driver.driverMobile || '',
+	                            driver.driverAddress || '',
+	                            driver.driverAadhar || ''// Use 'N/A' or another placeholder if undefined
+	                        ]);
+	                    });
+
+	                    table.draw(false); // Draw the table once all rows are added
+	                    // Add click event to rows
+                        $('#driverTable tbody').on('click', 'tr', function() {
+                            const data = table.row(this).data();
+                            const driverId = data[0]; // Assuming ID is in the first column
+                            const driverName = data[1];
+                            window.location.href = 'driverPayment.jsp?driverId='+driverId+'&driverName='+driverName;
+                        });
+	                },
+	                error: function(xhr, status, error) {
+	                    console.error("Error fetching Driver data:", error);
+	                  //  $('.spinner-container').hide(); // Hide the spinner on error as well
+	                }
+	            });
+	        }
+
+	        // Call the function to load vehicle data when the page is ready
+	        fetchVehiclesList();
+	    });
+	</script>
 </head>
 <body>
 
@@ -202,7 +304,7 @@
         <!-- Page Header -->
         <div class="page-header">
             <h1>Drivers</h1>
-            <button class="btn">Add New Driver</button>
+            <a href="addDriver.jsp" class="btn">Add New Driver </a>
         </div>
 
         <!-- Filters Section -->
@@ -217,33 +319,21 @@
             <button>Apply Filters</button>
         </div>
 
-        <!-- Drivers Grid -->
-        <div class="drivers-grid">
-            <div class="driver-card" onclick="openModal('Driver 01')">
-                <img src="https://via.placeholder.com/80" alt="Driver">
-                <h3>Driver 01</h3>
-                <p>Assigned to Vehicle: Truck 01</p>
-                <span class="driver-status status-available">Available</span>
-            </div>
-            <div class="driver-card" onclick="openModal('Driver 02')">
-                <img src="https://via.placeholder.com/80" alt="Driver">
-                <h3>Driver 02</h3>
-                <p>Assigned to Vehicle: Van 02</p>
-                <span class="driver-status status-on-duty">On Duty</span>
-            </div>
-            <div class="driver-card" onclick="openModal('Driver 03')">
-                <img src="https://via.placeholder.com/80" alt="Driver">
-                <h3>Driver 03</h3>
-                <p>Assigned to Vehicle: SUV 03</p>
-                <span class="driver-status status-off-duty">Off Duty</span>
-            </div>
-            <div class="driver-card" onclick="openModal('Driver 04')">
-                <img src="https://via.placeholder.com/80" alt="Driver">
-                <h3>Driver 04</h3>
-                <p>Assigned to Vehicle: Truck 02</p>
-                <span class="driver-status status-available">Available</span>
-            </div>
-        </div>
+        <!-- Table HTML structure -->
+		<table id="driverTable" class="display">
+		    <thead>
+		        <tr>
+		            <th>ID</th>
+		            <th>Driver Name</th>
+		            <th>Driver Mobile</th>
+		            <th>Driver Address</th>
+		            <th>Driver Aadhar</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <!-- Rows will be dynamically added here -->
+		    </tbody>
+		</table>
 
         <!-- Modal for Driver Details -->
         <div class="modal" id="driverModal">
