@@ -10,6 +10,7 @@ import com.sushant.live.service.CustomerService;
 import com.sushant.live.util.SessionManager;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/customers")
@@ -22,6 +23,14 @@ public class CustomerController {
     public ResponseEntity<Customer> getCustomer() {
     	System.out.println("CustomerController : getCustomer()");
         Customer customer = customerService.getCustomerById(SessionManager.getInstance().getUsername()); // Fetch customer by ID (example)
+        return ResponseEntity.ok(customer);
+    }
+    
+    @GetMapping("/getAll")
+    public ResponseEntity<List<Customer>> getAll() {
+    	System.out.println("CustomerController : getCustomer()");
+        List<Customer> customer = customerService.getCustomer();
+        System.out.println("Number of all customer"+customer.size());
         return ResponseEntity.ok(customer);
     }
 

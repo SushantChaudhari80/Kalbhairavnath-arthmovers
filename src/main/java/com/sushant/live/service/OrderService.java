@@ -21,6 +21,12 @@ public class OrderService {
 		return orderRepository.findAllByOwnerMobile(SessionManager.getInstance().getUsername());
 	}
 
+	
+	public Coustomer_order getById(int id) {
+		return orderRepository.getOne(Integer.valueOf(id));
+	}
+
+	
 	 public boolean addOrder(Coustomer_order order) {
 	        try {
 	        	orderRepository.save(order);

@@ -130,6 +130,10 @@
                 <label for="machine_number">Customer Name</label>
                 <input type="text" id="customer_name" name="customer_name" placeholder="Enter Customer Name">
             </div>
+			<div>
+			    <label for="machine_number">Customer Address</label>
+			    <input type="text" id="customer_address" name="customer_address" placeholder="Enter Customer Address">
+			 </div>
             <div id="vehicleContainer">
 			       
             </div>
@@ -195,44 +199,47 @@
 	});
    
     
-    // Simple JavaScript to handle form submission (placeholder, adjust as needed)
-    document.getElementById('addOrderForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent form from submitting normally
+	document.getElementById('addOrderForm').addEventListener('submit', function(event) {
+	    event.preventDefault(); // Prevent form from submitting normally
 
-    const machineNumber = document.getElementById('customer_name').value;
-    const interests = $('input[name="interest"]:checked').map(function() {
-        return this.value; // Get checked values
-    }).get();
-    const interestsString = interests.join(',');
-    console.log(interests);
+	    const customerName = document.getElementById('customer_name').value;
+		const customerAddress = document.getElementById('customer_address').value;
+	    const selectedVehicles = $('input[name="vehicle"]:checked').map(function() {
+	        return this.value; // Get checked values
+	    }).get();
+	    const selectedVehiclesString = selectedVehicles.join(',');
+	    
+	    console.log(selectedVehicles); // For debugging
 
-    $.ajax({
-        url: '/api/order/add',  // URL for adding the vehicle
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({
-            machineNumber: machineNumber,
-            company: interestsString
-        }),
-        success: function(msg) {
-            if (msg === "Order added successfully!") {
-                // Display success message
-                document.getElementById('successMessage').style.display = 'block';
-                document.getElementById('errorMessage').style.display = 'none';
-            } else {
-                // Display error message
-                document.getElementById('successMessage').style.display = 'none';
-                document.getElementById('errorMessage').style.display = 'block';
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("Error adding order:", error);
-            // Display error message
-            document.getElementById('successMessage').style.display = 'none';
-            document.getElementById('errorMessage').style.display = 'block';
-        }
-    });
-});
+	    $.ajax({
+	        url: '/api/order/add',  // URL for adding the order
+	        type: 'POST',
+	        contentType: 'application/json',
+	        data: JSON.stringify({
+	            customer_name: customerName,
+				address: customerAddress,
+	            machine_numbers: selectedVehiclesString
+	        }),
+	        success: function(msg) {
+	            if (msg === "Order added successfully!") {
+	                // Display success message
+	                document.getElementById('successMessage').style.display = 'block';
+	                document.getElementById('errorMessage').style.display = 'none';
+	            } else {
+	                // Display error message
+	                document.getElementById('successMessage').style.display = 'none';
+	                document.getElementById('errorMessage').style.display = 'block';
+	            }
+	        },
+	        error: function(xhr, status, error) {
+	            console.error("Error adding order:", error);
+	            // Display error message
+	            document.getElementById('successMessage').style.display = 'none';
+	            document.getElementById('errorMessage').style.display = 'block';
+	        }
+	    });
+	});
+
 
 </script>
 

@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sushant.live.dto.VehicalDTO;
 import com.sushant.live.model.Customer;
-import com.sushant.live.model.VehicalDTO;
 import com.sushant.live.model.Vehicale;
 import com.sushant.live.service.VehicaleService;
 import com.sushant.live.util.SessionManager;
