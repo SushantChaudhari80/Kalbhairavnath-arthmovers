@@ -25,9 +25,20 @@ public class Coustomer_order {
 	    @Column(name = "machins", nullable = false)
 	    private String machins;
 	    
+	    @Column(name = "address", nullable = false)
+	    private String address;
+	    
 	    @Column(name = "onwerMobile", nullable = false)
 	    private String onwerMobile;
 	    
+
+		public String getAddress() {
+			return address;
+		}
+
+		public void setAddress(String address) {
+			this.address = address;
+		}
 
 		public int getId() {
 			return id;
@@ -77,7 +88,7 @@ public class Coustomer_order {
 			this.machins = machins;
 		}
 
-		public Coustomer_order(int id, String customer_name, String status, String deliveryDate, String machins , String onwerMobile) {
+		public Coustomer_order(int id, String customer_name, String status, String deliveryDate, String machins , String onwerMobile , String address) {
 			super();
 			this.id = id;
 			this.customer_name = customer_name;
@@ -85,6 +96,7 @@ public class Coustomer_order {
 			this.deliveryDate = deliveryDate;
 			this.machins = machins;
 			this.onwerMobile = onwerMobile;
+			this.address =  address;
 		}
 
 		public Coustomer_order() {

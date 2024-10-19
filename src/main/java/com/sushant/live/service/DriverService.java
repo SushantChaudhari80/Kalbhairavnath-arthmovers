@@ -28,4 +28,28 @@ public class DriverService {
 	    public List<VehicaleDriver> getAllDrivers() {
 	    	return driverRepo.findAllByOwnerMobile(SessionManager.getInstance().getUsername());
 	    }
+	    
+	    public List<VehicaleDriver> getByNumber(String i) {
+	    	return driverRepo.getByMNumber(i);
+	    }
+	    
+	    public String assignDeriver(String MachineNumber , int DriverName ) {
+	    	try {
+	    		driverRepo.assignDriver(MachineNumber, DriverName);
+	    		return "Driver Assign successfully to : "+MachineNumber;
+	    	}catch(Exception e) {
+	    		System.out.println("Exception occured : " + e.getLocalizedMessage());
+	    		return "Error occured while assign driver , please contact Administrator";
+	    	}
+	    }
+	    
+	    public String removeDriver(String DriverName) {
+	    	try {
+	    		driverRepo.removeDriver(DriverName);
+	    		return "Driver Removed successfully";
+	    	}catch(Exception e) {
+	    		System.out.println("Exception occured : " + e.getLocalizedMessage());
+	    		return "Error occured while assign driver , please contact Administrator";
+	    	}
+	    }
 }

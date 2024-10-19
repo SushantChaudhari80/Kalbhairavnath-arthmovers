@@ -25,6 +25,9 @@ public class VehicaleDriver {
 	    @Column(name = "driverAadhar", length = 255, nullable = false)
 	    private String driverAadhar;
 	    
+	    @Column(name = "machineNumber", length = 255)
+	    private String machineNumber;
+	    
 	    @Column(name = "onwerMobile", nullable = false)
 	    private String onwerMobile;
 

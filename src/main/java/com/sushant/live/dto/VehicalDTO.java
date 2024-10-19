@@ -1,4 +1,4 @@
-package com.sushant.live.model;
+package com.sushant.live.dto;
 
 public class VehicalDTO {
     private String machineNumber;
