@@ -19,7 +19,7 @@ public class MachineReading {
 	
 	private String date ;
 	
-	private String startReading ;
+	private String startReading;
 	
 	private String endReading;
 	
@@ -28,6 +28,8 @@ public class MachineReading {
 	private String onwerMobile;
 	
 	private String driverName;
+	
+	private String machineNumber;
 
 	public int getId() {
 		return id;
@@ -85,8 +87,16 @@ public class MachineReading {
 		this.driverName = driverName;
 	}
 
-	public MachineReading(int id, String date, String startReading, String endReading, String maintenance,
-			String onwerMobile, String driverName) {
+	public String getMachineNumber() {
+		return machineNumber;
+	}
+
+	public void setMachineNumber(String machineNumber) {
+		this.machineNumber = machineNumber;
+	}
+
+	public MachineReading(int id, String date, String startReading, String endReading, String readingCount,
+			String maintenance, String onwerMobile, String driverName, String machineNumber) {
 		super();
 		this.id = id;
 		this.date = date;
@@ -95,13 +105,20 @@ public class MachineReading {
 		Maintenance = maintenance;
 		this.onwerMobile = onwerMobile;
 		this.driverName = driverName;
+		this.machineNumber = machineNumber;
 	}
 
 	public MachineReading() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
 
+	@Override
+	public String toString() {
+		return "MachineReading [id=" + id + ", date=" + date + ", startReading=" + startReading + ", endReading="
+				+ endReading + ", readingCount=" + ", Maintenance=" + Maintenance + ", onwerMobile="
+				+ onwerMobile + ", driverName=" + driverName + ", machineNumber=" + machineNumber + "]";
+	}
+
+	
 }

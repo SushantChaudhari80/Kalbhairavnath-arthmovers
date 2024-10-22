@@ -39,7 +39,7 @@ public class DriverController {
 	        driver.setDriverMobile(driverDTO.getDriverMobile());
 	        driver.setDriverAddress(driverDTO.getDriverAddress());
 	        driver.setDriverAadhar(driverDTO.getDriverAadhar());
-	        driver.setOnwerMobile(SessionManager.getInstance().getUsername());
+	        driver.setOwnerMobile(SessionManager.getInstance().getUsername());
 	       boolean isAdded = driverService.addDriver(driver);
 
 	        if (isAdded) {
@@ -68,6 +68,17 @@ public class DriverController {
 		public ResponseEntity<String> removeDriver(@RequestParam  String DriverName) {
 	    	String msg = driverService.removeDriver(DriverName);
 	        return ResponseEntity.ok(msg);
+	    }
+	  
+		@GetMapping("/getAllByOnwer")
+		public ResponseEntity<List<VehicaleDriver>> getVehicaleList(@RequestParam  String ownerMobile) {
+	    	List<VehicaleDriver> list = driverService.getAllDrivers(ownerMobile);
+	        return ResponseEntity.ok(list);
+	    }
+		
+		@GetMapping("/getById")
+		public VehicaleDriver getById(@RequestParam  int drId) {
+			return driverService.getById(drId);  
 	    }
 
 }

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Reading Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+		.form-container {
+		    max-width: 500px;
+		    margin: 0 auto;
+		    padding: 20px;
+		    background-color: #f4f7fa;
+		    border-radius: 8px;
+		    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		}
+
+		h2 {
+		    text-align: center;
+		    margin-bottom: 20px;
+		    color: #333;
+		}
+
+		.form-group {
+		    margin-bottom: 15px;
+		}
+
+		.form-group label {
+		    display: block;
+		    margin-bottom: 5px;
+		    font-weight: bold;
+		}
+
+		.form-group input,
+		.form-group select {
+		    width: 100%;
+		    padding: 10px;
+		    border: 1px solid #ccc;
+		    border-radius: 4px;
+		    font-size: 14px;
+		}
+
+		.form-group input:focus,
+		.form-group select:focus {
+		    border-color: #007bff;
+		}
+
+		.btn-submit {
+		    width: 100%;
+		    padding: 10px;
+		    background-color: #28a745;
+		    color: white;
+		    border: none;
+		    border-radius: 4px;
+		    cursor: pointer;
+		    font-size: 16px;
+		}
+
+		.btn-submit:hover {
+		    background-color: #218838;
+		}
+
+
+    </style>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<!-- Include DataTables CSS -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+
+	<!-- Include DataTables JavaScript -->
+	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+	<script>
+	    $(document).ready(function () {
+	        // Function to get query parameter from URL
+	        function getQueryParameter(param) {
+	            const urlParams = new URLSearchParams(window.location.search);
+	            return urlParams.get(param);
+	        }
+
+	        // Retrieve owner mobile number from the URL
+	        const selectedOwnerMobile = getQueryParameter('ownerMobile');
+	        console.log("Selected Owner Mobile: " + selectedOwnerMobile);
+
+	        // Populate driver list based on selected owner
+	        $.ajax({
+	            url: '/api/driver/getAllByOnwer?ownerMobile=' + selectedOwnerMobile,
+	            type: 'GET',
+	            success: function (drivers) {
+	                const driverList = $('#driverList'); // Target the select element
+	                driverList.empty(); // Clear any previous options
+	                driverList.append('<option value="">Select a driver</option>'); // Placeholder option
+
+	                drivers.forEach(function (driver) {
+	                    const option = $('<option></option>').val(driver.id).text(driver.driverName);
+	                    driverList.append(option); // Append the option to the select element
+	                });
+	            },
+	            error: function (xhr, status, error) {
+	                console.error("Error fetching driver data:", error);
+	            }
+	        });
+
+	        // Enable/Disable fields based on reading type selection
+	        $('input[name="readingType"]').on('change', function () {
+	            if ($(this).val() === 'startReading') {
+	                $('#startReading').prop('disabled', false);
+	                $('#endReading').prop('disabled', true).val('');  // Clear value when disabled
+	            } else {
+	                $('#startReading').prop('disabled', true).val('');
+	                $('#endReading').prop('disabled', false);
+	            }
+	        });
+			
+			//------------------------------------
+			$('select[id="driverList"]').on('change', function () {
+			        // Get the selected driver ID
+			        const drId = $(this).val();
+			        console.log(drId);
+					
+					$.ajax({
+					            url: '/api/driver/getById?drId=' + drId,
+					            type: 'GET',
+					            success: function (driver) {
+									console.log(driver);
+									$('#Mnumber').text(driver.machineNumber || "Driver is not assign to machine");
+					            },
+					            error: function (xhr, status, error) {
+					                console.error("Error fetching driver data:", error);
+					            }
+					        });
+			    });
+			
+			//-----------------------------------
+
+	        // Handle form submission
+	        $('#vehicleReadingForm').on('submit', function (e) {
+	            e.preventDefault(); // Prevent default form submission
+
+	            const selectedReadingType = $('input[name="readingType"]:checked').val();
+	            const formData = {
+	                startReading: selectedReadingType === 'startReading' ? $('#startReading').val() : null,
+	                endReading: selectedReadingType === 'endReading' ? $('#endReading').val() : null,
+	                maintenance: $('#maintenanceNumber').val(),
+	                driverId: $('#driverList').val(),
+					selectedOwnerMobile:selectedOwnerMobile,
+					machineNumber: $('#Mnumber').text()
+	            };
+
+	            // Submit form data via AJAX
+	            $.ajax({
+	                url: '/driver/reading/submit',  // REST endpoint
+	                type: 'POST',
+	                contentType: 'application/json',
+	                data: JSON.stringify(formData),
+	                success: function (response) {
+	                    alert(response);
+	                    $('#vehicleReadingForm')[0].reset();
+	                    $('#startReading').prop('disabled', false); // Reset to default state
+	                    $('#endReading').prop('disabled', true);
+	                },
+	                error: function (xhr, status, error) {
+	                    console.error("Error submitting vehicle reading:", error);
+	                    alert('Error submitting vehicle reading. Please try again.');
+	                }
+	            });
+	        });
+	    });
+	</script>
+</head>
+<body>
+	<div class="form-container">
+	    <h2>Capture Vehicle Reading</h2>
+	    <form id="vehicleReadingForm">
+	        <!-- Radio buttons for reading type -->
+	        <div class="form-group">
+	            <label>
+	                <input type="radio" name="readingType" value="startReading" checked />
+	                Start Reading
+	            </label>
+	            <label>
+	                <input type="radio" name="readingType" value="endReading" />
+	                End Reading
+	            </label>
+	        </div>
+
+	        <!-- Input for Start Reading -->
+	        <div class="form-group">
+				<label for="startReading">Start Reading:</label>
+				<input type="number" id="startReading" name="startReading" placeholder="Enter start reading" min="0"/>
+
+	        </div>
+
+	        <!-- Input for End Reading -->
+	        <div class="form-group">
+	            <label for="endReading">End Reading</label>
+	            <input type="number" id="endReading" name="endReading" disabled/>
+	        </div>
+
+	        <!-- Input for Maintenance -->
+	        <div class="form-group">
+	            <label for="maintenanceNumber">Maintenance</label>
+	            <input type="number" id="maintenanceNumber" name="maintenanceNumber" />
+	        </div>
+
+	        <!-- Dropdown for Driver List -->
+			<div class="form-group">
+			    <label for="driverList">Driver Name</label>
+			    <select id="driverList">
+			        <!-- Driver options will be dynamically appended -->
+			    </select>
+			</div>
+
+			<!-- Span to display machine number -->
+			<div class="form-group">
+			    <span id="Mnumber"></span>
+			</div>
+			
+	        <!-- Submit button -->
+	        <button type="submit" class="btn-submit">Submit</button>
+	    </form>
+	</div>
+
+</body>
+</html>

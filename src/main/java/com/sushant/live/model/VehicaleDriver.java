@@ -8,93 +8,114 @@ import jakarta.persistence.Id;
 
 @Entity
 public class VehicaleDriver {
-	
-	    @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-incrementing ID
-	    private int id;
 
-	    @Column(name = "driverName", length = 255, nullable = false)
-	    private String driverName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-incrementing ID
+    private int id;
 
-	    @Column(name = "driverMobile", length = 255, nullable = false)
-	    private String driverMobile;
-	    
-	    @Column(name = "driverAddress", length = 255, nullable = false)
-	    private String driverAddress;
-	    
-	    @Column(name = "driverAadhar", length = 255, nullable = false)
-	    private String driverAadhar;
-	    
-	    @Column(name = "machineNumber", length = 255)
-	    private String machineNumber;
-	    
-	    @Column(name = "onwerMobile", nullable = false)
-	    private String onwerMobile;
+    @Column(name = "driverName", length = 255, nullable = false)
+    private String driverName;
 
-		public int getId() {
-			return id;
-		}
+    @Column(name = "driverMobile", length = 255, nullable = false)
+    private String driverMobile;
+    
+    @Column(name = "driverAddress", length = 255, nullable = false)
+    private String driverAddress;
+    
+    @Column(name = "driverAadhar", length = 255, nullable = false)
+    private String driverAadhar;
+    
+    @Column(name = "machineNumber", length = 255)
+    private String machineNumber;  // Nullable if not assigned yet
+    
+    @Column(name = "ownerMobile", nullable = false)
+    private String ownerMobile;
 
-		public void setId(int id) {
-			this.id = id;
-		}
+    // Constructors
+    public VehicaleDriver() {
+        super();
+    }
 
-		public String getDriverName() {
-			return driverName;
-		}
+    public VehicaleDriver(int id, String driverName, String driverMobile, String driverAddress, 
+                         String driverAadhar, String ownerMobile, String machineNumber) {
+        this.id = id;
+        this.driverName = driverName;
+        this.driverMobile = driverMobile;
+        this.driverAddress = driverAddress;
+        this.driverAadhar = driverAadhar;
+        this.ownerMobile = ownerMobile;
+        this.machineNumber = machineNumber;
+    }
 
-		public void setDriverName(String driverName) {
-			this.driverName = driverName;
-		}
+    // Getters and Setters
+    public int getId() {
+        return id;
+    }
 
-		public String getDriverMobile() {
-			return driverMobile;
-		}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-		public void setDriverMobile(String driverMobile) {
-			this.driverMobile = driverMobile;
-		}
+    public String getDriverName() {
+        return driverName;
+    }
 
-		public String getDriverAddress() {
-			return driverAddress;
-		}
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
 
-		public void setDriverAddress(String driverAddress) {
-			this.driverAddress = driverAddress;
-		}
+    public String getDriverMobile() {
+        return driverMobile;
+    }
 
-		public String getDriverAadhar() {
-			return driverAadhar;
-		}
+    public void setDriverMobile(String driverMobile) {
+        this.driverMobile = driverMobile;
+    }
 
-		public void setDriverAadhar(String driverAadhar) {
-			this.driverAadhar = driverAadhar;
-		}
+    public String getDriverAddress() {
+        return driverAddress;
+    }
 
-		public String getOnwerMobile() {
-			return onwerMobile;
-		}
+    public void setDriverAddress(String driverAddress) {
+        this.driverAddress = driverAddress;
+    }
 
-		public void setOnwerMobile(String onwerMobile) {
-			this.onwerMobile = onwerMobile;
-		}
+    public String getDriverAadhar() {
+        return driverAadhar;
+    }
 
-		public VehicaleDriver() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
+    public void setDriverAadhar(String driverAadhar) {
+        this.driverAadhar = driverAadhar;
+    }
 
-		public VehicaleDriver(int id, String driverName, String driverMobile, String driverAddress, String driverAadhar,
-				String onwerMobile) {
-			super();
-			this.id = id;
-			this.driverName = driverName;
-			this.driverMobile = driverMobile;
-			this.driverAddress = driverAddress;
-			this.driverAadhar = driverAadhar;
-			this.onwerMobile = onwerMobile;
-		}
+    public String getMachineNumber() {
+        return machineNumber;
+    }
 
-	    
-		
+    public void setMachineNumber(String machineNumber) {
+        this.machineNumber = machineNumber;
+    }
+
+    public String getOwnerMobile() {
+        return ownerMobile;
+    }
+
+    public void setOwnerMobile(String ownerMobile) {
+        this.ownerMobile = ownerMobile;
+    }
+
+    // Optionally override toString, equals, and hashCode
+
+    @Override
+    public String toString() {
+        return "VehicleDriver{" +
+                "id=" + id +
+                ", driverName='" + driverName + '\'' +
+                ", driverMobile='" + driverMobile + '\'' +
+                ", driverAddress='" + driverAddress + '\'' +
+                ", driverAadhar='" + driverAadhar + '\'' +
+                ", machineNumber='" + machineNumber + '\'' +
+                ", ownerMobile='" + ownerMobile + '\'' +
+                '}';
+    }
 }
