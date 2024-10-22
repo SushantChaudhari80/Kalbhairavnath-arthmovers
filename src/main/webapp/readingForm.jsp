@@ -142,7 +142,8 @@
 	                startReading: selectedReadingType === 'startReading' ? $('#startReading').val() : null,
 	                endReading: selectedReadingType === 'endReading' ? $('#endReading').val() : null,
 	                maintenance: $('#maintenanceNumber').val(),
-	                driverId: $('#driverList').val(),
+					disel: $('#disel').val(),
+	                driverId: $('#driverList option:selected').text(),
 					selectedOwnerMobile:selectedOwnerMobile,
 					machineNumber: $('#Mnumber').text()
 	            };
@@ -156,8 +157,9 @@
 	                success: function (response) {
 	                    alert(response);
 	                    $('#vehicleReadingForm')[0].reset();
-	                    $('#startReading').prop('disabled', false); // Reset to default state
+	                    $('#startReading').prop('disabled', false); // Reset to default state Mnumber
 	                    $('#endReading').prop('disabled', true);
+						$('#Mnumber').prop('disabled', true);
 	                },
 	                error: function (xhr, status, error) {
 	                    console.error("Error submitting vehicle reading:", error);
@@ -187,14 +189,14 @@
 	        <!-- Input for Start Reading -->
 	        <div class="form-group">
 				<label for="startReading">Start Reading:</label>
-				<input type="number" id="startReading" name="startReading" placeholder="Enter start reading" min="0"/>
+				<input type="text" id="startReading" name="startReading" placeholder="Enter start reading" min="0"/>
 
 	        </div>
 
 	        <!-- Input for End Reading -->
 	        <div class="form-group">
 	            <label for="endReading">End Reading</label>
-	            <input type="number" id="endReading" name="endReading" disabled/>
+	            <input type="text" id="endReading" name="endReading" disabled/>
 	        </div>
 
 	        <!-- Input for Maintenance -->
@@ -202,6 +204,11 @@
 	            <label for="maintenanceNumber">Maintenance</label>
 	            <input type="number" id="maintenanceNumber" name="maintenanceNumber" />
 	        </div>
+			
+			<div class="form-group">
+				            <label for="disel">Disel</label>
+				            <input type="number" id="disel" name="disel" />
+				        </div>
 
 	        <!-- Dropdown for Driver List -->
 			<div class="form-group">
@@ -213,6 +220,7 @@
 
 			<!-- Span to display machine number -->
 			<div class="form-group">
+				 <label for="Mnumber">Vehicale Number</label>
 			    <span id="Mnumber"></span>
 			</div>
 			

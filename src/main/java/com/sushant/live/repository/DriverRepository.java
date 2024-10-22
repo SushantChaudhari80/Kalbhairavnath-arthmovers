@@ -14,7 +14,7 @@ import com.sushant.live.model.VehicaleDriver;
 @Repository
 public interface DriverRepository extends JpaRepository<VehicaleDriver , Integer> {
 	 
-	@Query("SELECT v FROM VehicaleDriver v WHERE v.ownerMobile = :mobile")
+	@Query("SELECT v FROM VehicaleDriver v WHERE v.onwerMobile = :mobile")
 	    public List<VehicaleDriver> findAllByOwnerMobile(@Param("mobile") String mobile);
 	
 	@Query("SELECT v FROM VehicaleDriver v WHERE machineNumber = :mid")

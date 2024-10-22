@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sushant.live.dto.DriverDTO;
+import com.sushant.live.model.DriverPayment;
 import com.sushant.live.model.VehicaleDriver;
+import com.sushant.live.service.DriverPaymentService;
 import com.sushant.live.service.DriverService;
 import com.sushant.live.util.SessionManager;
 
@@ -23,6 +25,9 @@ public class DriverController {
 	
 	@Autowired
 	private DriverService driverService;
+	
+	@Autowired
+	private DriverPaymentService paymentService;
 	
 	@GetMapping("/getAll")
 	public ResponseEntity<List<VehicaleDriver>> getVehicaleList() {
@@ -80,5 +85,23 @@ public class DriverController {
 		public VehicaleDriver getById(@RequestParam  int drId) {
 			return driverService.getById(drId);  
 	    }
+		
+		
+		
+		
+		//---------/payment/getAll---------------------------------------------------------------------------------------------------------
+		
+		@GetMapping("/payment/save")
+		public String addDriverPayment(@RequestParam  String driverName ,@RequestParam String amount) {
+			return paymentService.savePayment(driverName, amount);
+	    }
+		
+		
+		@GetMapping("/payment/getAll")
+		public ResponseEntity<List<DriverPayment>> getAll(@RequestParam  String driverName) {
+			List<DriverPayment> list = paymentService.getAll(driverName);
+			 return ResponseEntity.ok(list);
+	    }
+		
 
 }

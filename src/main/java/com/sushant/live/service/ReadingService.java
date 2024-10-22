@@ -38,6 +38,7 @@ public class ReadingService {
 	        reading.setStartReading(dto.getStartReading());
 	        reading.setEndReading(dto.getEndReading());
 	        reading.setMaintenance(dto.getMaintenance());
+	        reading.setDisel(dto.getDisel());
 	        reading.setOnwerMobile(dto.getSelectedOwnerMobile());
 	        reading.setDriverName(dto.getDriverId());
 	        reading.setMachineNumber(dto.getMachineNumber());
@@ -75,6 +76,13 @@ public class ReadingService {
 	            existingReading.setMaintenance(String.valueOf(currentMaintenance + newMaintenance));
 	        } catch (NumberFormatException e) {
 	            return "Invalid Maintenance Data.";
+	        }
+	        try {
+	            int d1 = Integer.parseInt(existingReading.getDisel() != null ? existingReading.getDisel() : "0");
+	            int d2 = Integer.parseInt(dto.getDisel() != null ? dto.getDisel() : "0");
+	            existingReading.setDisel(String.valueOf(d1 + d2));
+	        } catch (NumberFormatException e) {
+	            return "Invalid Disel Data.";
 	        }
 
 	        System.out.println("Updating Record: " + existingReading.toString());
