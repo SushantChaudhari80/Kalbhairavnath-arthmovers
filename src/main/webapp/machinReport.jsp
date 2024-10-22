@@ -171,7 +171,7 @@
 		            console.error("Error fetching vehicle data:", error);
 		        }
 		    });
-
+			fetchAndAppendRecords();
 		});
 
 		// Show the modal
@@ -265,6 +265,65 @@
 		        }
 		    });
 		}
+		
+		function fetchAndAppendRecords() {
+		    // Initialize DataTable if not already initialized
+		    const table = $('#readingTable').DataTable({
+		        columns: [
+		            { title: "ID" },
+		            { title: "Date" },
+		            { title: "Start Reading" },
+		            { title: "End Reading" },
+		            { title: "Total Hours" },
+		            { title: "Maintenance" },
+		            { title: "Updated By" }
+		        ]
+		    });
+
+		    // Fetch the machine number value from the element
+		    let machinN = $('#machin-number').text();
+
+		    // Make the AJAX request to fetch records
+		    $.ajax({
+		        url: '/vehicle/getRecords?machinN=' + machinN, // Adjust the endpoint URL if needed
+		        type: 'GET',
+		        dataType: 'json',
+		        success: function (data) {
+					console.log(data);
+		            // Clear the table before adding new rows
+		            table.clear();
+
+		            // Loop through each record and add it to the table
+		            data.forEach(function (record) {
+
+		                let totalHours = calculateTotalHours(record.startReading, record.endReading); // Assuming this function exists
+
+		                table.row.add([
+		                    record.id,
+		                    record.date || '',
+		                    record.startReading || '',
+		                    record.endReading || '',
+		                    totalHours || '',
+		                    record.maintenance || '',
+		                    record.driverName || ''
+		                ]);
+		            });
+
+		            // Draw the table after all rows are added
+		            table.draw();
+		        },
+		        error: function (xhr, status, error) {
+		            console.error("Error fetching records:", error);
+		        }
+		    });
+		}
+		   // Sample function to calculate total hours (adjust logic as needed)
+		   function calculateTotalHours(start, end) {
+		       if (start && end) {
+		           return end - start; // Simple difference (customize based on your logic)
+		       }
+		       return 'N/A';
+		   }
 
 	    
 	   </script>
@@ -291,21 +350,23 @@
 
 	    <div class="table-container">
 	        <h3>Machine Reading Table</h3>
-	        <table>
-	            <thead>
-	                <tr>
-	                    <th>Date</th>
-	                    <th>Start Reading</th>
-	                    <th>End Reading</th>
-						<th>Maintenance</th>
-	                    <th>Total Hours</th>
-	                     <!-- New column for maintenance -->
-	                </tr>
-	            </thead>
-	            <tbody>
-	               
-	            </tbody>
-	        </table>
+			<table id="readingTable">
+			    <thead>
+			        <tr>
+			            <th>ID</th>
+			            <th>Date</th>
+			            <th>Start Reading</th>
+			            <th>End Reading</th>
+			            <th>Maintenance</th>
+			            <th>Total Hours</th>
+			            <th>Updated By</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			        <!-- Rows will be dynamically appended here by DataTable -->
+			    </tbody>
+			</table>
+
 	    </div>
 		<div class="modal-backdrop"></div> <!-- Optional backdrop for the modal -->
 

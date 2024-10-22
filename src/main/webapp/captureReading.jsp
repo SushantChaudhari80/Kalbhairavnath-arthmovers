@@ -186,113 +186,63 @@
 			<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 	<script>
 		$(document).ready(function() {
-			$('#from1').hide();
-			$.ajax({
-										        url: '/api/customers/getAll', // Adjust this URL to match your API endpoint
-										        type: 'GET',
-										        success: function(onwers) {
-										            const driverList = $('#onwerList'); // Target the select element
-										            driverList.empty(); // Clear any previous options
-										            driverList.append('<option value="">Select a Onwer</option>'); // Placeholder option
+		    $('#from1').hide();
+		    
+		    // Fetching owners and populating the select dropdown
+		    $.ajax({
+		        url: '/api/customers/getAll', // Adjust this URL to match your API endpoint
+		        type: 'GET',
+		        success: function(onwers) {
+		            const onwerList = $('#onwerList'); // Target the select element
+		            onwerList.empty(); // Clear any previous options
+		            onwerList.append('<option value="">Select an Owner</option>'); // Placeholder option
 
-										            onwers.forEach(function(onwer) {
-										                const option = $('<option></option>').val(onwer.mobile).text(onwer.name);
-										                driverList.append(option); // Append the option to the select element
-										            });
-										        },
-										        error: function(xhr, status, error) {
-										            console.error("Error fetching driver data:", error);
-										        }
-										    });
-	
-				});
-				
-				
-				
-				function fetchDrivers(){
-					
-					$.ajax({
-							        url: '/api/driver/getAll', // Adjust this URL to match your API endpoint
-							        type: 'GET',
-							        success: function(drivers) {
-							            const driverList = $('#driverList'); // Target the select element
-							            driverList.empty(); // Clear any previous options
-							            driverList.append('<option value="">Select a driver</option>'); // Placeholder option
+		            onwers.forEach(function(onwer) {
+		                const option = $('<option></option>').val(onwer.mobile).text(onwer.name);
+		                onwerList.append(option); // Append the option to the select element
+		            });
+		        },
+		        error: function(xhr, status, error) {
+		            console.error("Error fetching owner data:", error);
+		        }
+		    });
+		});
+ 
+		
+		function submitForm(event) {
+		    event.preventDefault(); // Prevent default form submission
 
-							            drivers.forEach(function(driver) {
-							                const option = $('<option></option>').val(driver.id).text(driver.driverName);
-							                driverList.append(option); // Append the option to the select element
-							            });
-							        },
-							        error: function(xhr, status, error) {
-							            console.error("Error fetching driver data:", error);
-							        }
-							    });
-				}
-				
-				$('#subbtn').on('click', function() {
-				    $('#from1').show();  // Show form 1
-				    $('#from2').hide();  // Hide form 2
-				});
+		    const selectedOwnerMobile = $('#onwerList').val(); // Get the selected value from the dropdown
 
+		    if (selectedOwnerMobile) {
+		        console.log("Selected Owner Mobile: " + selectedOwnerMobile);
+		        window.location.href = 'readingForm.jsp?ownerMobile=' + selectedOwnerMobile; // Redirect to the new page with query param
+		    } else {
+		        console.log("No owner selected.");
+		        alert("No owner selected.");
+		    }
+		}
+
+		
 				
 		
 	</script>
 </head>
 <body>
-	
-<div>
-	<div id="from2" class="form-container">
-	    <h2>Select Onwer </h2>
-	    <form id="machineReadingForm"  enctype="multipart/form-data">
-			<label for="onwerList">Onwer Name</label>
-				    <select id="onwerList">
-				        
-				    </select>
-					
-	        <button id="subbtn" type="submit" class="btn-submit">Submit</button>
-	    </form>
+	<div>
+	    <div id="from2" class="form-container">
+	        <h2>Select Owner</h2>
+	        <form id="machineReadingForm"  onsubmit="submitForm(event)">
+	            <label for="onwerList">Owner Name</label>
+	            <select id="onwerList">
+	                <!-- Options will be dynamically appended here -->
+	            </select>
+	            
+	            <button id="subbtn" type="submit" class="btn-submit">Submit</button>
+	        </form>
+	    </div>
 	</div>
-</div>
-
-<div id="from1" class="form-container">
-    <h2>Machine Reading Form</h2>
-    <form id="machineReadingForm" action="/upload" method="post" enctype="multipart/form-data">
-		<label for="driverList">Driver Name</label>
-			    <select id="driverList">
-			        <!-- Driver options will be dynamically appended -->
-			    </select>
-				
-		<div class="form-group">
-		     <label for="ownerMobile">Machine Number</label>
-		     <input type="text" id="ownerMobile" name="ownerMobile" placeholder="Number" required>
-		</div>		
-
-        <div class="form-group">
-            <label for="ownerMobile">Owner Mobile Number:</label>
-            <input type="text" id="ownerMobile" name="ownerMobile" placeholder="Enter Owner Mobile Number" required>
-        </div>
-
-        <div class="form-group">
-            <label>Reading Type:</label>
-            <div class="checkbox-group">
-                <label>
-                    <input type="checkbox" name="readingType" value="startReading" id="startReading"> Start Reading
-                </label>
-                <label>
-                    <input type="checkbox" name="readingType" value="endReading" id="endReading"> End Reading
-                </label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="photo">Upload Photo:</label>
-            <input type="file" id="photo" name="photo" accept="image/*" required>
-        </div>
-
-        <button type="submit" class="btn-submit">Submit</button>
-    </form>
-</div>
+	
 
 </body>
 </html>

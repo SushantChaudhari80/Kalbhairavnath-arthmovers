@@ -29,6 +29,10 @@ public class DriverService {
 	    	return driverRepo.findAllByOwnerMobile(SessionManager.getInstance().getUsername());
 	    }
 	    
+	    public List<VehicaleDriver> getAllDrivers(String ownerMobile) {
+	    	return driverRepo.findAllByOwnerMobile(ownerMobile);
+	    }
+	    
 	    public List<VehicaleDriver> getByNumber(String i) {
 	    	return driverRepo.getByMNumber(i);
 	    }
@@ -51,5 +55,9 @@ public class DriverService {
 	    		System.out.println("Exception occured : " + e.getLocalizedMessage());
 	    		return "Error occured while assign driver , please contact Administrator";
 	    	}
+	    }
+	    
+	    public VehicaleDriver getById(int id) {
+	    	return driverRepo.getById(id);
 	    }
 }
