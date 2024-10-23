@@ -32,6 +32,16 @@ public class MachineReading {
 	private String driverName;
 	
 	private String machineNumber;
+	
+	private String OrderName;
+	
+    
+	public String getOrderName() {
+		return OrderName;
+	}
+	public void setOrderName(String orderName) {
+		OrderName = orderName;
+	}
 
 	public String getDisel() {
 		return disel;
@@ -106,7 +116,7 @@ public class MachineReading {
 	}
 
 	public MachineReading(int id, String date, String startReading, String endReading, String readingCount,
-			String maintenance,String disel, String onwerMobile, String driverName, String machineNumber) {
+			String maintenance,String disel, String onwerMobile, String driverName, String machineNumber ,String OrderName) {
 		super();
 		this.id = id;
 		this.date = date;
@@ -116,6 +126,7 @@ public class MachineReading {
 		this.onwerMobile = onwerMobile;
 		this.driverName = driverName;
 		this.machineNumber = machineNumber;
+		this.OrderName = OrderName;
 	}
 
 	public MachineReading() {

@@ -7,9 +7,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.sushant.live.dto.ReadingDTO;
+import com.sushant.live.model.Coustomer_order;
 import com.sushant.live.model.MachineReading;
 import com.sushant.live.model.VehicaleDriver;
 import com.sushant.live.repository.DriverRepository;
+import com.sushant.live.repository.OrderRepository;
 import com.sushant.live.repository.ReadingRepository;
 import com.sushant.live.util.SessionManager;
 
@@ -21,6 +23,9 @@ public class ReadingService {
 	
 	@Autowired
 	DriverRepository drRepo;
+	
+	@Autowired
+	OrderRepository orderRepo;
 	
 	public String saveReading(ReadingDTO dto) {
 	    // Get today's date and format it
@@ -42,6 +47,9 @@ public class ReadingService {
 	        reading.setOnwerMobile(dto.getSelectedOwnerMobile());
 	        reading.setDriverName(dto.getDriverId());
 	        reading.setMachineNumber(dto.getMachineNumber());
+	        System.out.println(dto.getSelectedOwnerMobile()+dto.getMachineNumber());
+	        Coustomer_order order= orderRepo.findAllByMachine(dto.getSelectedOwnerMobile(),dto.getMachineNumber());
+	        reading.setOrderName(order.getCustomer_name());
 
 	        System.out.println("New Record: " + reading.toString());
 	        repo.save(reading); // Save the new record
@@ -95,6 +103,11 @@ public class ReadingService {
 	
 	public List<MachineReading> getAllByMachine(String machineNumber){
 		return repo.getAllByM(SessionManager.getInstance().getUsername(), machineNumber);
+		
+	}
+	
+	public List<MachineReading> getAll(){
+		return repo.getAll(SessionManager.getInstance().getUsername());
 		
 	}
 	

@@ -124,6 +124,7 @@
 					            success: function (driver) {
 									console.log(driver);
 									$('#Mnumber').text(driver.machineNumber || "Driver is not assign to machine");
+									$('#Mnumber').show();
 					            },
 					            error: function (xhr, status, error) {
 					                console.error("Error fetching driver data:", error);
@@ -159,7 +160,7 @@
 	                    $('#vehicleReadingForm')[0].reset();
 	                    $('#startReading').prop('disabled', false); // Reset to default state Mnumber
 	                    $('#endReading').prop('disabled', true);
-						$('#Mnumber').prop('disabled', true);
+						$('#Mnumber').hide();
 	                },
 	                error: function (xhr, status, error) {
 	                    console.error("Error submitting vehicle reading:", error);

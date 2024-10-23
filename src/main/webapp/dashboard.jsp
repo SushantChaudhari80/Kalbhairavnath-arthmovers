@@ -254,8 +254,11 @@
                     <li><a href="dashboard.jsp">Dashboard</a></li>
                     <li><a href="order.jsp">Orders</a></li>
                     <li><a href="vehicales.jsp">Vehicles</a></li>
-                    <li><a href="reports.jsp">Reports</a></li>
                     <li><a href="drivers.jsp">Drivers</a></li>
+					<li><a href="reports.jsp">Reports</a></li>
+					<li><a href="orderReport.jsp">Order Report</a></li>
+					<li><a href="dieselReport.jsp">Diesel Report</a></li>
+					<li><a href="invoices.jsp">Invoices</a></li>
                 </ul>
             </div>
             <div class="footer">

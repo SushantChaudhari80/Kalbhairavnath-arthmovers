@@ -9,7 +9,10 @@ public class ReadingDTO {
     String driverId;
     String machineNumber;
     String selectedOwnerMobile;
+   
     
+    
+
 	public String getMachineNumber() {
 		return machineNumber;
 	}
