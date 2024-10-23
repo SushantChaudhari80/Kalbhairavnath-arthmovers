@@ -20,4 +20,7 @@ public interface ReadingRepository extends JpaRepository<MachineReading , Intege
 
 	 @Query(value = "SELECT * FROM machinereading WHERE onwer_mobile = :onwerMobile and machine_number= :machineNumber", nativeQuery = true)
 	    List<MachineReading> getAllByM(@Param("onwerMobile") String onwerMobile, @Param("machineNumber") String machineNumber);
+	 
+	 @Query(value = "SELECT * FROM machinereading WHERE onwer_mobile = :onwerMobile", nativeQuery = true)
+	List<MachineReading> getAll(@Param("onwerMobile") String onwerMobile);
 }

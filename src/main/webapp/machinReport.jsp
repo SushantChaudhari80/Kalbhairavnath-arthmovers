@@ -276,6 +276,7 @@
 		            { title: "End Reading" },
 		            { title: "Total Hours" },
 		            { title: "Maintenance" },
+					{ title: "Disel" },
 		            { title: "Updated By" }
 		        ]
 		    });
@@ -305,6 +306,7 @@
 		                    record.endReading || '',
 		                    totalHours || '',
 		                    record.maintenance || '',
+							record.disel || '',
 		                    record.driverName || ''
 		                ]);
 		            });
@@ -358,6 +360,7 @@
 			            <th>Start Reading</th>
 			            <th>End Reading</th>
 			            <th>Maintenance</th>
+						<th>Disel</th>
 			            <th>Total Hours</th>
 			            <th>Updated By</th>
 			        </tr>

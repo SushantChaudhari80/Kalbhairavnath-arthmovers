@@ -28,8 +28,8 @@ public class VehicaleDriver {
     @Column(name = "machineNumber", length = 255)
     private String machineNumber;  // Nullable if not assigned yet
     
-    @Column(name = "ownerMobile", nullable = false)
-    private String ownerMobile;
+    @Column(name = "onwerMobile", nullable = false)
+    private String onwerMobile;
 
     // Constructors
     public VehicaleDriver() {
@@ -43,7 +43,7 @@ public class VehicaleDriver {
         this.driverMobile = driverMobile;
         this.driverAddress = driverAddress;
         this.driverAadhar = driverAadhar;
-        this.ownerMobile = ownerMobile;
+        this.onwerMobile = ownerMobile;
         this.machineNumber = machineNumber;
     }
 
@@ -97,11 +97,11 @@ public class VehicaleDriver {
     }
 
     public String getOwnerMobile() {
-        return ownerMobile;
+        return onwerMobile;
     }
 
     public void setOwnerMobile(String ownerMobile) {
-        this.ownerMobile = ownerMobile;
+        this.onwerMobile = ownerMobile;
     }
 
     // Optionally override toString, equals, and hashCode
@@ -115,7 +115,7 @@ public class VehicaleDriver {
                 ", driverAddress='" + driverAddress + '\'' +
                 ", driverAadhar='" + driverAadhar + '\'' +
                 ", machineNumber='" + machineNumber + '\'' +
-                ", ownerMobile='" + ownerMobile + '\'' +
+                ", ownerMobile='" + onwerMobile + '\'' +
                 '}';
     }
 }

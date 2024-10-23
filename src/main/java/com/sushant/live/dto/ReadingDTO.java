@@ -5,10 +5,14 @@ public class ReadingDTO {
 	String startReading;
     String endReading;
     String maintenance;
+    String disel;
     String driverId;
     String machineNumber;
     String selectedOwnerMobile;
+   
     
+    
+
 	public String getMachineNumber() {
 		return machineNumber;
 	}
@@ -34,6 +38,12 @@ public class ReadingDTO {
 	public void setMaintenance(String maintenance) {
 		this.maintenance = maintenance;
 	}
+	public String getDisel() {
+		return disel;
+	}
+	public void setDisel(String disel) {
+		this.disel = disel;
+	}
 	public String getDriverId() {
 		return driverId;
 	}
@@ -46,12 +56,13 @@ public class ReadingDTO {
 	public void setSelectedOwnerMobile(String selectedOwnerMobile) {
 		this.selectedOwnerMobile = selectedOwnerMobile;
 	}
-	public ReadingDTO(String startReading, String endReading, String maintenance, String driverId,
+	public ReadingDTO(String startReading, String endReading, String maintenance,String disel, String driverId,
 			String selectedOwnerMobile) {
 		super();
 		this.startReading = startReading;
 		this.endReading = endReading;
 		this.maintenance = maintenance;
+		this.disel = disel;
 		this.driverId = driverId;
 		this.selectedOwnerMobile = selectedOwnerMobile;
 	}

@@ -33,4 +33,11 @@ public class MachineReadingController {
     	List<MachineReading> list =  machineReadingService.getAllByMachine(machinN);
     	return ResponseEntity.ok(list);
     }
+    
+    @GetMapping("/vehicle/getAll")
+    public  ResponseEntity<List<MachineReading>> getAll(){
+    	System.out.println("MachineReadingController : getAllbyOnwer()");
+    	List<MachineReading> list =  machineReadingService.getAll();
+    	return ResponseEntity.ok(list);
+    }
 }
