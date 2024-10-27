@@ -16,6 +16,9 @@ public interface OrderRepository extends JpaRepository<Coustomer_order , Integer
     
     @Query("SELECT v FROM Coustomer_order v WHERE v.onwerMobile = :mobile AND v.machins LIKE %:mNumber%")
     public Coustomer_order findAllByMachine(@Param("mobile") String mobile, @Param("mNumber") String mNumber);
+    
+    @Query("SELECT v FROM Coustomer_order v WHERE v.onwerMobile = :mobile AND v.machins LIKE %:mNumber%")
+    public Coustomer_order findAllBy(@Param("mobile") String mobile, @Param("mNumber") String mNumber);
 
 	
 }

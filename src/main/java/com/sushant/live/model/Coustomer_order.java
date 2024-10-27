@@ -15,9 +15,13 @@ public class Coustomer_order {
 	
 	 @Column(name = "customer_name", length = 50, nullable = false)
 	 private String customer_name;
+	 
 
 	    @Column(name = "status", length = 20)
 	    private String status;
+	    
+	    @Column(name = "order_date")
+	    private String order_date;
 
 	    @Column(name = "deliveryDate")
 	    private String deliveryDate;
@@ -46,6 +50,14 @@ public class Coustomer_order {
 
 		public String getOnwerMobile() {
 			return onwerMobile;
+		}
+
+		public String getOrder_date() {
+			return order_date;
+		}
+
+		public void setOrder_date(String order_date) {
+			this.order_date = order_date;
 		}
 
 		public void setOnwerMobile(String onwerMobile) {
@@ -88,15 +100,19 @@ public class Coustomer_order {
 			this.machins = machins;
 		}
 
-		public Coustomer_order(int id, String customer_name, String status, String deliveryDate, String machins , String onwerMobile , String address) {
+		
+
+		public Coustomer_order(int id, String customer_name, String status, String order_date, String deliveryDate,
+				String machins, String address, String onwerMobile) {
 			super();
 			this.id = id;
 			this.customer_name = customer_name;
 			this.status = status;
+			this.order_date = order_date;
 			this.deliveryDate = deliveryDate;
 			this.machins = machins;
+			this.address = address;
 			this.onwerMobile = onwerMobile;
-			this.address =  address;
 		}
 
 		public Coustomer_order() {
