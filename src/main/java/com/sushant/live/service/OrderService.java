@@ -45,7 +45,12 @@ public class OrderService {
 	    }
 	 
 	 public boolean updateOrder(Coustomer_order order) {
-		
+		 if(order.getMachins() == null) {
+			 orderRepository.save(order);
+			 return true;
+		 }else {
+		 Coustomer_order order1 = orderRepository.findAllBy(SessionManager.getInstance().getUsername(), order.getMachins());
+		 if(order1 == null) {
 			 try {
 		        	orderRepository.save(order);
 		            return true;
@@ -54,6 +59,10 @@ public class OrderService {
 		            return false;
 		        }
 	
-	    }
+	        }else {
+	        	return false;
+	        }
+		 }
+	 }
 	    
 }
