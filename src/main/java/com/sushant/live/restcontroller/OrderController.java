@@ -1,5 +1,7 @@
 package com.sushant.live.restcontroller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sushant.live.dto.OrderDTO;
-import com.sushant.live.dto.VehicalDTO;
 import com.sushant.live.model.Coustomer_order;
-import com.sushant.live.model.Vehicale;
 import com.sushant.live.service.OrderService;
 import com.sushant.live.util.SessionManager;
 
@@ -49,6 +49,11 @@ public class OrderController {
 	        newOrder.setMachins(orderDTO.getMachine_numbers());
 	        newOrder.setAddress(orderDTO.getAddress());
 	        newOrder.setOnwerMobile(SessionManager.getInstance().getUsername());
+	        LocalDate today = LocalDate.now();
+	  	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	  	    String formattedDate = today.format(formatter);
+	  	    
+	  	    newOrder.setOrder_date(formattedDate);
 	       // System.out.println("Machine Number"+orderDTO.getCompany());
 	       boolean isAdded = orderService.addOrder(newOrder);
 
@@ -71,8 +76,9 @@ public class OrderController {
 	          existingOrder.setAddress(updatedOrder.getAddress());
 	          existingOrder.setMachins(updatedOrder.getMachins());
 	          existingOrder.setOnwerMobile(SessionManager.getInstance().getUsername());
+	      
 	          // Save the updated order
-	          orderService.addOrder(existingOrder);
+	          orderService.updateOrder(existingOrder);
 	          return ResponseEntity.ok(existingOrder);
 	      } else {
 	          return ResponseEntity.notFound().build();

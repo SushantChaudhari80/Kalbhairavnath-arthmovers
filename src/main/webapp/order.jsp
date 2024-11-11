@@ -335,7 +335,8 @@
 		    // Initialize DataTable when the document is ready
 		    const table = $('#orderTable').DataTable({
 		        columns: [
-		            { title: "ID" },
+		            { title: "ID" },//Order Date
+		            { title: "Order Date" },
 		            { title: "Customer Name" },
 		            { title: "Status" },
 					{ title: "Address" },
@@ -469,6 +470,7 @@
 					    console.log("Order ID:", orderId);  // Debugging line
 					    table.row.add([
 					        orderId,
+					        order.order_date || '',
 					        order.customer_name || '',
 					        order.status || '',
 							order.address || '',
@@ -569,7 +571,7 @@
                 <option value="">Filter by Status</option>
                 <option value="delivered">Delivered</option>
                 <option value="pending">Pending</option>
-                <option value="canceled">Canceled</option>
+                <option value="canceled">Cancelled</option>
             </select>
             <input type="date" placeholder="From Date">
             <input type="date" placeholder="To Date">
@@ -581,6 +583,7 @@
             <thead>
                 <tr>
                     <th>Order ID</th>
+                    <th>Order Date</th>
                     <th>Customer Name</th>
                     <th>Status</th>
 					<th>Address</th>

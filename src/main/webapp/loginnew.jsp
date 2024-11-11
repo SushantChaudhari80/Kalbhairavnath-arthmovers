@@ -128,7 +128,7 @@
 	        <h2>Login</h2>
 
 	        <form style="background-image: url('img/bk4.jpg'); background-position: center;" action="" method="post" onsubmit="loginMeth(event)">
-	            <input type="text" name="email" placeholder="email" required>
+	            <input type="text" name="email" placeholder="Username" required>
 	            <input type="password" name="password" placeholder="Password" required>
 	            <button type="submit">Login</button>
 	        </form>
