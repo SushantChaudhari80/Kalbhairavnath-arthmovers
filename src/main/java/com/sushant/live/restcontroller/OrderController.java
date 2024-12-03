@@ -48,6 +48,8 @@ public class OrderController {
 	        newOrder.setCustomer_name(orderDTO.getCustomer_name());
 	        newOrder.setMachins(orderDTO.getMachine_numbers());
 	        newOrder.setAddress(orderDTO.getAddress());
+	        newOrder.setAdvance(orderDTO.getAdvance());
+	        newOrder.setStatus("In Progress");
 	        newOrder.setOnwerMobile(SessionManager.getInstance().getUsername());
 	        LocalDate today = LocalDate.now();
 	  	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");

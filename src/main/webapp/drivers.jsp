@@ -252,7 +252,8 @@
 	                { title: "Driver Name" },
 	                { title: "Driver Mobile" },
 	                { title: "Driver Address" },
-	                { title: "Driver Aadhar" }
+	                { title: "Driver Aadhar" },
+					{ title: "Driver DL Number"}
 	                
 	            ]
 	        });
@@ -273,7 +274,8 @@
 	                            driver.driverName || '',   // Replace with the correct property name if different
 	                            driver.driverMobile || '',
 	                            driver.driverAddress || '',
-	                            driver.driverAadhar || ''// Use 'N/A' or another placeholder if undefined
+	                            driver.driverAadhar || '',
+								driver.driverLiencense || 'N/A'// Use 'N/A' or another placeholder if undefined
 	                        ]);
 	                    });
 
@@ -328,6 +330,7 @@
 		            <th>Driver Mobile</th>
 		            <th>Driver Address</th>
 		            <th>Driver Aadhar</th>
+					<th>Driver DL Number</th>
 		        </tr>
 		    </thead>
 		    <tbody>

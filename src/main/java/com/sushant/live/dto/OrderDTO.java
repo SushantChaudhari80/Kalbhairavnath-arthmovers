@@ -7,6 +7,8 @@ public class OrderDTO {
 	String machine_numbers;
 	
 	String address;
+	
+	String advance;
 
 	public String getCustomer_name() {
 		return customer_name;
@@ -31,18 +33,31 @@ public class OrderDTO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	
+	
+
+	public String getAdvance() {
+		return advance;
+	}
+
+	public void setAdvance(String advance) {
+		this.advance = advance;
+	}
 
 	public OrderDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public OrderDTO(String customer_name, String machine_numbers, String address) {
+	public OrderDTO(String customer_name, String machine_numbers, String address, String advance) {
 		super();
 		this.customer_name = customer_name;
 		this.machine_numbers = machine_numbers;
 		this.address = address;
+		this.advance = advance;
 	}
+
+	
 	
 	
 
