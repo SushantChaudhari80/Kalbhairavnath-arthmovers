@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sushant.live.dto.OrderDTO;
-import com.sushant.live.dto.VehicalDTO;
 import com.sushant.live.model.Coustomer_order;
-import com.sushant.live.model.Vehicale;
 import com.sushant.live.service.OrderService;
 import com.sushant.live.util.SessionManager;
 
@@ -50,6 +48,8 @@ public class OrderController {
 	        newOrder.setCustomer_name(orderDTO.getCustomer_name());
 	        newOrder.setMachins(orderDTO.getMachine_numbers());
 	        newOrder.setAddress(orderDTO.getAddress());
+	        newOrder.setAdvance(orderDTO.getAdvance());
+	        newOrder.setStatus("In Progress");
 	        newOrder.setOnwerMobile(SessionManager.getInstance().getUsername());
 	        LocalDate today = LocalDate.now();
 	  	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");

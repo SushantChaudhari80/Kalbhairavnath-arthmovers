@@ -25,6 +25,9 @@ public class VehicaleDriver {
     @Column(name = "driverAadhar", length = 255, nullable = false)
     private String driverAadhar;
     
+    @Column(name = "driverLiencense", length = 255, nullable = false)
+    private String driverLiencense;
+    
     @Column(name = "machineNumber", length = 255)
     private String machineNumber;  // Nullable if not assigned yet
     
@@ -37,7 +40,7 @@ public class VehicaleDriver {
     }
 
     public VehicaleDriver(int id, String driverName, String driverMobile, String driverAddress, 
-                         String driverAadhar, String ownerMobile, String machineNumber) {
+                         String driverAadhar, String ownerMobile, String machineNumber , String driverLiencense) {
         this.id = id;
         this.driverName = driverName;
         this.driverMobile = driverMobile;
@@ -45,6 +48,7 @@ public class VehicaleDriver {
         this.driverAadhar = driverAadhar;
         this.onwerMobile = ownerMobile;
         this.machineNumber = machineNumber;
+        this.driverLiencense = driverLiencense;
     }
 
     // Getters and Setters
@@ -103,10 +107,28 @@ public class VehicaleDriver {
     public void setOwnerMobile(String ownerMobile) {
         this.onwerMobile = ownerMobile;
     }
+    
+    
 
     // Optionally override toString, equals, and hashCode
 
-    @Override
+    public String getDriverLiencense() {
+		return driverLiencense;
+	}
+
+	public void setDriverLiencense(String driverLiencense) {
+		this.driverLiencense = driverLiencense;
+	}
+
+	public String getOnwerMobile() {
+		return onwerMobile;
+	}
+
+	public void setOnwerMobile(String onwerMobile) {
+		this.onwerMobile = onwerMobile;
+	}
+
+	@Override
     public String toString() {
         return "VehicleDriver{" +
                 "id=" + id +

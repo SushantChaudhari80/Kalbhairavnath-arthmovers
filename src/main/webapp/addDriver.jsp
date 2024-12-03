@@ -162,6 +162,11 @@
             <input type="text" id="driverAadhar" name="driverAadhar" placeholder="Enter driver Aadhar number" pattern="[0-9]{12}" required>
             <span class="error" id="aadharError"></span>
         </div>
+		
+		<div class="form-group">
+		           <label for="driverLiecense">Driver Liecense</label>
+		           <input type="text" id="driverLiecense" name="driverLiecense" placeholder="Enter driver Liecense number" required>
+		</div>
 
         <button type="submit" class="btn-submit">Add Driver</button>
         
@@ -211,8 +216,8 @@
         	const driverName = document.getElementById('driverName').value;
             const driverMobile = document.getElementById('driverMobile').value;
             const driverAddress = document.getElementById('driverAddress').value;
-            const driverAadhar = document.getElementById('driverAadhar').value;
-            
+            const driverAadhar = document.getElementById('driverAadhar').value; //driverLiecense
+			const driverLiecense = document.getElementById('driverLiecense').value;
             $.ajax({
                 url: '/api/driver/add',  // URL for adding the vehicle
                 type: 'POST',
@@ -221,7 +226,8 @@
                 	driverName: driverName,
                 	driverMobile: driverMobile, 
                 	driverAddress: driverAddress,
-                	driverAadhar: driverAadhar
+                	driverAadhar: driverAadhar,
+					driverLiecense: driverLiecense
                 }),
                 success: function(msg) {
                     if (msg === "Driver added successfully!") {

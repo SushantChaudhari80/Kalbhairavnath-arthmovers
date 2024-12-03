@@ -134,6 +134,10 @@
 			    <label for="machine_number">Customer Address</label>
 			    <input type="text" id="customer_address" name="customer_address" placeholder="Enter Customer Address">
 			 </div>
+			 <div>
+			 	 <label for="adv_payment">Advance Payment</label>
+			 	 <input type="text" id="adv_payment" name="adv_payment" placeholder="Advance Payment">
+			 </div>
             <div id="vehicleContainer">
 			       
             </div>
@@ -204,6 +208,7 @@
 
 	    const customerName = document.getElementById('customer_name').value;
 		const customerAddress = document.getElementById('customer_address').value;
+		const advPayment = document.getElementById('adv_payment').value;
 	    const selectedVehicles = $('input[name="vehicle"]:checked').map(function() {
 	        return this.value; // Get checked values
 	    }).get();
@@ -218,18 +223,38 @@
 	        data: JSON.stringify({
 	            customer_name: customerName,
 				address: customerAddress,
-	            machine_numbers: selectedVehiclesString
+	            machine_numbers: selectedVehiclesString,
+				advance : advPayment
 	        }),
 	        success: function(msg) {
-	            if (msg === "Order added successfully!") {
-	                // Display success message
-	                document.getElementById('successMessage').style.display = 'block';
-	                document.getElementById('errorMessage').style.display = 'none';
-	            } else {
-	                // Display error message
-	                document.getElementById('successMessage').style.display = 'none';
-	                document.getElementById('errorMessage').style.display = 'block';
-	            }
+				
+				$.ajax({
+					        url: '/api/payment/add',  // URL for adding the order
+					        type: 'POST',
+					        contentType: 'application/json',
+					        data: JSON.stringify({
+					            customer_name: customerName,
+								amount : advPayment
+					        }),
+					        success: function(msg1) {
+
+								if (msg === "Order added successfully!" && msg1 === "Payment Added Successfully") {
+								    // Display success message
+								    document.getElementById('successMessage').style.display = 'block';
+								    document.getElementById('errorMessage').style.display = 'none';
+								} else {
+								    // Display error message
+								    document.getElementById('successMessage').style.display = 'none';
+								    document.getElementById('errorMessage').style.display = 'block';
+								}
+								},
+							error: function(xhr, status, error) {
+						        console.error("Error adding order:", error);
+							    // Display error message
+								document.getElementById('successMessage').style.display = 'none';
+								document.getElementById('errorMessage').style.display = 'block';
+							 }
+							 });
 	        },
 	        error: function(xhr, status, error) {
 	            console.error("Error adding order:", error);

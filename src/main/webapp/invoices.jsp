@@ -30,7 +30,7 @@
         }
 
         .filters {
-            display: flex;
+            display: none;
             justify-content: space-between;
             margin-bottom: 20px;
             flex-wrap: wrap;
@@ -235,10 +235,10 @@
         <table>
             <thead>
                 <tr>
-                    <th>Invoice Number</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Amount</th>
+                    <th>Customer Name</th>
+                    <th>Paid Amt</th>
+                    <th>Pending Amt</th>
+                    <th>Total Due Amt</th>
                     <th>Due Date</th>
                     <th>Actions</th>
                 </tr>
@@ -251,7 +251,7 @@
                     <td>Paid</td>
                     <td>$500.00</td>
                     <td>2024-10-15</td>
-                    <td><button>View</button></td>
+                    <td><button>View</button><button>Update</button></td>
                 </tr>
                 <tr>
                     <td>INV-12346</td>
@@ -259,7 +259,7 @@
                     <td>Unpaid</td>
                     <td>$600.00</td>
                     <td>2024-10-20</td>
-                    <td><button>View</button></td>
+                    <td><button>View</button><button>Update</button></td>
                 </tr>
             </tbody>
         </table>

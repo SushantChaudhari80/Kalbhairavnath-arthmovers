@@ -338,6 +338,7 @@
 		            { title: "ID" },//Order Date
 		            { title: "Order Date" },
 		            { title: "Customer Name" },
+					{ title: "Advance Payment" },
 		            { title: "Status" },
 					{ title: "Address" },
 		            { title: "Delivery Date" },
@@ -467,11 +468,12 @@
 		            console.log(orders);
 					orders.forEach(function(order) {
 					    var orderId = order.id || '';
-					    console.log("Order ID:", orderId);  // Debugging line
+					    console.log("Order ID:", orderId);  // Debugging line						
 					    table.row.add([
 					        orderId,
 					        order.order_date || '',
 					        order.customer_name || '',
+							order.advance,
 					        order.status || '',
 							order.address || '',
 					        order.deliveryDate || '',
@@ -585,6 +587,7 @@
                     <th>Order ID</th>
                     <th>Order Date</th>
                     <th>Customer Name</th>
+					<th>Advance Payment</th>
                     <th>Status</th>
 					<th>Address</th>
                     <th>Vehicle Numbers</th>

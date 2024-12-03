@@ -44,6 +44,7 @@ public class DriverController {
 	        driver.setDriverMobile(driverDTO.getDriverMobile());
 	        driver.setDriverAddress(driverDTO.getDriverAddress());
 	        driver.setDriverAadhar(driverDTO.getDriverAadhar());
+	        driver.setDriverLiencense(driverDTO.getDriverLiecense());
 	        driver.setOwnerMobile(SessionManager.getInstance().getUsername());
 	       boolean isAdded = driverService.addDriver(driver);
 

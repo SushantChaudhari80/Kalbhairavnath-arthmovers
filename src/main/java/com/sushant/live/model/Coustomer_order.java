@@ -16,6 +16,9 @@ public class Coustomer_order {
 	 @Column(name = "customer_name", length = 50, nullable = false)
 	 private String customer_name;
 	 
+	 @Column(name = "advance", length = 50, nullable = false)
+	 private String advance;
+	 
 
 	    @Column(name = "status", length = 20)
 	    private String status;
@@ -102,11 +105,22 @@ public class Coustomer_order {
 
 		
 
-		public Coustomer_order(int id, String customer_name, String status, String order_date, String deliveryDate,
-				String machins, String address, String onwerMobile) {
+		public String getAdvance() {
+			return advance;
+		}
+
+		public void setAdvance(String advance) {
+			this.advance = advance;
+		}
+
+		
+
+		public Coustomer_order(int id, String customer_name, String advance, String status, String order_date,
+				String deliveryDate, String machins, String address, String onwerMobile) {
 			super();
 			this.id = id;
 			this.customer_name = customer_name;
+			this.advance = advance;
 			this.status = status;
 			this.order_date = order_date;
 			this.deliveryDate = deliveryDate;
