@@ -28,32 +28,24 @@ public class OrderService {
 
 	
 	 public boolean addOrder(Coustomer_order order) {
-		 Coustomer_order order1 = orderRepository.findAllBy(SessionManager.getInstance().getUsername(), order.getMachins());
-		 if(order1 == null) {
-			 try {
-		        	orderRepository.save(order);
-		            return true;
-		        } catch (Exception e) {
-		            e.printStackTrace();
-		            return false;
-		        }
-		 }else {
-			 System.out.println("Machine is assign to anther order , please remove first, then retry.");
-		 return false;
-		 }
-	       
+	        try {
+	        	orderRepository.save(order);
+	            return true;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
 	    }
 	 
 	 public boolean updateOrder(Coustomer_order order) {
-		
-			 try {
-		        	orderRepository.save(order);
-		            return true;
-		        } catch (Exception e) {
-		            e.printStackTrace();
-		            return false;
-		        }
-	
+	        try {
+	        	orderRepository.save(order);
+	            return true;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
 	    }
+	    
 	    
 }
