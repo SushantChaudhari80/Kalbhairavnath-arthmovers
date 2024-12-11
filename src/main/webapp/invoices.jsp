@@ -173,45 +173,96 @@
             background-color: #2c3e50;
         }
     </style>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<!-- Include DataTables CSS -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+
+	<!-- Include DataTables JavaScript -->
+	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+	<script>
+	
+		$(document).ready(function () {
+		    const table = $('#invoiceTable').DataTable({
+		        columns: [
+		            { title: "Customer Name" },
+		            { title: "Paid Amt" },
+		            { title: "Pending Amt" },
+		            { title: "Total Due Amt" },
+		            { title: "Due Date" },
+		            { title: "Actions" }
+		        ]
+		    });
+
+		    function fetchInvoiceList() {
+		        $.ajax({
+		            url: '/api/payment/getAll/customer',
+		            type: 'GET',
+		            success: function (invoices) {
+		                table.clear(); // Clear existing data in the table
+
+		                // Fetch additional data for each customer
+		                const fetchDetailsPromises = invoices.map(invoice =>
+						   var totalAmt =0;
+						 //  $.ajax({
+						  // 		     url: '/api/payment/getAll/customer',
+						  // 		     type: 'GET',
+						 // 		     success: function (readings) {
+							//		    },
+							//		 error: function (xhr, status, error) {
+						//				console.error("Error fetching customer list:", error);
+							//			alert('Failed to fetch customer list. Please try again.');
+							//		}
+												
+		                    $.ajax({
+		                        url: `/api/invoice/getTotalPaid?cName=`+invoice, // Safely encode customer names
+		                        type: 'GET'
+		                    }).then(amt => {
+		                        return [
+		                            invoice || 'N/A',   // Customer Name
+		                            amt || '0',         // Paid Amount
+		                            totalAmt || '',                 // Pending Amount (placeholder)
+		                            '',                 // Total Due Amount (placeholder)
+		                            'N/A',              // Due Date (placeholder)
+		                            '<button class="btn btn-primary">View</button>' // Actions
+		                        ];
+		                    }).catch(error => {
+		                        console.error(`Error fetching data for ${invoice}:`, error);
+		                        return [
+		                            invoice || 'N/A',
+		                            'Error',
+		                            'Error',
+		                            'Error',
+		                            'Error',
+		                            '<button class="btn btn-danger disabled">Error</button>'
+		                        ];
+		                    })
+		                );
+
+		                // Wait for all promises to resolve
+		                Promise.all(fetchDetailsPromises).then(rows => {
+		                    rows.forEach(row => table.row.add(row));
+		                    table.draw(); // Render the table after adding all rows
+		                });
+		            },
+		            error: function (xhr, status, error) {
+		                console.error("Error fetching customer list:", error);
+		                alert('Failed to fetch customer list. Please try again.');
+		            }
+		        });
+		    }
+
+		    fetchInvoiceList();
+		});
+
+
+	</script>
+	
 </head>
 <body>
 
     <div class="container">
         <h1>Invoices Report</h1>
-
-        <!-- Filters Section -->
-        <div class="filters">
-            <div class="filter-item">
-                <label for="invoiceNumber">Invoice Number</label>
-                <input type="text" id="invoiceNumber" placeholder="Enter invoice number">
-            </div>
-            <div class="filter-item">
-                <label for="startDate">Start Date</label>
-                <input type="date" id="startDate">
-            </div>
-            <div class="filter-item">
-                <label for="endDate">End Date</label>
-                <input type="date" id="endDate">
-            </div>
-            <div class="filter-item">
-                <label for="status">Status</label>
-                <select id="status">
-                    <option value="all">All</option>
-                    <option value="paid">Paid</option>
-                    <option value="unpaid">Unpaid</option>
-                    <option value="overdue">Overdue</option>
-                </select>
-            </div>
-            <button class="btn-filter">Filter</button>
-        </div>
-
-        <!-- Actions Section (Export, Print) -->
-        <div class="actions">
-            <button onclick="exportCSV()">Export CSV</button>
-            <button onclick="printReport()">Print</button>
-        </div>
-
-        <!-- Summary Section -->
         <div class="summary">
             <div class="summary-item">
                 <h3 id="totalInvoices">0</h3>
@@ -232,7 +283,7 @@
         </div>
 
         <!-- Invoices Table -->
-        <table>
+        <table  id="invoiceTable" class="display">
             <thead>
                 <tr>
                     <th>Customer Name</th>
@@ -244,46 +295,13 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Dynamic rows will be inserted here -->
-                <tr>
-                    <td>INV-12345</td>
-                    <td>2024-10-01</td>
-                    <td>Paid</td>
-                    <td>$500.00</td>
-                    <td>2024-10-15</td>
-                    <td><button>View</button><button>Update</button></td>
-                </tr>
-                <tr>
-                    <td>INV-12346</td>
-                    <td>2024-10-05</td>
-                    <td>Unpaid</td>
-                    <td>$600.00</td>
-                    <td>2024-10-20</td>
-                    <td><button>View</button><button>Update</button></td>
-                </tr>
+             
             </tbody>
         </table>
-
-        <!-- Pagination Section -->
-        <div class="pagination">
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">Next</a>
-        </div>
-
     </div>
 
     <script>
-        function exportCSV() {
-            // Add functionality for exporting the table data to CSV
-            alert('Export CSV functionality will be added here.');
-        }
 
-        function printReport() {
-            // Add functionality for printing the report
-            window.print();
-        }
     </script>
 
 </body>

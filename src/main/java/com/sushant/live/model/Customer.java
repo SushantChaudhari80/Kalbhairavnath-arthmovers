@@ -17,6 +17,16 @@ public class Customer {
 
     private String name;
 
+    private String bussinessName;
+
+    private String gstNo;
+
+    private String acNo;
+
+    private String ifsc;
+
+    private String bankName;
+
     private String address;
 
     @Lob  // To indicate that the picture is a large object (BLOB)
@@ -29,46 +39,92 @@ public class Customer {
     public Customer() {}
 
     // Parameterized constructor
-    public Customer(String mobile, String name, String address, byte[] picture , String password) {
+    public Customer(String mobile, String name, String bussinessName, String gstNo,
+                    String acNo, String ifsc, String bankName, String address, 
+                    byte[] picture, String password) {
         this.mobile = mobile;
         this.name = name;
+        this.bussinessName = bussinessName;
+        this.gstNo = gstNo;
+        this.acNo = acNo;
+        this.ifsc = ifsc;
+        this.bankName = bankName;
         this.address = address;
         this.picture = picture;
         this.password = password;
     }
 
-    // Getters and Setters
-    public String getMobile() {
-        return mobile;
-    }
+	public String getMobile() {
+		return mobile;
+	}
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	public String getBussinessName() {
+		return bussinessName;
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	public void setBussinessName(String bussinessName) {
+		this.bussinessName = bussinessName;
+	}
 
-    public byte[] getPicture() {
-        return picture;
-    }
+	public String getGstNo() {
+		return gstNo;
+	}
 
-    public void setPicture(byte[] picture) {
-        this.picture = picture;
-    }
+	public void setGstNo(String gstNo) {
+		this.gstNo = gstNo;
+	}
+
+	public String getAcNo() {
+		return acNo;
+	}
+
+	public void setAcNo(String acNo) {
+		this.acNo = acNo;
+	}
+
+	public String getIfsc() {
+		return ifsc;
+	}
+
+	public void setIfsc(String ifsc) {
+		this.ifsc = ifsc;
+	}
+
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public byte[] getPicture() {
+		return picture;
+	}
+
+	public void setPicture(byte[] picture) {
+		this.picture = picture;
+	}
 
 	public String getPassword() {
 		return password;
@@ -77,4 +133,6 @@ public class Customer {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+    
 }

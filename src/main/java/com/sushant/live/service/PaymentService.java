@@ -1,5 +1,6 @@
 package com.sushant.live.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,17 @@ public class PaymentService {
 	
 	public List<Payments> getAll(String onwerMobile){
 		return repo.getByOnwer(onwerMobile);
+	}
+	public List<String> getAllCustomerNames(String onwerMobile){
+		List<Payments> list = repo.getByOnwer(onwerMobile);
+		List<String> customerNames = new ArrayList();
+		for(Payments p : list) {
+			if (!customerNames.contains(p.getCustomerName())) {
+				customerNames.add(p.getCustomerName());
+			}
+			}
+			
+		return customerNames;
 	}
 	
 	public String addNew(Payments payment){

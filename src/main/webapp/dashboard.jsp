@@ -258,6 +258,7 @@
 					<li><a href="reports.jsp">Reports</a></li>
 					<li><a href="orderReport.jsp">Order Report</a></li>
 					<li><a href="dieselReport.jsp">Diesel Report</a></li>
+					<li><a href="payments.jsp">Payments</a></li>
 					<li><a href="invoices.jsp">Invoices</a></li>
                 </ul>
             </div>

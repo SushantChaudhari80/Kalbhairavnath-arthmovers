@@ -39,6 +39,11 @@ public class CustomerController {
     public ResponseEntity<String> addCustomer(
             @RequestParam("mobile") String mobile,
             @RequestParam("name") String name,
+            @RequestParam("bussinessName") String bussinessName,
+            @RequestParam("gstNo") String gstNo,
+            @RequestParam("acNo") String acNo,
+            @RequestParam("ifsc") String ifsc,
+            @RequestParam("bankName") String bankName,
             @RequestParam("address") String address,
             @RequestParam("password") String password,
             @RequestParam(value = "picture", required = false) MultipartFile picture) {
@@ -53,9 +58,10 @@ public class CustomerController {
             }
         }
 
-        Customer customer = new Customer(mobile, name, address, pictureData , password);
+        Customer customer = new Customer(mobile, name, bussinessName, gstNo, acNo, ifsc, bankName, address, pictureData, password);
         customerService.addCustomer(customer);
 
         return ResponseEntity.ok("Customer added successfully");
     }
+
 }

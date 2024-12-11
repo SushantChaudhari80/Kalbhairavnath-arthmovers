@@ -30,6 +30,12 @@ public class PaymentController {
 		return ResponseEntity.ok(list);
 	}
 	
+	@GetMapping("/getAll/customer")
+	public ResponseEntity<List<String>> getAllCustomerNames(){
+		List<String> list = service.getAllCustomerNames(SessionManager.getInstance().getUsername());
+		return ResponseEntity.ok(list);
+	}
+	
 	@PostMapping("/add")
 	public ResponseEntity<String> addNewPayment(@RequestBody PaymentDTO dto){
 		System.out.println("from PaymentController : ");

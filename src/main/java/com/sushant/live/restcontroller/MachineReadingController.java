@@ -40,4 +40,9 @@ public class MachineReadingController {
     	List<MachineReading> list =  machineReadingService.getAll();
     	return ResponseEntity.ok(list);
     }
+//    @GetMapping("/vehicle/getAllRecord")
+//    public  ResponseEntity<List<MachineReading>> getAllRecord(@RequestParam String machinN){
+//    	
+//    	return ResponseEntity.ok(list);
+//    }
 }
