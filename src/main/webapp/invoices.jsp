@@ -203,7 +203,7 @@
 
 		                // Fetch additional data for each customer
 		                const fetchDetailsPromises = invoices.map(invoice =>
-						   var totalAmt =0;
+						  // var totalAmt =0;
 						 //  $.ajax({
 						  // 		     url: '/api/payment/getAll/customer',
 						  // 		     type: 'GET',
@@ -221,7 +221,7 @@
 		                        return [
 		                            invoice || 'N/A',   // Customer Name
 		                            amt || '0',         // Paid Amount
-		                            totalAmt || '',                 // Pending Amount (placeholder)
+		                             '',                 // Pending Amount (placeholder)
 		                            '',                 // Total Due Amount (placeholder)
 		                            'N/A',              // Due Date (placeholder)
 		                            '<button class="btn btn-primary">View</button>' // Actions
