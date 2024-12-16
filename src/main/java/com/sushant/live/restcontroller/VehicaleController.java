@@ -30,6 +30,7 @@ public class VehicaleController {
         Vehicale newVehicale = new Vehicale();
         newVehicale.setMachineNumber(vehicleDTO.getMachineNumber());
         newVehicale.setCompany(vehicleDTO.getCompany());
+        newVehicale.setV_type(vehicleDTO.getV_type());
         newVehicale.setOnwer_mobile(SessionManager.getInstance().getUsername());
         boolean isAdded = vehicaleService.addVehicale(newVehicale);
 

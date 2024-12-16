@@ -203,18 +203,23 @@
 
 		                // Fetch additional data for each customer
 		                const fetchDetailsPromises = invoices.map(invoice =>
-						  // var totalAmt =0;
-						 //  $.ajax({
-						  // 		     url: '/api/payment/getAll/customer',
-						  // 		     type: 'GET',
-						 // 		     success: function (readings) {
-							//		    },
-							//		 error: function (xhr, status, error) {
-						//				console.error("Error fetching customer list:", error);
-							//			alert('Failed to fetch customer list. Please try again.');
-							//		}
 												
-		                    $.ajax({
+						//$.ajax({
+						   //     url: "https://api.example.com/data", // REST endpoint
+						     //  type: "GET", // HTTP method
+						 //       dataType: "json", // Expected data format
+						 //      success: function(response) {
+						                        // Handle success
+						 //                       console.log(response);
+						 //                       $("#result").html(JSON.stringify(response, null, 4)); // Display response
+						 //       },
+						 //                   error: function(xhr, status, error) {
+						 //                       // Handle error
+						 //                       console.error("Error: " + error);
+						 //                       $("#result").html("Error fetching data.");
+						 //     }
+						// });   
+						 $.ajax({
 		                        url: `/api/invoice/getTotalPaid?cName=`+invoice, // Safely encode customer names
 		                        type: 'GET'
 		                    }).then(amt => {

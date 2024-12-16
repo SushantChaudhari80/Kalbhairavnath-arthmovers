@@ -18,6 +18,10 @@ public class Vehicale {
 
     @Column(name = "company", length = 20, nullable = false)
     private String company;
+    
+    @Column(name = "v_type", length = 20, nullable = false)
+    private String v_type;
+
 
     @Column(name = "onwerMobile", nullable = false)
     private String onwerMobile;
@@ -27,18 +31,39 @@ public class Vehicale {
     }
 
     // Parameterized constructor
-    public Vehicale(String machineNumber, String company , String onwer_mobile) {
-        this.machineNumber = machineNumber;
-        this.company = company;
-        this.onwerMobile = onwer_mobile;
-    }
+    public Vehicale(int id, String machineNumber, String company, String v_type, String onwerMobile) {
+		super();
+		this.id = id;
+		this.machineNumber = machineNumber;
+		this.company = company;
+		this.v_type = v_type;
+		this.onwerMobile = onwerMobile;
+	}
 
     // Getters and Setters
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    
+
+	public String getV_type() {
+		return v_type;
+	}
+
+	public void setV_type(String v_type) {
+		this.v_type = v_type;
+	}
+
+	public String getOnwerMobile() {
+		return onwerMobile;
+	}
+
+	public void setOnwerMobile(String onwerMobile) {
+		this.onwerMobile = onwerMobile;
+	}
+
+	public void setId(int id) {
         this.id = id;
     }
 

@@ -25,15 +25,19 @@
         }
 
         /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background-color: #2C3E50;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-        }
+		.sidebar {
+		    height: 100%;
+		    width: 250px;
+		    background-color: #2C3E50;
+		    color: white;
+		    display: flex;
+		    flex-direction: column;
+		    justify-content: space-between;
+		    padding: 20px;
+		    box-sizing: border-box; /* Ensures padding doesn't increase the size of the sidebar */
+		    overflow-y: auto; /* Adds a scrollbar if content exceeds the height */
+		}
+
 
         .sidebar h2 {
             font-size: 24px;
@@ -256,10 +260,13 @@
                     <li><a href="vehicales.jsp">Vehicles</a></li>
                     <li><a href="drivers.jsp">Drivers</a></li>
 					<li><a href="reports.jsp">Reports</a></li>
-					<li><a href="orderReport.jsp">Order Report</a></li>
+					<li><a href="orderReport.jsp">Exavetor Report</a></li>
+					<li><a href="">Loading Vehicale Report</a></li>
 					<li><a href="dieselReport.jsp">Diesel Report</a></li>
 					<li><a href="payments.jsp">Payments</a></li>
+					<li><a href="quotation.jsp">Quotation Genrator</a></li>
 					<li><a href="invoices.jsp">Invoices</a></li>
+					<li><a href="">Incident/Support</a></li>
                 </ul>
             </div>
             <div class="footer">

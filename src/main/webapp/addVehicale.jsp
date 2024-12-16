@@ -134,6 +134,13 @@
                 <label for="company">Company</label>
                 <input type="text" id="company" name="company" placeholder="Enter company name">
             </div>
+			<div>
+			    <label for="v_type">Vehicale Type</label>
+				<select id="v_type">
+					<option value="Excavator">Excavator</option> 
+					<option value="Dumper">Dumper</option> 
+				</select>
+			</div>			
         </div>
 
         <div class="form-group inline">
@@ -156,14 +163,15 @@
 
     const machineNumber = document.getElementById('machine_number').value;
     const company = document.getElementById('company').value;
-
+    const v_type =  $('#v_type option:selected').text();
     $.ajax({
         url: '/api/vehicles/add',  // URL for adding the vehicle
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
             machineNumber: machineNumber,
-            company: company
+            company: company,
+			v_type: v_type
         }),
         success: function(msg) {
 			console.log(msg);

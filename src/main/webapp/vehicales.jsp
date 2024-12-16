@@ -298,6 +298,7 @@
 	                { title: "ID" },
 	                { title: "Vehicle Number" },
 	                { title: "Company" },
+					{ title: "Vehicale Type"},
 	                { title: "Drivers" }
 	            ]
 	        });
@@ -317,6 +318,7 @@
 	                            vehicle.id || '',              // Ensure fallback value if undefined
 	                            vehicle.machineNumber || '',   // Replace with the correct property name if different
 	                            vehicle.company || '',
+								vehicle.v_type || '',
 	                             'N/A'       // Use 'N/A' or another placeholder if undefined
 	                        ]);
 	                    });
@@ -372,6 +374,7 @@
 		            <th>ID</th>
 		            <th>Vehicle Number</th>
 		            <th>Company</th>
+					<th>Vehicale Type</th>
 		            <th>Drivers</th>
 		        </tr>
 		    </thead>
