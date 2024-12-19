@@ -1,12 +1,16 @@
 package com.sushant.live.model;
 
+import java.util.Arrays;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Lob;
 
 @Entity
 @Table(name = "machinereading")
@@ -19,13 +23,25 @@ public class MachineReading {
 	
 	private String date ;
 	
+	@Lob  // Marking this as a large object
+    @Column(name = "startReadingImg", columnDefinition = "MEDIUMBLOB")
+    private byte[] startReadingImg;  // Field to store image data
+	
 	private String startReading;
+	
+	@Lob  // Marking this as a large object
+    @Column(name = "endReadingImg", columnDefinition = "MEDIUMBLOB")
+    private byte[] endReadingImg;  // Field to store image data
 	
 	private String endReading;
 	
 	private String Maintenance;
 	
-	private String disel;
+	@Lob  // Marking this as a large object
+    @Column(name = "dieselImg", columnDefinition = "MEDIUMBLOB")
+    private byte[] dieselImg;  
+	
+	private String diesel;
 	
 	private String onwerMobile;
 	
@@ -34,22 +50,6 @@ public class MachineReading {
 	private String machineNumber;
 	
 	private String OrderName;
-	
-    
-	public String getOrderName() {
-		return OrderName;
-	}
-	public void setOrderName(String orderName) {
-		OrderName = orderName;
-	}
-
-	public String getDisel() {
-		return disel;
-	}
-
-	public void setDisel(String disel) {
-		this.disel = disel;
-	}
 
 	public int getId() {
 		return id;
@@ -67,12 +67,28 @@ public class MachineReading {
 		this.date = date;
 	}
 
+	public byte[] getStartReadingImg() {
+		return startReadingImg;
+	}
+
+	public void setStartReadingImg(byte[] startReadingImg) {
+		this.startReadingImg = startReadingImg;
+	}
+
 	public String getStartReading() {
 		return startReading;
 	}
 
 	public void setStartReading(String startReading) {
 		this.startReading = startReading;
+	}
+
+	public byte[] getEndReadingImg() {
+		return endReadingImg;
+	}
+
+	public void setEndReadingImg(byte[] endReadingImg) {
+		this.endReadingImg = endReadingImg;
 	}
 
 	public String getEndReading() {
@@ -89,6 +105,22 @@ public class MachineReading {
 
 	public void setMaintenance(String maintenance) {
 		Maintenance = maintenance;
+	}
+
+	public byte[] getDieselImg() {
+		return dieselImg;
+	}
+
+	public void setDieselImg(byte[] dieselImg) {
+		this.dieselImg = dieselImg;
+	}
+
+	public String getDiesel() {
+		return diesel;
+	}
+
+	public void setDiesel(String diesel) {
+		this.diesel = diesel;
 	}
 
 	public String getOnwerMobile() {
@@ -115,18 +147,31 @@ public class MachineReading {
 		this.machineNumber = machineNumber;
 	}
 
-	public MachineReading(int id, String date, String startReading, String endReading, String readingCount,
-			String maintenance,String disel, String onwerMobile, String driverName, String machineNumber ,String OrderName) {
+	public String getOrderName() {
+		return OrderName;
+	}
+
+	public void setOrderName(String orderName) {
+		OrderName = orderName;
+	}
+
+	public MachineReading(int id, String date, byte[] startReadingImg, String startReading, byte[] endReadingImg,
+			String endReading, String maintenance, byte[] dieselImg, String diesel, String onwerMobile,
+			String driverName, String machineNumber, String orderName) {
 		super();
 		this.id = id;
 		this.date = date;
+		this.startReadingImg = startReadingImg;
 		this.startReading = startReading;
+		this.endReadingImg = endReadingImg;
 		this.endReading = endReading;
-		Maintenance = maintenance;        this.disel = disel;
+		Maintenance = maintenance;
+		this.dieselImg = dieselImg;
+		this.diesel = diesel;
 		this.onwerMobile = onwerMobile;
 		this.driverName = driverName;
 		this.machineNumber = machineNumber;
-		this.OrderName = OrderName;
+		OrderName = orderName;
 	}
 
 	public MachineReading() {
@@ -136,10 +181,15 @@ public class MachineReading {
 
 	@Override
 	public String toString() {
-		return "MachineReading [id=" + id + ", date=" + date + ", startReading=" + startReading + ", endReading="
-				+ endReading + ", readingCount=" + ", Maintenance=" + Maintenance + ", onwerMobile="
-				+ onwerMobile + ", driverName=" + driverName + ", machineNumber=" + machineNumber + "]";
+		return "MachineReading [id=" + id + ", date=" + date + ", startReadingImg=" + Arrays.toString(startReadingImg)
+				+ ", startReading=" + startReading + ", endReadingImg=" + Arrays.toString(endReadingImg)
+				+ ", endReading=" + endReading + ", Maintenance=" + Maintenance + ", dieselImg="
+				+ Arrays.toString(dieselImg) + ", diesel=" + diesel + ", onwerMobile=" + onwerMobile + ", driverName="
+				+ driverName + ", machineNumber=" + machineNumber + ", OrderName=" + OrderName + "]";
 	}
+
+	
+	
 
 	
 }

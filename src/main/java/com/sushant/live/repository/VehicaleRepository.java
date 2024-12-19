@@ -14,5 +14,9 @@ public interface VehicaleRepository extends JpaRepository<Vehicale, Integer> {
 	
 	    @Query("SELECT v FROM Vehicale v WHERE v.onwerMobile = :mobile")
 	    public List<Vehicale> findAllByOwnerMobile(@Param("mobile") String mobile);
+	    
+
+	    @Query("SELECT v FROM Vehicale v WHERE v.onwerMobile = :mobile and v_type='Dumper'")
+	    public List<Vehicale> findAllLoadingByOwnerMobile(@Param("mobile") String mobile);
 
 }

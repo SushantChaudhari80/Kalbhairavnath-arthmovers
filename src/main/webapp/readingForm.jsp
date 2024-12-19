@@ -139,22 +139,41 @@
 	            e.preventDefault(); // Prevent default form submission
 
 	            const selectedReadingType = $('input[name="readingType"]:checked').val();
-	            const formData = {
-	                startReading: selectedReadingType === 'startReading' ? $('#startReading').val() : null,
-	                endReading: selectedReadingType === 'endReading' ? $('#endReading').val() : null,
-	                maintenance: $('#maintenanceNumber').val(),
-					disel: $('#disel').val(),
-	                driverId: $('#driverList option:selected').text(),
-					selectedOwnerMobile:selectedOwnerMobile,
-					machineNumber: $('#Mnumber').text()
-	            };
+	           
+				const formData = new FormData(this);
+
+				   // Append additional data that is not directly part of the form
+				   formData.append('selectedOwnerMobile', selectedOwnerMobile);
+				   formData.append('machineNumber', $('#Mnumber').text());
+				  
+				    const driverId = $('#driverList').val();  // Assuming 'driverList' is the ID of the dropdown
+				      if (driverId) {
+				          formData.append('driverId', driverId);  // Append driverId to FormData
+				      }
+
+				      // Append files only if selected
+				      const startReadingFile = $('#startReading')[0].files[0];
+				      if (startReadingFile) {
+				          formData.append('startReading', startReadingFile);
+				      }
+
+				      const endReadingFile = $('#endReading')[0].files[0];
+				      if (endReadingFile) {
+				          formData.append('endReading', endReadingFile);
+				      }
+
+				      const disel = $('#disel')[0].files[0];
+				      if (disel) {
+				          formData.append('disel', disel);
+				      }  
 
 	            // Submit form data via AJAX
 	            $.ajax({
 	                url: '/driver/reading/submit',  // REST endpoint
 	                type: 'POST',
-	                contentType: 'application/json',
-	                data: JSON.stringify(formData),
+					processData: false, // Prevent query string serialization
+					contentType: false, // Let browser set Content-Type
+	                data: formData,
 	                success: function (response) {
 	                    alert(response);
 	                    $('#vehicleReadingForm')[0].reset();
@@ -174,7 +193,7 @@
 <body>
 	<div class="form-container">
 	    <h2>Capture Vehicle Reading</h2>
-	    <form id="vehicleReadingForm">
+	    <form id="vehicleReadingForm" enctype="multipart/form-data">
 	        <!-- Radio buttons for reading type -->
 	        <div class="form-group">
 	            <label>
@@ -190,14 +209,15 @@
 	        <!-- Input for Start Reading -->
 	        <div class="form-group">
 				<label for="startReading">Start Reading:</label>
-				<input type="text" id="startReading" name="startReading" placeholder="Enter start reading" min="0"/>
-
+				<input type="file" id="startReading" name="startReading" accept="image/*">
+				<small style="font-size: 12px; color: #666;">(Accepts images up to 5MB)</small>
 	        </div>
 
 	        <!-- Input for End Reading -->
 	        <div class="form-group">
 	            <label for="endReading">End Reading</label>
-	            <input type="text" id="endReading" name="endReading" disabled/>
+				<input type="file" id="endReading" name="endReading" accept="image/*">
+                <small style="font-size: 12px; color: #666;">(Accepts images up to 5MB)</small>
 	        </div>
 
 	        <!-- Input for Maintenance -->
@@ -207,9 +227,10 @@
 	        </div>
 			
 			<div class="form-group">
-				            <label for="disel">Disel</label>
-				            <input type="number" id="disel" name="disel" />
-				        </div>
+				<label for="disel">Disel</label>
+				<input type="file" id="disel" name="disel" accept="image/*">
+				<small style="font-size: 12px; color: #666;">(Accepts images up to 5MB)</small>
+			</div>
 
 	        <!-- Dropdown for Driver List -->
 			<div class="form-group">

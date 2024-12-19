@@ -27,7 +27,8 @@ public class ReadingService {
 	@Autowired
 	OrderRepository orderRepo;
 	
-	public String saveReading(ReadingDTO dto) {
+	public String saveReading(ReadingDTO dto)  {
+		try {
 	    // Get today's date and format it
 	    LocalDate today = LocalDate.now();
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -40,10 +41,22 @@ public class ReadingService {
 	        // Create new record if no existing record is found
 	        MachineReading reading = new MachineReading();
 	        reading.setDate(formattedDate);
-	        reading.setStartReading(dto.getStartReading());
-	        reading.setEndReading(dto.getEndReading());
+	        reading.setStartReading("");
+	        
+	        if(dto.getStartReading()!=null)
+	        reading.setStartReadingImg(dto.getStartReading());
+	        
+	        reading.setEndReading("");
+	        
+	         if(dto.getEndReading() != null)
+	         reading.setEndReadingImg(dto.getEndReading());
+	         
 	        reading.setMaintenance(dto.getMaintenance());
-	        reading.setDisel(dto.getDisel());
+	        reading.setDiesel("");
+	        
+	        if(dto.getDisel()!= null)
+	        reading.setDieselImg(dto.getDisel());
+	        
 	        reading.setOnwerMobile(dto.getSelectedOwnerMobile());
 	        reading.setDriverName(dto.getDriverId());
 	        reading.setMachineNumber(dto.getMachineNumber());
@@ -61,14 +74,16 @@ public class ReadingService {
 	        boolean updated = false;
 
 	        // Update the start reading if it's null and if DTO provides a new start reading
-	        if (existingReading.getStartReading() == null && dto.getStartReading() != null) {
-	            existingReading.setStartReading(dto.getStartReading());
+	        if (existingReading.getStartReadingImg() == null && dto.getStartReading() != null) {
+	           // existingReading.setStartReading(dto.getStartReading());
+	        	existingReading.setStartReading("");
 	            updated = true;
 	        }
 
 	        // Update the end reading if it's null and if DTO provides a new end reading
-	        if (existingReading.getEndReading() == null && dto.getEndReading() != null) {
-	            existingReading.setEndReading(dto.getEndReading());
+	        if (existingReading.getEndReadingImg()==null && dto.getEndReading() != null) {
+	           // existingReading.setEndReading(dto.getEndReading());
+	        	existingReading.setEndReading("");
 	            updated = true;
 	        }
 
@@ -86,10 +101,12 @@ public class ReadingService {
 	            return "Invalid Maintenance Data.";
 	        }
 	        try {
-	            int d1 = Integer.parseInt(existingReading.getDisel() != null ? existingReading.getDisel() : "0");
-	            int d2 = Integer.parseInt(dto.getDisel() != null ? dto.getDisel() : "0");
-	            existingReading.setDisel(String.valueOf(d1 + d2));
+//	            int d1 = Integer.parseInt(existingReading.getDisel() != null ? existingReading.getDisel() : "0");
+//	            int d2 = Integer.parseInt(dto.getDisel() != null ? dto.getDisel() : "0");
+//	            existingReading.setDiesel(String.valueOf(d1 + d2));
+	        	existingReading.setDiesel("");
 	        } catch (NumberFormatException e) {
+	        	e.printStackTrace();
 	            return "Invalid Disel Data.";
 	        }
 
@@ -98,6 +115,11 @@ public class ReadingService {
 
 	        return "Reading Updated Successfully.";
 	    }
+		}catch (Exception e) {
+			System.out.println(e.getLocalizedMessage());
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}
 	}
 
 	
@@ -114,33 +136,3 @@ public class ReadingService {
 	
 }
 
-
-//
-//reading.setDate(formattedDate);
-//if (dto.getStartReading() != null) {
-//    reading.setReadingtype("Start Reading");
-//    reading.setReadingCount(dto.getStartReading());
-//} 
-//else if (dto.getEndReading() != null) {
-//    reading.setReadingtype("End Reading");
-//    reading.setReadingCount(dto.getEndReading());
-//} else {
-//    return "No reading provided"; // If neither start nor end reading is provided
-//}
-//reading.setMaintenance(dto.getMaintenance());
-//reading.setOnwerMobile(dto.getSelectedOwnerMobile());
-//reading.setDriverName(dto.getDriverId());
-//reading.setMachineNumber(dto.getMachineNumber());
-//
-//// Check if a reading for the date and type already exists
-//boolean flag = check(formattedDate, reading.getReadingtype() , reading.getMachineNumber() );
-//System.out.println("returned flag " + flag);
-//
-//// Return appropriate response based on the check
-//if (flag) {
-//    return "Reading Submitted Already";
-//} else {
-//    repo.save(reading);  // Save the reading to the database
-//    reading.toString();
-//    return "Reading Added Successfully.";
-//}

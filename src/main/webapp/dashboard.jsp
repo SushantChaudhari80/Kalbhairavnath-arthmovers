@@ -261,12 +261,13 @@
                     <li><a href="drivers.jsp">Drivers</a></li>
 					<li><a href="reports.jsp">Reports</a></li>
 					<li><a href="orderReport.jsp">Exavetor Report</a></li>
-					<li><a href="">Loading Vehicale Report</a></li>
+					<li><a href="dumper.jsp">Loading Vehicale Report</a></li>
 					<li><a href="dieselReport.jsp">Diesel Report</a></li>
 					<li><a href="payments.jsp">Payments</a></li>
+					<li><a href="approveCount.jsp">Admin Approve</a></li>
 					<li><a href="quotation.jsp">Quotation Genrator</a></li>
 					<li><a href="invoices.jsp">Invoices</a></li>
-					<li><a href="">Incident/Support</a></li>
+					<li><a href="payments.jsp">Incident/Support</a></li>
                 </ul>
             </div>
             <div class="footer">

@@ -50,4 +50,12 @@ public class VehicaleController {
     	List<Vehicale> list = vehicaleService.getAllVehical();
         return ResponseEntity.ok(list);
     }
+    
+    
+    @GetMapping("/getAll/loading")
+    public ResponseEntity<List<Vehicale>> getLoadingVehicaleList() {
+    	System.out.println("VehicaleController : getAllLoadingVehical()");
+    	List<Vehicale> list = vehicaleService.getAllLoadingVehical();
+    	return ResponseEntity.ok(list);
+    }
 }

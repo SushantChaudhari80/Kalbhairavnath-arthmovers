@@ -28,5 +28,9 @@ public class VehicaleService {
     public List<Vehicale> getAllVehical() {
     	return vehicaleRepository.findAllByOwnerMobile(SessionManager.getInstance().getUsername());
     }
+    
+    public List<Vehicale> getAllLoadingVehical() {
+    	return vehicaleRepository.findAllLoadingByOwnerMobile(SessionManager.getInstance().getUsername());
+    }
 
 }

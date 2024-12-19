@@ -23,6 +23,7 @@ public class CustomerController {
     public ResponseEntity<Customer> getCustomer() {
     	System.out.println("CustomerController : getCustomer()");
         Customer customer = customerService.getCustomerById(SessionManager.getInstance().getUsername()); // Fetch customer by ID (example)
+        customer.setBussinessName(customer.getBussinessName().toUpperCase());
         return ResponseEntity.ok(customer);
     }
     
