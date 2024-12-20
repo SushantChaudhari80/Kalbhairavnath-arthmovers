@@ -15,8 +15,7 @@
         }
 
         body {
-            background: linear-gradient(to right, #6a11cb, #2575fc);
-            color: #fff;
+            background: #f4f6f9;
             font-size: 16px;
             display: flex;
             justify-content: center;
@@ -31,7 +30,7 @@
         }
 
         form {
-            background: rgba(255, 255, 255, 0.1);
+            background: #f4f6f9;
             backdrop-filter: blur(10px);
             padding: 20px;
             border-radius: 10px;
@@ -83,6 +82,36 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
+		.image-preview {
+		           position: fixed;
+		           top: 0;
+		           left: 0;
+		           width: 100%;
+		           height: 100%;
+		           background: rgba(0, 0, 0, 0.8);
+		           display: flex;
+		           justify-content: center;
+		           align-items: center;
+		           z-index: 9999;
+		           display: none;
+		       }
+
+		       .image-preview img {
+		           max-width: 90%;
+		           max-height: 90%;
+		       }
+
+		       .image-preview .close-btn {
+		           position: absolute;
+		           top: 20px;
+		           right: 20px;
+		           background: #fff;
+		           color: #333;
+		           font-size: 1.5rem;
+		           padding: 5px 10px;
+		           border-radius: 5px;
+		           cursor: pointer;
+		       }
 
         button:hover {
             background: #6a11cb;
@@ -137,10 +166,20 @@
 
         <button type="submit">Update Reading</button>
     </form>
+	<div class="image-preview" id="imagePreviewModal">
+	       <span class="close-btn" id="closePreview">X</span>
+	       <img id="previewImage" src="" alt="Preview Image">
+	   </div>
 
     <script>
+		function getQueryParameter(param) {
+			        const urlParams = new URLSearchParams(window.location.search);
+			        return urlParams.get(param);
+			    }
+
+			    // Retrieve the driverId from the URL
+			    const readingId = getQueryParameter('rowId');
         $(document).ready(function () {
-            const readingId = 3; // Example reading ID
             
             // Fetch data using AJAX
             $.ajax({
@@ -155,10 +194,10 @@
                         $('#startReadingImgPreview').attr('src', 'data:image/jpeg;base64,'+data.startReading);
                     }
                     if (data.endReading) {
-						$('#endReadingImgPreview').attr('src', 'data:image/jpeg;base64,'+data.startReading);
+						$('#endReadingImgPreview').attr('src', 'data:image/jpeg;base64,'+data.endReading);
                     }
                     if (data.disel) {
-						$('#dieselImgPreview').attr('src', 'data:image/jpeg;base64,'+data.startReading);
+						$('#dieselImgPreview').attr('src', 'data:image/jpeg;base64,'+data.disel);
                     }
                 },
                 error: function (xhr, status, error) {
@@ -188,6 +227,16 @@
                     }
                 });
             });
+			$('img').on('click', function () {
+			               const imgSrc = $(this).attr('src');
+			               $('#previewImage').attr('src', imgSrc);
+			               $('#imagePreviewModal').fadeIn();
+			           });
+
+			           // Close image preview modal
+			           $('#closePreview').on('click', function () {
+			               $('#imagePreviewModal').fadeOut();
+			           });
         });
     </script>
 </body>

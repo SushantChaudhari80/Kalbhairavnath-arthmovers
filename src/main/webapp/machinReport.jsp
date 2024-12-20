@@ -313,6 +313,11 @@
 
 		            // Draw the table after all rows are added
 		            table.draw();
+					$('#readingTable tbody').on('click', 'tr', function() {
+											                           const data = table.row(this).data();
+											                           const vId = data[0]; // Assuming ID is in the first col
+											                           window.location.href = 'approveCount.jsp?rowId='+vId;
+											                       });
 		        },
 		        error: function (xhr, status, error) {
 		            console.error("Error fetching records:", error);

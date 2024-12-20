@@ -146,7 +146,7 @@
 				   formData.append('selectedOwnerMobile', selectedOwnerMobile);
 				   formData.append('machineNumber', $('#Mnumber').text());
 				  
-				    const driverId = $('#driverList').val();  // Assuming 'driverList' is the ID of the dropdown
+				    const driverId = $('#driverList').text();  // Assuming 'driverList' is the ID of the dropdown
 				      if (driverId) {
 				          formData.append('driverId', driverId);  // Append driverId to FormData
 				      }

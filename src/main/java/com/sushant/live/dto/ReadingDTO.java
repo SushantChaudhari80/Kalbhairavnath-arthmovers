@@ -1,5 +1,7 @@
 package com.sushant.live.dto;
 
+import java.util.Arrays;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.persistence.Column;
@@ -72,6 +74,13 @@ public class ReadingDTO {
 	public ReadingDTO() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	@Override
+	public String toString() {
+		return "ReadingDTO [startReading=" + Arrays.toString(startReading) + ", endReading="
+				+ Arrays.toString(endReading) + ", disel=" + Arrays.toString(disel) + ", maintenance=" + maintenance
+				+ ", driverId=" + driverId + ", machineNumber=" + machineNumber + ", selectedOwnerMobile="
+				+ selectedOwnerMobile + "]";
 	}
     
    

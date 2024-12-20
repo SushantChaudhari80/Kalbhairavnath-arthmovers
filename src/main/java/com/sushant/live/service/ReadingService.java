@@ -27,99 +27,85 @@ public class ReadingService {
 	@Autowired
 	OrderRepository orderRepo;
 	
-	public String saveReading(ReadingDTO dto)  {
-		try {
-	    // Get today's date and format it
-	    LocalDate today = LocalDate.now();
-	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	    String formattedDate = today.format(formatter);
+	public String saveReading(ReadingDTO dto) {
+	    try {
+	        // Get today's date and format it
+	        LocalDate today = LocalDate.now();
+	        String formattedDate = today.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-	    // Check if a record exists for the same date and machine number
-	    MachineReading existingReading = repo.checkRecords(formattedDate, dto.getMachineNumber(),dto.getSelectedOwnerMobile());
+	        // Check for existing record
+	        MachineReading existingReading = repo.checkRecords(formattedDate, dto.getMachineNumber(), dto.getSelectedOwnerMobile());
 
-	    if (existingReading == null) {
-	        // Create new record if no existing record is found
-	        MachineReading reading = new MachineReading();
-	        reading.setDate(formattedDate);
-	        reading.setStartReading("");
-	        
-	        if(dto.getStartReading()!=null)
-	        reading.setStartReadingImg(dto.getStartReading());
-	        
-	        reading.setEndReading("");
-	        
-	         if(dto.getEndReading() != null)
-	         reading.setEndReadingImg(dto.getEndReading());
-	         
-	        reading.setMaintenance(dto.getMaintenance());
-	        reading.setDiesel("");
-	        
-	        if(dto.getDisel()!= null)
-	        reading.setDieselImg(dto.getDisel());
-	        
-	        reading.setOnwerMobile(dto.getSelectedOwnerMobile());
-	        reading.setDriverName(dto.getDriverId());
-	        reading.setMachineNumber(dto.getMachineNumber());
-	        System.out.println(dto.getSelectedOwnerMobile()+dto.getMachineNumber());
-	        Coustomer_order order= orderRepo.findAllByMachine(dto.getSelectedOwnerMobile(),dto.getMachineNumber());
-	        reading.setOrderName(order.getCustomer_name());
+	        if (existingReading == null) {
+	            // Create new record
+	            MachineReading newReading = new MachineReading();
+	            newReading.setDate(formattedDate);
+	            newReading.setStartReadingImg(dto.getStartReading());
+	            newReading.setEndReadingImg(dto.getEndReading());
+	            newReading.setMaintenance(dto.getMaintenance());
+	            newReading.setDieselImg(dto.getDisel());
+	            newReading.setOnwerMobile(dto.getSelectedOwnerMobile());
+	            newReading.setDriverName(dto.getDriverId());
+	            newReading.setMachineNumber(dto.getMachineNumber());
 
-	        System.out.println("New Record: " + reading.toString());
-	        repo.save(reading); // Save the new record
+	            // Fetch order details
+	            Coustomer_order order = orderRepo.findAllByMachine(dto.getSelectedOwnerMobile(), dto.getMachineNumber());
+	            if (order != null) {
+	                newReading.setOrderName(order.getCustomer_name());
+	            } else {
+	                return "Order details not found for the given machine.";
+	            }
 
-	        return "Reading Added Successfully.";
+	            // Save the new reading
+	            repo.save(newReading);
+	            return "Reading Added Successfully.";
 
-	    } else {
-	        // Update the existing record if it's found
-	        boolean updated = false;
+	        } else {
+	            // Update existing record
+	            boolean isUpdated = false;
 
-	        // Update the start reading if it's null and if DTO provides a new start reading
-	        if (existingReading.getStartReadingImg() == null && dto.getStartReading() != null) {
-	           // existingReading.setStartReading(dto.getStartReading());
-	        	existingReading.setStartReading("");
-	            updated = true;
+	            // Update only if the DTO provides new data, otherwise keep the existing value
+	            if (dto.getStartReading() != null) {
+	                existingReading.setStartReadingImg(dto.getStartReading());
+	                isUpdated = true;
+	            }
+	            if (dto.getEndReading() != null) {
+	                existingReading.setEndReadingImg(dto.getEndReading());
+	                isUpdated = true;
+	            }
+	            if (dto.getDisel() != null) {
+	                existingReading.setDieselImg(dto.getDisel());
+	                isUpdated = true;
+	            }
+
+	            // If no updates are made, return appropriate message
+	            if (!isUpdated) {
+	                return "Reading Already Submitted.";
+	            }
+
+	            // Update maintenance
+	            existingReading.setMaintenance(sumField(existingReading.getMaintenance(), dto.getMaintenance()));
+
+	            // Save updated reading
+	            repo.save(existingReading);
+	            return "Reading Updated Successfully.";
 	        }
 
-	        // Update the end reading if it's null and if DTO provides a new end reading
-	        if (existingReading.getEndReadingImg()==null && dto.getEndReading() != null) {
-	           // existingReading.setEndReading(dto.getEndReading());
-	        	existingReading.setEndReading("");
-	            updated = true;
-	        }
-
-	        // If neither start nor end readings can be updated, the reading is already complete
-	        if (!updated) {
-	            return "Reading Already Submitted.";
-	        }
-
-	        // Update maintenance by adding to the existing maintenance
-	        try {
-	            int currentMaintenance = Integer.parseInt(existingReading.getMaintenance() != null ? existingReading.getMaintenance() : "0");
-	            int newMaintenance = Integer.parseInt(dto.getMaintenance() != null ? dto.getMaintenance() : "0");
-	            existingReading.setMaintenance(String.valueOf(currentMaintenance + newMaintenance));
-	        } catch (NumberFormatException e) {
-	            return "Invalid Maintenance Data.";
-	        }
-	        try {
-//	            int d1 = Integer.parseInt(existingReading.getDisel() != null ? existingReading.getDisel() : "0");
-//	            int d2 = Integer.parseInt(dto.getDisel() != null ? dto.getDisel() : "0");
-//	            existingReading.setDiesel(String.valueOf(d1 + d2));
-	        	existingReading.setDiesel("");
-	        } catch (NumberFormatException e) {
-	        	e.printStackTrace();
-	            return "Invalid Disel Data.";
-	        }
-
-	        System.out.println("Updating Record: " + existingReading.toString());
-	        repo.save(existingReading); // Save the updated record
-
-	        return "Reading Updated Successfully.";
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return "An error occurred: " + e.getMessage();
 	    }
-		}catch (Exception e) {
-			System.out.println(e.getLocalizedMessage());
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}
+	}
+
+	// Utility method to safely sum maintenance values
+	private String sumField(String existingValue, String newValue) {
+	    try {
+	        int existing = existingValue != null ? Integer.parseInt(existingValue) : 0;
+	        int newVal = newValue != null ? Integer.parseInt(newValue) : 0;
+	        return String.valueOf(existing + newVal);
+	    } catch (NumberFormatException e) {
+	        throw new IllegalArgumentException("Invalid numeric data.");
+	    }
 	}
 
 	

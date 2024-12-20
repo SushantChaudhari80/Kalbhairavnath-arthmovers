@@ -82,7 +82,7 @@ public class MachineReadingController {
         dto.setStartReading(reading.getStartReadingImg());
         dto.setEndReading(reading.getEndReadingImg());
         dto.setDisel(reading.getDieselImg());
-
+       System.out.println(dto.toString());
         return ResponseEntity.ok(dto);
     }
 
