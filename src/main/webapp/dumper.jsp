@@ -301,6 +301,7 @@
 	            columns: [
 	                { title: "Treep ID" },
 	                { title: "Date" },
+					{ title: "Details"},
 	                { title: "Customer Name" },
 					{ title: "Vehicale Number"},
 	                { title: "Diesel(Liter)" },
@@ -349,7 +350,8 @@
 	                    vehicles.forEach(function(vehicle) {
 	                        table.row.add([
 	                            vehicle.id || '',              // Ensure fallback value if undefined
-	                            vehicle.createDate || '',   // Replace with the correct property name if different
+	                            vehicle.createDate || '', 
+								vehicle.item || '',  // Replace with the correct property name if different
 	                            vehicle.customerName || '',
 								vehicle.selectedVehicle || '',
 								vehicle.diesel || '',
@@ -388,7 +390,7 @@
     <div class="container">
         <!-- Page Header -->
         <div class="page-header">
-            <h1>Vehicles</h1>
+            <h1>Treep Report</h1>
             <a id="printbtn" class="btn">Print</a>
         </div>
 		  <div id="summary">
@@ -403,6 +405,7 @@
 		        <tr>
 					<th>Treep ID</th>
 					<th>Date</th>
+					<th>Details</th>
 		            <th>Customer Name</th>
 		            <th>Vehicle Number</th>
 		            <th>Diesel (Liters)</th>

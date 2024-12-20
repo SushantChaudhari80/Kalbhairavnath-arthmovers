@@ -212,11 +212,23 @@
 
             <label for="advance">Advance Payment (₹)</label>
             <input type="number" id="advance" placeholder="Enter advance amount">
+			
+			<label>Select Items</label>
+			    <div>
+			        <input type="checkbox" id="checkbox-soil" value="Soil">
+			        <label for="checkbox-soil">Soil</label>
+			        <input type="checkbox" id="checkbox-bricks" value="Bricks">
+			        <label for="checkbox-bricks">Bricks</label>
+			        <input type="checkbox" id="checkbox-crushsand" value="Crush Sand">
+			        <label for="checkbox-crushsand">Crush Sand</label>
+			        <input type="checkbox" id="checkbox-sand" value="Sand">
+			        <label for="checkbox-sand">Sand</label>
+			    </div>
 
-            <label for="soil-brass">Number of Brass Soil</label>
+            <label for="soil-brass">Number of Brass/Treep Soil</label>
             <input type="number" id="soil-brass" placeholder="Enter number of brass">
 
-            <label for="soil-rate">Soil Rate per Brass (₹)</label>
+            <label for="soil-rate">Soil Rate per Brass/Treep (₹)</label>
             <input type="number" id="soil-rate" placeholder="Enter rate per brass" value="1000">
         </form>
 
@@ -249,7 +261,7 @@
 			            <tbody>
 			                <tr>
 			                    <td>1</td>
-			                    <td>Soil</td>
+			                    <td id="summary-details"></td>
 								<td id="summary-vehicle-number"></td>
 								<td id="summary-diesel"></td>
 			                    <td id="summary-soil-brass">N/A</td>
@@ -272,6 +284,7 @@
         </div>
 
         <button class="print-btn" id="print-btn">Download as PDF</button>
+		<button class="print-btn" id="save-btn">Save</button>
     </div>
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -340,6 +353,11 @@
 		        const advance = document.getElementById('advance').value;
 		        const soilBrass = document.getElementById('soil-brass').value;
 		        const soilRate = document.getElementById('soil-rate').value;
+                var selectedItems='';
+				if (document.getElementById('checkbox-soil').checked) selectedItems='Soil';
+				if (document.getElementById('checkbox-bricks').checked) selectedItems='Bricks';
+				if (document.getElementById('checkbox-crushsand').checked) selectedItems='Crush Sand';
+				if (document.getElementById('checkbox-sand').checked) selectedItems='Sand';
 
 		        // Calculate total payment
 		        const totalPayment = soilBrass * soilRate;
@@ -352,7 +370,8 @@
 		        document.getElementById('summary-soil-brass').innerText = soilBrass || '-';
 		        document.getElementById('summary-soil-rate').innerText = soilRate || '-';
 		        document.getElementById('summary-total-payment').innerText = totalPayment || '-';
-				document.getElementById('summary-total-payment1').innerText = totalPayment || '-';
+				document.getElementById('summary-total-payment1').innerText = totalPayment || '-';//summary-details
+				document.getElementById('summary-details').innerText = selectedItems || '-'
 		    });
 
 		    // Print functionality
@@ -366,7 +385,11 @@
 					        // Calculate total payment
 					        const totalPayment = soilBrass * soilRate;
 							const selectedVehicleText = document.getElementById('vehicaleList').options[document.getElementById('vehicaleList').selectedIndex].text;
-
+							var selectedItems='';
+										if (document.getElementById('checkbox-soil').checked) selectedItems='Soil';
+										if (document.getElementById('checkbox-bricks').checked) selectedItems='Bricks';
+										if (document.getElementById('checkbox-crushsand').checked) selectedItems='Crush Sand';
+										if (document.getElementById('checkbox-sand').checked) selectedItems='Sand';
 
 				               const formData = {
 				                   selectedVehicle: selectedVehicleText,
@@ -375,7 +398,8 @@
 				                   advance: advance,
 				                   soilBrass: soilBrass,
 				                   soilRate: soilRate,
-				                   totalPayment:totalPayment
+				                   totalPayment:totalPayment,
+								   item:selectedItems
 				               };
                               console.log(formData);
 				               $.ajax({
@@ -392,6 +416,49 @@
 				               });
 		        window.print();
 		    });
+			document.getElementById('save-btn').addEventListener('click', function () {
+					         	const customerName = document.getElementById('customer-name').value;
+							        const diesel = document.getElementById('diesel').value;
+							        const advance = document.getElementById('advance').value;
+							        const soilBrass = document.getElementById('soil-brass').value;
+							        const soilRate = document.getElementById('soil-rate').value;
+
+							        // Calculate total payment
+							        const totalPayment = soilBrass * soilRate;
+									const selectedVehicleText = document.getElementById('vehicaleList').options[document.getElementById('vehicaleList').selectedIndex].text;
+
+									var selectedItems='';
+																			if (document.getElementById('checkbox-soil').checked) selectedItems='Soil';
+																			if (document.getElementById('checkbox-bricks').checked) selectedItems='Bricks';
+																			if (document.getElementById('checkbox-crushsand').checked) selectedItems='Crush Sand';
+																			if (document.getElementById('checkbox-sand').checked) selectedItems='Sand';
+							
+
+						               const formData = {
+						                   selectedVehicle: selectedVehicleText,
+						                   customerName:customerName,
+						                   diesel: diesel,
+						                   advance: advance,
+						                   soilBrass: soilBrass,
+						                   soilRate: soilRate,
+						                   totalPayment:totalPayment,
+										   item:selectedItems
+						               };
+			                             console.log(formData);
+						               $.ajax({
+						                   url: '/api/treep/add', // Endpoint URL
+						                   type: 'POST',
+						                   contentType: 'application/json',
+						                   data: JSON.stringify(formData),
+						                   success: function (response) {
+						                       alert(response);
+						                   },
+						                   error: function (xhr, status, error) {
+						                       console.error('Error:', error);
+						                   }
+						               });
+				       // window.print();
+				    });
 		});
 
 

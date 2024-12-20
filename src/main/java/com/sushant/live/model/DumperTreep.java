@@ -29,6 +29,8 @@ public class DumperTreep {
 	private String createDate;
 	
 	private String omobile;
+	
+	private String item;
 
 	public int getId() {
 		return id;
@@ -114,8 +116,23 @@ public class DumperTreep {
 	
 	
 
+	
+
+	public String getItem() {
+		return item;
+	}
+
+	public void setItem(String item) {
+		this.item = item;
+	}
+
+	public DumperTreep() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public DumperTreep(int id, String selectedVehicle, String customerName, String diesel, String advance,
-			String soilBrass, String soilRate, String totalPayment, String createDate, String omobile) {
+			String soilBrass, String soilRate, String totalPayment, String createDate, String omobile, String item) {
 		super();
 		this.id = id;
 		this.selectedVehicle = selectedVehicle;
@@ -127,11 +144,7 @@ public class DumperTreep {
 		this.totalPayment = totalPayment;
 		this.createDate = createDate;
 		this.omobile = omobile;
-	}
-
-	public DumperTreep() {
-		super();
-		// TODO Auto-generated constructor stub
+		this.item = item;
 	}
 	
 	

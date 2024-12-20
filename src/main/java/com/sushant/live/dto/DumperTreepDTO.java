@@ -15,9 +15,11 @@ public class DumperTreepDTO {
 	 String soilRate;
 	
 	 String	totalPayment;
+	 
+	 String item;
 
 	public DumperTreepDTO(String selectedVehicle, String customerName, String diesel, String advance, String soilBrass,
-			String soilRate, String totalPayment) {
+			String soilRate, String totalPayment, String item) {
 		super();
 		this.selectedVehicle = selectedVehicle;
 		this.customerName = customerName;
@@ -26,6 +28,15 @@ public class DumperTreepDTO {
 		this.soilBrass = soilBrass;
 		this.soilRate = soilRate;
 		this.totalPayment = totalPayment;
+		this.item = item;
+	}
+
+	public String getItem() {
+		return item;
+	}
+
+	public void setItem(String item) {
+		this.item = item;
 	}
 
 	public DumperTreepDTO() {
