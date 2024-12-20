@@ -107,6 +107,49 @@
             }
         }
     </style>
+	<script>
+	    document.getElementById("password").addEventListener("input", function () {
+	        const passwordInput = this.value;
+	        const helpText = document.getElementById("password-help");
+	        const validationCriteria = [
+	            {
+	                regex: /.{8,20}/,
+	                message: "Password must be between 8 and 20 characters.",
+	            },
+	            {
+	                regex: /[A-Z]/,
+	                message: "Password must include at least one uppercase letter.",
+	            },
+	            {
+	                regex: /[a-z]/,
+	                message: "Password must include at least one lowercase letter.",
+	            },
+	            {
+	                regex: /\d/,
+	                message: "Password must include at least one number.",
+	            },
+	            {
+	                regex: /[@$!%*?&]/,
+	                message: "Password must include at least one special character.",
+	            },
+	        ];
+
+	        let messages = [];
+	        validationCriteria.forEach((rule) => {
+	            if (!rule.regex.test(passwordInput)) {
+	                messages.push(rule.message);
+	            }
+	        });
+
+	        if (messages.length === 0) {
+	            helpText.style.color = "green";
+	            helpText.innerText = "Password looks good!";
+	        } else {
+	            helpText.style.color = "red";
+	            helpText.innerText = messages.join(" ");
+	        }
+	    });
+	</script>
 </head>
 <body>
     <div class="container">
@@ -153,10 +196,24 @@
                     <textarea id="address" name="address" placeholder="Enter address"></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="text" id="password" name="password" placeholder="Enter password" required>
-                </div>
+				<div class="form-group">
+				    <label for="password">Password</label>
+				    <input 
+				        type="password" 
+				        id="password" 
+				        name="password" 
+				        placeholder="Enter password" 
+				        required 
+				        minlength="8" 
+				        maxlength="20" 
+				        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$" 
+				        title="Password must be 8-20 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character."
+				    >
+				    <small id="password-help" style="color: gray; font-size: 12px;">
+				        Must be 8-20 characters and include at least one uppercase letter, one lowercase letter, one number, and one special character.
+				    </small>
+				</div>
+
 
                 <div class="form-group">
                     <label for="picture">Upload Picture</label>

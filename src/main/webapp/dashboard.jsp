@@ -214,6 +214,42 @@
 					    100% { transform: rotate(360deg); }
 					}
         }
+		.modal {
+		    display: none; /* Hidden by default */
+		    position: fixed;
+		    z-index: 1000;
+		    left: 0;
+		    top: 0;
+		    width: 100%;
+		    height: 100%;
+		    overflow: auto;
+		    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+		}
+
+		.modal-content {
+		    background-color: #fefefe;
+		    margin: 15% auto;
+		    padding: 20px;
+		    border: 1px solid #888;
+		    width: 80%;
+		    max-width: 500px;
+		    border-radius: 10px;
+		}
+
+		.close-btn {
+		    color: #aaa;
+		    float: right;
+		    font-size: 28px;
+		    font-weight: bold;
+		    cursor: pointer;
+		}
+
+		.close-btn:hover,
+		.close-btn:focus {
+		    color: black;
+		    text-decoration: none;
+		    cursor: pointer;
+		}
     </style>
     
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -242,6 +278,59 @@
 		
 		        // Call the function to load customer data when the page is ready
 		        fetchCustomerData();
+				// Modal Elements
+				   const modal = $('#user-info-modal');
+				   const closeModal = $('.close-btn');
+
+				   // Open modal on user-section click
+				   $('.user-section').on('click', function () {
+				       modal.show();
+				       $('.spinner-container').show();
+
+				       // Fetch user information
+				       $.ajax({
+				           url: '/api/customers/get', // Adjust this endpoint as necessary
+				           type: 'GET',
+				           success: function (customer) {
+				               // Populate modal fields
+				               $('#user-mobile').text(customer.mobile || 'N/A');
+				               $('#user-name').text(customer.name || 'N/A');
+				               $('#user-business-name').text(customer.bussinessName || 'N/A');
+				               $('#user-gst-no').text(customer.gstNo || 'N/A');
+				               $('#user-ac-no').text(customer.acNo || 'N/A');
+				               $('#user-ifsc').text(customer.ifsc || 'N/A');
+				               $('#user-bank-name').text(customer.bankName || 'N/A');
+				               $('#user-address').text(customer.address || 'N/A');
+				               if (customer.picture) {
+				                   const imgUrl = 'data:image/png;base64,' + customer.picture;
+				                   $('#user-picture').attr('src', imgUrl);
+				               } else {
+				                   $('#user-picture').attr('src', 'https://via.placeholder.com/150');
+				               }
+
+				               // Hide spinner and show modal
+				               $('.spinner-container').hide();
+				               
+				           },
+				           error: function (xhr, status, error) {
+				               console.error('Error fetching user data:', error);
+				               alert('Failed to load user information.');
+				               $('.spinner-container').hide();
+				           },
+				       });
+				   });
+
+				   // Close modal
+				   closeModal.on('click', function () {
+				       modal.hide();
+				   });
+
+				   // Close modal when clicking outside
+				   $(window).on('click', function (event) {
+				       if ($(event.target).is(modal)) {
+				           modal.hide();
+				       }
+				   });
 		    });
 		</script>
 </head>
@@ -249,6 +338,25 @@
 	<div class="spinner-container">
         <div class="spinner"></div>
 	</div>
+	<!-- User Info Modal -->
+	<div id="user-info-modal" class="modal">
+	    <div class="modal-content">
+	        <span class="close-btn">&times;</span>
+	        <h2>User Information</h2>
+	        <div class="user-info">
+	            <p><strong>Mobile:</strong> <span id="user-mobile"></span></p>
+	            <p><strong>Name:</strong> <span id="user-name"></span></p>
+	            <p><strong>Business Name:</strong> <span id="user-business-name"></span></p>
+	            <p><strong>GST No:</strong> <span id="user-gst-no"></span></p>
+	            <p><strong>Account No:</strong> <span id="user-ac-no"></span></p>
+	            <p><strong>IFSC Code:</strong> <span id="user-ifsc"></span></p>
+	            <p><strong>Bank Name:</strong> <span id="user-bank-name"></span></p>
+	            <p><strong>Address:</strong> <span id="user-address"></span></p>
+	            <img id="user-picture" src="https://via.placeholder.com/150" alt="User Picture" style="max-width: 100px;">
+	        </div>
+	    </div>
+	</div>
+
    <div class="dashboard-container">
         <!-- Sidebar -->
         <div class="sidebar">
@@ -266,7 +374,7 @@
 					<li><a href="payments.jsp">Payments</a></li>
 					<li><a href="quotation.jsp">Quotation Genrator</a></li>
 					<li><a href="invoices.jsp">Invoices</a></li>
-					<li><a href="payments.jsp">Incident/Support</a></li>
+					<li><a href="incident.jsp">Incident/Support</a></li>
                 </ul>
             </div>
             <div class="footer">

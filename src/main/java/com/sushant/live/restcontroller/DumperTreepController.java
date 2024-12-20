@@ -35,8 +35,10 @@ public class DumperTreepController {
 		treep.setSoilBrass(dto.getSoilBrass());
 		treep.setSoilRate(dto.getSoilRate());
 		treep.setTotalPayment(dto.getTotalPayment());
+		treep.setItem(dto.getItem());
 		treep.setCreateDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		treep.setOmobile(SessionManager.getInstance().getUsername());
+		System.out.println(treep.toString());
 	  return ResponseEntity.ok(service.addTreep(treep));
 	}
 	
