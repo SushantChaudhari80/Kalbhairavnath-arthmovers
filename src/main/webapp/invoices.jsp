@@ -229,7 +229,7 @@
 		                             '',                 // Pending Amount (placeholder)
 		                            '',                 // Total Due Amount (placeholder)
 		                            'N/A',              // Due Date (placeholder)
-		                            '<button class="btn btn-primary">View</button>' // Actions
+		                            '<button id="viewinvoice" class="btn btn-primary view-invoice">View</button>' //  '<button class="btn btn-primary view-invoice" data-customer="' + invoice + '">View</button>' // Actions
 		                        ];
 		                    }).catch(error => {
 		                        console.error(`Error fetching data for ${invoice}:`, error);
@@ -258,6 +258,13 @@
 		    }
 
 		    fetchInvoiceList();
+			$('#invoiceTable').on('click', '.view-invoice', function () {
+			        const customerName = $(this).data('customer');
+			        console.log(`Viewing invoice for customer: ${customerName}`);
+			        // Redirect to invoice model page
+			        //window.location.href = 'invoiceModel.jsp?customer=' + encodeURIComponent(customerName);
+					window.location.href = 'invoiceModel.jsp';
+			    });
 		});
 
 

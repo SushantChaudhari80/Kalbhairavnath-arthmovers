@@ -145,8 +145,8 @@
 				   // Append additional data that is not directly part of the form
 				   formData.append('selectedOwnerMobile', selectedOwnerMobile);
 				   formData.append('machineNumber', $('#Mnumber').text());
-				  
-				    const driverId = $('#driverList').text();  // Assuming 'driverList' is the ID of the dropdown
+				   //const driverName = $('#driverList option:selected').text();
+				    const driverId =  $('#driverList option:selected').text(); // Assuming 'driverList' is the ID of the dropdown
 				      if (driverId) {
 				          formData.append('driverId', driverId);  // Append driverId to FormData
 				      }

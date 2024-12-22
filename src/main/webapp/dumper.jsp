@@ -320,9 +320,9 @@
 				// Loop through only the visible rows
 				   table.rows({ filter: 'applied' }).every(function(rowIdx, tableLoop, rowLoop) {
 				       const data = this.data();
-				       const advance = parseFloat(data[5]) || 0; // Advance Payment is in the 6th column
-				       const totalPayment = parseFloat(data[8]) || 0; // Total Payment is in the 9th column
-					   const totalDisel = parseFloat(data[4]) || 0;
+				       const advance = parseFloat(data[6]) || 0; // Advance Payment is in the 6th column
+				       const totalPayment = parseFloat(data[9]) || 0; // Total Payment is in the 9th column
+					   const totalDisel = parseFloat(data[5]) || 0;
 
 				       sumAdvance += advance;
 				       sumTotalPayment += totalPayment;
