@@ -293,94 +293,103 @@
 	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 
 	<script>
-	    $(document).ready(function() {
-	        $('.spinner-container').show();
+		$(document).ready(function() {
+		    $('.spinner-container').show();
 
-	        // Initialize DataTable when the document is ready
-	        const table = $('#vehicleTable').DataTable({
-	            columns: [
-	                { title: "Treep ID" },
-	                { title: "Date" },
-					{ title: "Details"},
-	                { title: "Customer Name" },
-					{ title: "Vehicale Number"},
-	                { title: "Diesel(Liter)" },
-					{ title: "Advance Payment" },
-					{ title: "Total Soil (Brass)" },
-					{ title: "Soil Rate per Brass" },
-					{ title: "Total Payment" }
-	            ]
-	        });
-			
-			function calculateSums() {
-			    let sumAdvance = 0;
-			    let sumTotalPayment = 0;
-				let sumTotalDisel = 0;
+		    // Initialize DataTable when the document is ready
+		    const table = $('#vehicleTable').DataTable({
+		        columns: [
+		            { title: "Treep ID" },
+		            { title: "Date" },
+		            { title: "Details" },
+		            { title: "Customer Name" },
+		            { title: "Vehicle Number" },
+		            { title: "Diesel(Liter)" },
+		            { title: "Advance Payment" },
+		            { title: "Total Soil (Brass)" },
+		            { title: "Soil Rate per Brass" },
+		            { title: "Total Payment" }
+		        ]
+		    });
 
-				// Loop through only the visible rows
-				   table.rows({ filter: 'applied' }).every(function(rowIdx, tableLoop, rowLoop) {
-				       const data = this.data();
-				       const advance = parseFloat(data[6]) || 0; // Advance Payment is in the 6th column
-				       const totalPayment = parseFloat(data[9]) || 0; // Total Payment is in the 9th column
-					   const totalDisel = parseFloat(data[5]) || 0;
+		    function calculateSums() {
+		        let sumAdvance = 0;
+		        let sumTotalPayment = 0;
+		        let sumTotalDisel = 0;
 
-				       sumAdvance += advance;
-				       sumTotalPayment += totalPayment;
-					   sumTotalDisel += totalDisel;
-				   });
+		        // Loop through only the visible rows (filtered rows)
+		        table.rows({ filter: 'applied' }).every(function(rowIdx, tableLoop, rowLoop) {
+		            const data = this.data();
+		            const advance = parseFloat(data[6]) || 0; // Advance Payment is in the 6th column
+		            const totalPayment = parseFloat(data[9]) || 0; // Total Payment is in the 9th column
+		            const totalDisel = parseFloat(data[5]) || 0; // Diesel is in the 5th column
 
-			    // Update the placeholders in the DOM
-			    $('#sumAdvance').text(sumAdvance.toFixed(2));
-			    $('#sumTotalPayment').text(sumTotalPayment.toFixed(2));
-				$('#sumTotalDisel').text(sumTotalDisel.toFixed(2));
-				let due=sumTotalPayment-sumAdvance;
-				$('#duePayment').text(due.toFixed(2));
-			}
+		            sumAdvance += advance;
+		            sumTotalPayment += totalPayment;
+		            sumTotalDisel += totalDisel;
+		        });
 
-	        // Function to fetch vehicle data from server using AJAX
-	        function fetchVehiclesList() {
-	            $.ajax({
-	                url: '/api/treep/getAll', // URL for fetching vehicle data
-	                type: 'GET',
-	                success: function(vehicles) {
-	                    table.clear(); // Clear existing rows
-	                    console.log(vehicles);
+		        // Update the placeholders in the DOM
+		        $('#sumAdvance').text(sumAdvance.toFixed(2));
+		        $('#sumTotalPayment').text(sumTotalPayment.toFixed(2));
+		        $('#sumTotalDisel').text(sumTotalDisel.toFixed(2));
 
-	                    // Loop through each vehicle and add it to the DataTable
-	                    vehicles.forEach(function(vehicle) {
-	                        table.row.add([
-	                            vehicle.id || '',              // Ensure fallback value if undefined
-	                            vehicle.createDate || '', 
-								vehicle.item || '',  // Replace with the correct property name if different
-	                            vehicle.customerName || '',
-								vehicle.selectedVehicle || '',
-								vehicle.diesel || '',
-								vehicle.advance || '',
-								vehicle.soilBrass || '',
-								vehicle.soilRate || '',
-								vehicle.totalPayment || ''
-	                                    
-	                        ]);
-	                    });
+		        // Calculate due payment
+		        const due = sumTotalPayment - sumAdvance;
+		        $('#duePayment').text(due.toFixed(2));
+		    }
 
-	                    table.draw(false); // Draw the table once all rows are added
-	                    $('.spinner-container').hide(); // Hide the spinner
-						calculateSums(); 
-	                },
-	                error: function(xhr, status, error) {
-	                    console.error("Error fetching vehicle data:", error);
-	                    $('.spinner-container').hide(); // Hide the spinner on error as well
-	                }
-	            });
-	        }
+		    // Function to fetch vehicle data from server using AJAX
+		    function fetchVehiclesList() {
+		        $.ajax({
+		            url: '/api/treep/getAll', // URL for fetching vehicle data
+		            type: 'GET',
+		            success: function(vehicles) {
+		                table.clear(); // Clear existing rows
+		                console.log(vehicles);
 
-	        // Call the function to load vehicle data when the page is ready
-	        fetchVehiclesList();
-			$('#printbtn').on('click', function () {
-				calculateSums(); 
-				window.print();  
-			});
-	    });
+		                // Loop through each vehicle and add it to the DataTable
+		                vehicles.forEach(function(vehicle) {
+		                    table.row.add([
+		                        vehicle.id || '',              // Ensure fallback value if undefined
+		                        vehicle.createDate || '',
+		                        vehicle.item || '',  // Replace with the correct property name if different
+		                        vehicle.customerName || '',
+		                        vehicle.selectedVehicle || '',
+		                        vehicle.diesel || '',
+		                        vehicle.advance || '',
+		                        vehicle.soilBrass || '',
+		                        vehicle.soilRate || '',
+		                        vehicle.totalPayment || ''
+		                    ]);
+		                });
+
+		                table.draw(false); // Draw the table once all rows are added
+		                $('.spinner-container').hide(); // Hide the spinner
+		                calculateSums();
+		            },
+		            error: function(xhr, status, error) {
+		                console.error("Error fetching vehicle data:", error);
+		                $('.spinner-container').hide(); // Hide the spinner on error as well
+		            }
+		        });
+		    }
+
+		    // Call the function to load vehicle data when the page is ready
+		    fetchVehiclesList();
+
+		    // Update sums on filtering or searching
+		    table.on('search.dt', function() {
+		        calculateSums();
+		    });
+
+		    // Recalculate sums when clicking the print button
+		    $('#printbtn').on('click', function() {
+		        calculateSums();
+		        window.print();
+		    });
+		});
+
 	</script>
 </head>
 <body>

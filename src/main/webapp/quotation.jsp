@@ -213,14 +213,10 @@
 			
 			<label>Select Items</label>
 			    <div>
-			        <input type="checkbox" id="checkbox-soil" value="Soil">
-			        <label for="checkbox-soil">Soil</label>
-			        <input type="checkbox" id="checkbox-bricks" value="Bricks">
-			        <label for="checkbox-bricks">Bricks</label>
-			        <input type="checkbox" id="checkbox-crushsand" value="Crush Sand">
-			        <label for="checkbox-crushsand">Crush Sand</label>
-			        <input type="checkbox" id="checkbox-sand" value="Sand">
-			        <label for="checkbox-sand">Sand</label>
+			       <label for="checkbox-soil">Soil</label> <input type="checkbox" id="checkbox-soil" value="Soil">
+			       <label for="checkbox-bricks">Bricks</label> <input type="checkbox" id="checkbox-bricks" value="Bricks">
+			        <label for="checkbox-crushsand">Crush Sand</label><input type="checkbox" id="checkbox-crushsand" value="Crush Sand">
+			        <input type="checkbox" id="checkbox-sand" value="Sand"><label for="checkbox-sand">Sand</label>
 			    </div>
 
             <label for="soil-brass">Number of Brass/Treep Soil</label>

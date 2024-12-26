@@ -45,6 +45,146 @@
             color: #ecf0f1;
             margin-bottom: 20px;
         }
+		* {
+		           margin: 0;
+		           padding: 0;
+		           box-sizing: border-box;
+		       }
+
+		       body, html {
+		           font-family: 'Poppins', sans-serif;
+		           height: 100%;
+		           background-image: url('img/bk6.jpg');
+		       }
+
+		       .dashboard-container {
+		           display: flex;
+		           height: 100vh;
+		       }
+
+		       /* Sidebar */
+		       .sidebar {
+		           height: 100%;
+		           width: 250px;
+		           background-color: #2C3E50;
+		           color: white;
+		           display: flex;
+		           flex-direction: column;
+		           justify-content: space-between;
+		           padding: 20px;
+		           box-sizing: border-box;
+		           overflow-y: auto;
+		           transition: transform 0.3s ease;
+		       }
+
+		       .sidebar.hidden {
+		           transform: translateX(-100%);
+		       }
+
+		       .sidebar h2 {
+		           font-size: 24px;
+		           font-weight: 500;
+		           color: #ecf0f1;
+		           margin-bottom: 20px;
+		       }
+
+		       .nav-links {
+		           list-style: none;
+		       }
+
+		       .nav-links li {
+		           margin-bottom: 20px;
+		       }
+
+		       .nav-links li a {
+		           text-decoration: none;
+		           color: #bdc3c7;
+		           font-size: 16px;
+		           display: flex;
+		           align-items: center;
+		       }
+
+		       .nav-links li a:hover {
+		           color: #ecf0f1;
+		       }
+
+		       .footer {
+		           text-align: center;
+		           font-size: 14px;
+		           color: #bdc3c7;
+		       }
+
+		       /* Sidebar Toggle Button */
+		       .sidebar-toggle {
+		           position: absolute;
+		           top: 20px;
+		           left: 20px;
+		           background-color: #2980b9;
+		           color: white;
+		           border: none;
+		           padding: 10px 15px;
+		           border-radius: 4px;
+		           cursor: pointer;
+		           z-index: 1000;
+		       }
+
+		       .sidebar-toggle:hover {
+		           background-color: #3498db;
+		       }
+
+		       /* Main Content */
+		       .main-content {
+		           flex: 1;
+		           padding: 20px;
+		       }
+
+		       .main-content h1 {
+		           font-size: 28px;
+		           font-weight: 500;
+		           margin-bottom: 20px;
+		           color: white;
+		       }
+
+		       .overview {
+		           display: grid;
+		           grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		           gap: 20px;
+		       }
+
+		       .card {
+		           background-color: white;
+		           border-radius: 8px;
+		           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		           padding: 20px;
+		           text-align: center;
+		       }
+
+		       .card h3 {
+		           font-size: 22px;
+		           margin-bottom: 10px;
+		       }
+
+		       .card p {
+		           font-size: 18px;
+		           color: #7f8c8d;
+		       }
+
+		       /* Responsive Design */
+		       @media (max-width: 768px) {
+		           .dashboard-container {
+		               flex-direction: column;
+		           }
+
+		           .sidebar {
+		               position: absolute;
+		               z-index: 100;
+		               height: 100%;
+		           }
+
+		           .main-content {
+		               padding: 10px;
+		           }
+		       }
 
         .nav-links {
             list-style: none;
@@ -332,6 +472,10 @@
 				       }
 				   });
 		    });
+			function toggleSidebar() {
+			            const sidebar = document.getElementById('sidebar');
+			            sidebar.classList.toggle('hidden');
+			        }
 		</script>
 </head>
 <body>
@@ -358,29 +502,29 @@
 	</div>
 
    <div class="dashboard-container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div>
-                <h2>Transport</h2>
-                <ul class="nav-links">
-                    <li><a href="dashboard.jsp">Dashboard</a></li>
-                    <li><a href="order.jsp">Orders</a></li>
-                    <li><a href="vehicales.jsp">Vehicles</a></li>
-                    <li><a href="drivers.jsp">Drivers</a></li>
-					<li><a href="reports.jsp">Reports</a></li>
-					<li><a href="orderReport.jsp">Exavetor Report</a></li>
-					<li><a href="dumper.jsp">Loading Vehicale Report</a></li>
-					<li><a href="dieselReport.jsp">Diesel Report</a></li>
-					<li><a href="payments.jsp">Payments</a></li>
-					<li><a href="quotation.jsp">Quotation Genrator</a></li>
-					<li><a href="invoices.jsp">Invoices</a></li>
-					<li><a href="incident.jsp">Incident/Support</a></li>
-                </ul>
-            </div>
-            <div class="footer">
-                <p>&copy; Tanvi Enterprices</p>
-            </div>
-        </div>
+       <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+	   <div class="sidebar" id="sidebar">
+	              <div>
+	                  <h2>Transport</h2>
+	                  <ul class="nav-links">
+	                      <li><a href="dashboard.jsp">Dashboard</a></li>
+	                      <li><a href="order.jsp">Orders</a></li>
+	                      <li><a href="vehicales.jsp">Vehicles</a></li>
+	                      <li><a href="drivers.jsp">Drivers</a></li>
+	                      <li><a href="reports.jsp">Reports</a></li>
+	                      <li><a href="orderReport.jsp">Excavator Report</a></li>
+	                      <li><a href="dumper.jsp">Loading Vehicle Report</a></li>
+	                      <li><a href="dieselReport.jsp">Diesel Report</a></li>
+	                      <li><a href="payments.jsp">Payments</a></li>
+	                      <li><a href="quotation.jsp">Quotation Generator</a></li>
+	                      <li><a href="invoices.jsp">Invoices</a></li>
+	                      <li><a href="incident.jsp">Incident/Support</a></li>
+	                  </ul>
+	              </div>
+	              <div class="footer">
+	                  <p>&copy; Tanvi Enterprises</p>
+	              </div>
+	    </div>
 
         <!-- Main Content -->
         <div class="main-content">
