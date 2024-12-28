@@ -24,6 +24,57 @@
 		        min-height: 100vh;
 		        padding: 20px;
 		    }
+		
+
+			       .receipt {
+			           width: 500px;
+			           background-color: #fff;
+			           padding: 20px;
+			           border: 1px solid #ccc;
+			           border-radius: 5px;
+			           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			       }
+
+			       .header {
+			           text-align: center;
+			           margin-bottom: 15px;
+			       }
+
+			       .header h1 {
+			           font-size: 18px;
+			           margin: 0;
+			       }
+
+			       .header p {
+			           margin: 5px 0;
+			           font-size: 12px;
+			       }
+
+			       .divider {
+			           border-bottom: 1px dashed #000;
+			           margin: 10px 0;
+			       }
+
+			       .details {
+			           font-size: 14px;
+			       }
+
+			       .details div {
+			           margin-bottom: 8px;
+			       }
+
+			       .footer {
+			           display: flex;
+			           justify-content: space-between;
+			           font-size: 12px;
+			           margin-top: 20px;
+			       }
+
+			       .footer div {
+			           border-top: 1px solid #000;
+			           text-align: center;
+			           padding-top: 5px;
+			       }
 
 		    /* Container Styles */
 		    .quotation-container {
@@ -95,13 +146,16 @@
 		    }
 
 		    .invoice-container .details {
-		        margin: 10px 0;
+		        margin: 20px 0;
 		        font-size: 14px;
 		    }
 
 		    .invoice-container .details span {
 		        display: inline-block;
 		        margin-right: 15px;
+				margin-left: 20px; /* Adds space between label and value */
+				flex: 1; /* Ensures alignment across rows */
+				text-align: right;
 		    }
 
 		    .invoice-container .details .field {
@@ -204,20 +258,15 @@
 										        <!-- Driver options will be dynamically appended -->
 					</select>
 			 </div>
-
-            <label for="diesel">Diesel (Liters)</label>
-            <input type="number" id="diesel" placeholder="Enter diesel in liters">
-
-            <label for="advance">Advance Payment (₹)</label>
-            <input type="number" id="advance" placeholder="Enter advance amount">
-			
-			<label>Select Items</label>
-			    <div>
-			       <label for="checkbox-soil">Soil</label> <input type="checkbox" id="checkbox-soil" value="Soil">
-			       <label for="checkbox-bricks">Bricks</label> <input type="checkbox" id="checkbox-bricks" value="Bricks">
-			        <label for="checkbox-crushsand">Crush Sand</label><input type="checkbox" id="checkbox-crushsand" value="Crush Sand">
-			        <input type="checkbox" id="checkbox-sand" value="Sand"><label for="checkbox-sand">Sand</label>
-			    </div>
+			 
+			<label for="material">Select Material:</label>
+			<select id="material" name="material">
+				<option >Select</option>
+			    <option value="Soil">Soil</option>
+			    <option value="Bricks">Bricks</option>
+			    <option value="Crush Sand">Crush Sand</option>
+			    <option value="Sand">Sand</option>
+			</select>
 
             <label for="soil-brass">Number of Brass/Treep Soil</label>
             <input type="number" id="soil-brass" placeholder="Enter number of brass">
@@ -229,51 +278,34 @@
         <div class="quotation-summary" id="quotation-summary">
             <h2>Receipt</h2>
             
-			<div class="invoice-container">
-			        <div class="header"><span id="customerName">Loading....</span></div>
-			        <div class="sub-header">
-			            <p><span id="o-name">Loading....</span>| GST No:<span id="gst-number">Loading....</span></p>
-			            <p><span id="address">Loading....</span> | Sand, Bricks, Cement, Steel, Crush Sand And all building Materials</p>
-			        </div>
-			        <div class="details">
-			            <span class="field">Name:</span><span id="summary-customer-name"> </span>
-			            <span class="field">Address:</span><span> Loading</span>
-			            <span class="field">Date:</span><span id="summary-date">Loading</span>
-			        </div>
-			        <table>
-			            <thead>
-			                <tr>
-			                    <th>No</th>
-			                    <th>Details</th>
-								<th>Vehicle Number</th>
-								<th>Disel</th>
-			                    <th>Pices/Brass</th>
-			                    <th>Rate</th>
-			                    <th>Amount</th>
-			                </tr>
-			            </thead>
-			            <tbody>
-			                <tr>
-			                    <td>1</td>
-			                    <td id="summary-details"></td>
-								<td id="summary-vehicle-number"></td>
-								<td id="summary-diesel"></td>
-			                    <td id="summary-soil-brass">N/A</td>
-			                    <td id="summary-soil-rate">N/A</td>
-			                    <td id="summary-total-payment">N/A/-</td>
-			                </tr>
-			            </tbody>
-			        </table>
-			        <div class="details">
-			            <span class="field">Total:</span><span id="summary-total-payment1">N/A/-</span>
-			            <span class="field">Paid:</span><span id="summary-advance"></span>
-			            <span><span class="field">Due:</span></span>
-			        </div>
-			        <div class="footer">
-			            <div>Customer Sign</div>
-			            <div id="signatureId" class="signature">Loading</div>
-			        </div>
-			    </div>
+			<div class="receipt">
+			       <div class="header">
+			           <div>
+						<img src="img/logo.png" alt="Logo" style="max-width: 70%; height: auto;"/>
+					</div>
+			           <p id="summary-oname">Loading</p>
+			           <p id="address"></p>
+			           <p>Sand, Bricks, Crush Sand, Cement, Steel, Soil</p>
+			           <p>And all building Material</p>
+			       </div>
+			       <div class="divider"></div>
+			       <div class="details">
+						<div style="display: flex; justify-content: space-between; align-items: center;">
+						    <span>Bill No: <span id="">2102</span></span>
+						    <span>Date: <span id="summary-date">____________</span></span>
+						</div>
+			           <div>Customer Name   : <span id="summary-customer-name">____________</span></div>
+			           <div>Owner Name      : <span id="summary-oname-recept">____________</span></div>
+			           <div>Vehicle Number  : <span id="summary-vehicle-number">____________</span></div>
+			           <div>Material        : <span id="summary-soil">____________</span></div>
+					   <div>Qty(Brass/Trip) : <span id="summary-soil-brass">____________</span></div>
+					   <div>Rate            : <span id="summary-soil-rate"></span></div>
+			       </div>
+			       <div class="footer">
+			           <div>Recipiant sign</div>
+			           <div id="signatureId"></div>
+			       </div>
+			   </div>
 			
         </div>
 
@@ -297,7 +329,7 @@
 
 			    return dd+'/'+mm+'/'+yyyy;
 			}
-		    // Fetch and populate the vehicle dropdown
+		  
 		    $.ajax({
 		        url: '/api/vehicles/getAll/loading',
 		        type: 'GET',
@@ -318,10 +350,9 @@
 				                url: '/api/customers/get',  // URL for fetching the customer data
 				                type: 'GET',
 				                success: function(customer) {
-				                    // Update the UI with the customer data
-				                    $('#customerName').text(customer.bussinessName);
-									$('#o-name').text(customer.name);
-									$('#gst-number').text(customer.gstNo);//address
+				                   console.log(customer);
+									$('#summary-oname').text(customer.name+','+customer.mobile);
+									$('#summary-oname-recept').text(customer.name);
 									$('#address').text(customer.address);//signatureId
 									$('#signatureId').text('For '+customer.bussinessName);
 									$('.spinner-container').hide();
@@ -339,61 +370,43 @@
 		        const selectedVehicle = $(this).find('option:selected').text();
 		        document.getElementById('summary-vehicle-number').innerText = selectedVehicle || '-';
 		    });
+			
+			$('#material').on('change', function () {
+				        const item = $(this).find('option:selected').text();
+				        document.getElementById('summary-soil').innerText = item || '-';
+			});
 
 		    // Update summary dynamically
 		    document.getElementById('quotation-form').addEventListener('input', function () {
 		        const customerName = document.getElementById('customer-name').value;
-		        const diesel = document.getElementById('diesel').value;
-		        const advance = document.getElementById('advance').value;
 		        const soilBrass = document.getElementById('soil-brass').value;
 		        const soilRate = document.getElementById('soil-rate').value;
-                var selectedItems='';
-				if (document.getElementById('checkbox-soil').checked) selectedItems='Soil';
-				if (document.getElementById('checkbox-bricks').checked) selectedItems='Bricks';
-				if (document.getElementById('checkbox-crushsand').checked) selectedItems='Crush Sand';
-				if (document.getElementById('checkbox-sand').checked) selectedItems='Sand';
+              
 
-		        // Calculate total payment
-		        const totalPayment = soilBrass * soilRate;
-
-		        // Update summary
-				//$('#customer-name').text(customer.name);
 		        document.getElementById('summary-customer-name').innerText = customerName || '-';
-		        document.getElementById('summary-diesel').innerText = diesel || '-';
-		        document.getElementById('summary-advance').innerText = advance || '-';
+		      
 		        document.getElementById('summary-soil-brass').innerText = soilBrass || '-';
 		        document.getElementById('summary-soil-rate').innerText = soilRate || '-';
-		        document.getElementById('summary-total-payment').innerText = totalPayment || '-';
-				document.getElementById('summary-total-payment1').innerText = totalPayment || '-';//summary-details
-				document.getElementById('summary-details').innerText = selectedItems || '-'
-		    });
+		        
+				});
 
 		    // Print functionality
 		    document.getElementById('print-btn').addEventListener('click', function () {
 			         	const customerName = document.getElementById('customer-name').value;
-					        const diesel = document.getElementById('diesel').value;
-					        const advance = document.getElementById('advance').value;
 					        const soilBrass = document.getElementById('soil-brass').value;
 					        const soilRate = document.getElementById('soil-rate').value;
 
 					        // Calculate total payment
-					        const totalPayment = soilBrass * soilRate;
-							const selectedVehicleText = document.getElementById('vehicaleList').options[document.getElementById('vehicaleList').selectedIndex].text;
-							var selectedItems='';
-										if (document.getElementById('checkbox-soil').checked) selectedItems='Soil';
-										if (document.getElementById('checkbox-bricks').checked) selectedItems='Bricks';
-										if (document.getElementById('checkbox-crushsand').checked) selectedItems='Crush Sand';
-										if (document.getElementById('checkbox-sand').checked) selectedItems='Sand';
+					        const selectedVehicleText = document.getElementById('vehicaleList').options[document.getElementById('vehicaleList').selectedIndex].text;
+							var selectedItems=document.getElementById('material').options[document.getElementById('material').selectedIndex].text;
 
 				               const formData = {
 				                   selectedVehicle: selectedVehicleText,
 				                   customerName:customerName,
-				                   diesel: diesel,
-				                   advance: advance,
 				                   soilBrass: soilBrass,
 				                   soilRate: soilRate,
-				                   totalPayment:totalPayment,
-								   item:selectedItems
+				                   item:selectedItems,
+								   isBilled:false
 				               };
                               console.log(formData);
 				               $.ajax({
@@ -451,7 +464,6 @@
 						                       console.error('Error:', error);
 						                   }
 						               });
-				       // window.print();
 				    });
 		});
 

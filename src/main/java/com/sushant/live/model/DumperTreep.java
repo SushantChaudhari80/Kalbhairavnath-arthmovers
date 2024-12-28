@@ -31,6 +31,18 @@ public class DumperTreep {
 	private String omobile;
 	
 	private String item;
+	
+	private String isBilled;
+	
+	
+
+	public String getIsBilled() {
+		return isBilled;
+	}
+
+	public void setIsBilled(String isBilled) {
+		this.isBilled = isBilled;
+	}
 
 	public int getId() {
 		return id;
@@ -132,7 +144,8 @@ public class DumperTreep {
 	}
 
 	public DumperTreep(int id, String selectedVehicle, String customerName, String diesel, String advance,
-			String soilBrass, String soilRate, String totalPayment, String createDate, String omobile, String item) {
+			String soilBrass, String soilRate, String totalPayment, String createDate, String omobile, String item,
+			String isBilled) {
 		super();
 		this.id = id;
 		this.selectedVehicle = selectedVehicle;
@@ -145,8 +158,7 @@ public class DumperTreep {
 		this.createDate = createDate;
 		this.omobile = omobile;
 		this.item = item;
+		this.isBilled = isBilled;
 	}
-	
-	
 
 }

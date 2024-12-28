@@ -22,4 +22,8 @@ public class JobManagerControllar {
 	public String addReading() {
 		return "captureReading";
 	}
+	@GetMapping("/login")
+	public String login() {
+		return "loginnew";
+	}
 }

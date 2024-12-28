@@ -291,14 +291,19 @@
 
 	<!-- Include DataTables JavaScript -->
 	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-
+	
 	<script>
-		$(document).ready(function() {
+		$(document).ready(function () {
 		    $('.spinner-container').show();
 
 		    // Initialize DataTable when the document is ready
 		    const table = $('#vehicleTable').DataTable({
 		        columns: [
+		            {
+		                title: "<input type='checkbox' id='selectAll'>",
+		                orderable: false,
+		                className: 'select-checkbox',
+		            },
 		            { title: "Treep ID" },
 		            { title: "Date" },
 		            { title: "Details" },
@@ -309,51 +314,55 @@
 		            { title: "Total Soil (Brass)" },
 		            { title: "Soil Rate per Brass" },
 		            { title: "Total Payment" }
-		        ]
+		        ],
+		        order: [[1, 'asc']], // Order by Treep ID by default
 		    });
+
+		    let selectedRows = [];
 
 		    function calculateSums() {
 		        let sumAdvance = 0;
 		        let sumTotalPayment = 0;
-		        let sumTotalDisel = 0;
+		        let sumTotalDiesel = 0;
 
 		        // Loop through only the visible rows (filtered rows)
-		        table.rows({ filter: 'applied' }).every(function(rowIdx, tableLoop, rowLoop) {
+		        table.rows({ filter: 'applied' }).every(function (rowIdx, tableLoop, rowLoop) {
 		            const data = this.data();
-		            const advance = parseFloat(data[6]) || 0; // Advance Payment is in the 6th column
-		            const totalPayment = parseFloat(data[9]) || 0; // Total Payment is in the 9th column
-		            const totalDisel = parseFloat(data[5]) || 0; // Diesel is in the 5th column
+		            const advance = parseFloat(data[7]) || 0; // Advance Payment is in the 7th column
+		            const totalPayment = parseFloat(data[10]) || 0; // Total Payment is in the 10th column
+		            const totalDiesel = parseFloat(data[6]) || 0; // Diesel is in the 6th column
 
 		            sumAdvance += advance;
 		            sumTotalPayment += totalPayment;
-		            sumTotalDisel += totalDisel;
+		            sumTotalDiesel += totalDiesel;
 		        });
 
 		        // Update the placeholders in the DOM
 		        $('#sumAdvance').text(sumAdvance.toFixed(2));
 		        $('#sumTotalPayment').text(sumTotalPayment.toFixed(2));
-		        $('#sumTotalDisel').text(sumTotalDisel.toFixed(2));
+		        $('#sumTotalDiesel').text(sumTotalDiesel.toFixed(2));
 
 		        // Calculate due payment
 		        const due = sumTotalPayment - sumAdvance;
 		        $('#duePayment').text(due.toFixed(2));
 		    }
 
-		    // Function to fetch vehicle data from server using AJAX
+		    // Function to fetch vehicle data from the server using AJAX
 		    function fetchVehiclesList() {
 		        $.ajax({
 		            url: '/api/treep/getAll', // URL for fetching vehicle data
 		            type: 'GET',
-		            success: function(vehicles) {
+		            success: function (vehicles) {
 		                table.clear(); // Clear existing rows
 		                console.log(vehicles);
 
 		                // Loop through each vehicle and add it to the DataTable
-		                vehicles.forEach(function(vehicle) {
+		                vehicles.forEach(function (vehicle) {
 		                    table.row.add([
-		                        vehicle.id || '',              // Ensure fallback value if undefined
+		                        `<input type="checkbox" class="row-checkbox" data-id="${vehicle.id || ''}">`,
+		                        vehicle.id || '',
 		                        vehicle.createDate || '',
-		                        vehicle.item || '',  // Replace with the correct property name if different
+		                        vehicle.item || '',
 		                        vehicle.customerName || '',
 		                        vehicle.selectedVehicle || '',
 		                        vehicle.diesel || '',
@@ -368,26 +377,147 @@
 		                $('.spinner-container').hide(); // Hide the spinner
 		                calculateSums();
 		            },
-		            error: function(xhr, status, error) {
+		            error: function (xhr, status, error) {
 		                console.error("Error fetching vehicle data:", error);
 		                $('.spinner-container').hide(); // Hide the spinner on error as well
 		            }
 		        });
 		    }
 
+		    // Update sums on filtering or searching
+		    table.on('search.dt', function () {
+		        calculateSums();
+		    });
+
+			$('#printbtn').on('click', function() {
+				        calculateSums();
+				        window.print();
+				});
+		    // Track checkbox selections
+		    $('#vehicleTable tbody').on('change', '.row-checkbox', function () {
+		        const id = $(this).data('id');
+		        if (this.checked) {
+		            selectedRows.push(id);
+		        } else {
+		            selectedRows = selectedRows.filter(rowId => rowId !== id);
+		        }
+
+		        // Enable/Disable the print button
+		        if (selectedRows.length > 0) {
+		            $('#printInvoiceBtn').prop('disabled', false);
+		        } else {
+		            $('#printInvoiceBtn').prop('disabled', true);
+		        }
+		    });
+
+		    // Select/Deselect all rows
+		    $('#selectAll').on('change', function () {
+		        const isChecked = this.checked;
+		        $('.row-checkbox').prop('checked', isChecked).trigger('change');
+		    });
+
+		    // Generate PDF for selected rows
+			$('#printInvoiceBtn').on('click', function () {
+			    // Gather selected rows by checking which checkboxes are checked
+			    const selectedRows = [];
+			    $('#vehicleTable tbody .row-checkbox:checked').each(function () {
+			        const rowIndex = $(this).closest('tr').index();
+			        const rowData = table.row(rowIndex).data(); // Fetch data for the row
+
+			        if (rowData) {
+			            selectedRows.push(rowData);
+			        }
+			    });
+
+			    if (selectedRows.length === 0) {
+			        alert('No rows selected for the invoice!');
+			        return;
+			    }
+
+			    console.log("Selected Rows:", selectedRows); // Debugging: Log selected rows
+
+			    // Generate the print content
+			    let printContent = `
+			        <html>
+			        <head>
+			            <title>Invoice</title>
+			            <style>
+			                body { font-family: Arial, sans-serif; margin: 20px; }
+			                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+			                table, th, td { border: 1px solid black; }
+			                th, td { padding: 10px; text-align: left; }
+			            </style>
+			        </head>
+			        <body>
+			            <h2>Invoice</h2>
+			            <table>
+			                <thead>
+			                    <tr>
+			                        <th>Treep ID</th>
+			                        <th>Date</th>
+			                        <th>Details</th>
+			                        <th>Customer Name</th>
+			                        <th>Vehicle Number</th>
+			                        <th>Diesel (Liter)</th>
+			                        <th>Advance Payment</th>
+			                        <th>Total Soil (Brass)</th>
+			                        <th>Soil Rate per Brass</th>
+			                        <th>Total Payment</th>
+			                    </tr>
+			                </thead>
+			                <tbody>
+			    `;
+
+			  
+				selectedRows.forEach(row => {
+				    printContent += "<tr>";
+
+				    if (Array.isArray(row)) {
+				        // For array-based rows
+				        row.forEach((value, index) => {
+				            if (index === 0) return; // Skip checkbox column
+
+				            let displayValue = value || "0"; // Default to "0" if value is empty
+				            if (index === 5 && value === "Select a Vehicle") {
+				                displayValue = "N/A"; // Handle special case for vehicle selection
+				            }
+
+				            printContent += "<td>" + displayValue + "</td>";
+				        });
+				    } else {
+				        // For object-based rows
+				        const keys = ["treepID", "date", "details", "customerName", "vehicleNumber", "diesel", "advancePayment", "totalSoil", "soilRate", "totalPayment"];
+				        keys.forEach(key => {
+				            let value = row[key] || "0"; // Default to "0" if value is empty
+				            if (key === "vehicleNumber" && value === "Select a Vehicle") {
+				                value = "N/A"; // Handle special case for vehicle selection
+				            }
+
+				            printContent += "<td>" + value + "</td>";
+				        });
+				    }
+
+				    printContent += "</tr>";
+				});
+
+
+			    printContent += `
+			                </tbody>
+			            </table>
+			        </body>
+			        </html>
+			    `;
+
+			    // Open the content in a new window and print
+			    const printWindow = window.open('', '_blank');
+			    printWindow.document.write(printContent);
+			    printWindow.document.close();
+			    printWindow.print();
+			});
+
+
 		    // Call the function to load vehicle data when the page is ready
 		    fetchVehiclesList();
-
-		    // Update sums on filtering or searching
-		    table.on('search.dt', function() {
-		        calculateSums();
-		    });
-
-		    // Recalculate sums when clicking the print button
-		    $('#printbtn').on('click', function() {
-		        calculateSums();
-		        window.print();
-		    });
 		});
 
 	</script>
@@ -400,7 +530,10 @@
         <!-- Page Header -->
         <div class="page-header">
             <h1>Treep Report</h1>
-            <a id="printbtn" class="btn">Print</a>
+			<div>
+	            <a id="printbtn" class="btn">Print</a>
+				<a id="printInvoiceBtn" class="btn">Generate Invoice</a>
+			</div>
         </div>
 		  <div id="summary">
 			   <p><strong>Sum of Total Payment: </strong><span id="sumTotalPayment">0</span></p>
@@ -412,6 +545,7 @@
 		<table id="vehicleTable" class="display">
 		    <thead>
 		        <tr>
+					<th></th>
 					<th>Treep ID</th>
 					<th>Date</th>
 					<th>Details</th>
@@ -419,7 +553,7 @@
 		            <th>Vehicle Number</th>
 		            <th>Diesel (Liters)</th>
 					<th>Advance Payment</th>
-		            <th>Total Soil (Brass)</th>
+		            <th>Total Soil (Brass/qty)</th>
 					<th>Soil Rate per Brass</th>
 					<th>Total Payment</th>
 		        </tr>
