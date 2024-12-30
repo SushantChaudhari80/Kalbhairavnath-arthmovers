@@ -291,7 +291,7 @@
 
 	<!-- Include DataTables JavaScript -->
 	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-	
+	<jsp:include page="utility.jsp" />
 	<script>
 		$(document).ready(function () {
 		    $('.spinner-container').show();
@@ -415,104 +415,324 @@
 		        const isChecked = this.checked;
 		        $('.row-checkbox').prop('checked', isChecked).trigger('change');
 		    });
+			
+			function getFormattedDate() {
+						    const today = new Date();
+						    const dd = String(today.getDate()).padStart(2, '0'); // Get day and add leading zero if needed
+						    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based, add 1 and leading zero
+						    const yyyy = today.getFullYear(); // Get full year
+
+						    return dd+'/'+mm+'/'+yyyy;
+						}
 
 		    // Generate PDF for selected rows
 			$('#printInvoiceBtn').on('click', function () {
-			    // Gather selected rows by checking which checkboxes are checked
-			    const selectedRows = [];
-			    $('#vehicleTable tbody .row-checkbox:checked').each(function () {
-			        const rowIndex = $(this).closest('tr').index();
-			        const rowData = table.row(rowIndex).data(); // Fetch data for the row
+				  
+				$.ajax({
+								                url: '/api/customers/get',  // URL for fetching the customer data
+								                type: 'GET',
+								                success: function(customer) {
+								                   console.log(customer);
+												    const mobile=customer.mobile;
+												 	const ownerName=customer.name;
+													const bussinessName=customer.bussinessName;
+													const gstNo=customer.gstNo;
+													const acNo=customer.acNo;
+													const ifsc=customer.ifsc;
+													const bankName=customer.bankName;
+													const address=customer.address;
+													
+													
+													const selectedRows = [];
+																    $('#vehicleTable tbody .row-checkbox:checked').each(function () {
+																        const rowIndex = $(this).closest('tr').index();
+																        const rowData = table.row(rowIndex).data(); // Fetch data for the row
 
-			        if (rowData) {
-			            selectedRows.push(rowData);
-			        }
-			    });
+																        if (rowData) {
+																            selectedRows.push(rowData);
+																        }
+																    });
 
-			    if (selectedRows.length === 0) {
-			        alert('No rows selected for the invoice!');
-			        return;
-			    }
+																    if (selectedRows.length === 0) {
+																        alert('No rows selected for the invoice!');
+																        return;
+																    }
 
-			    console.log("Selected Rows:", selectedRows); // Debugging: Log selected rows
+																    console.log("Selected Rows:", selectedRows); // Debugging: Log selected rows
 
-			    // Generate the print content
-			    let printContent = `
-			        <html>
-			        <head>
-			            <title>Invoice</title>
-			            <style>
-			                body { font-family: Arial, sans-serif; margin: 20px; }
-			                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-			                table, th, td { border: 1px solid black; }
-			                th, td { padding: 10px; text-align: left; }
-			            </style>
-			        </head>
-			        <body>
-			            <h2>Invoice</h2>
-			            <table>
-			                <thead>
-			                    <tr>
-			                        <th>Treep ID</th>
-			                        <th>Date</th>
-			                        <th>Details</th>
-			                        <th>Customer Name</th>
-			                        <th>Vehicle Number</th>
-			                        <th>Diesel (Liter)</th>
-			                        <th>Advance Payment</th>
-			                        <th>Total Soil (Brass)</th>
-			                        <th>Soil Rate per Brass</th>
-			                        <th>Total Payment</th>
-			                    </tr>
-			                </thead>
-			                <tbody>
-			    `;
+																    // Generate the print content
+																    let printContent = `
+																	<!DOCTYPE html>
+																	<html lang="en">
+																	<head>
+																	    <meta charset="UTF-8">
+																	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+																	    <title>Tax Invoice</title>
+																	    <style>
+																	        body {
+																	            font-family: Arial, sans-serif;
+																	            margin: 0;
+																	            padding: 0;
+																	            background-color: #f9f9f9;
+																	        }
+																	        .invoice-container {
+																	            width: 90%;
+																	            margin: 20px auto;
+																	            background: #fff;
+																	            border: 1px solid #000;
+																	            padding: 20px;
+																	            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+																	        }
+																	        .invoice-header {
+																	            text-align: center;
+																	            margin-bottom: 20px;
+																	        }
+																	        .invoice-header h1 {
+																	            margin: 0;
+																	            font-size: 24px;
+																	        }
+																	        .invoice-header p {
+																	            margin: 5px 0;
+																	        }
+																	        h2 {
+																	            text-align: center;
+																	            margin: 20px 0;
+																	            font-size: 18px;
+																	            text-decoration: underline;
+																	        }
+																	        .details-table, .items-table, .summary-table {
+																	            width: 100%;
+																	            border-collapse: collapse;
+																	            margin-bottom: 20px;
+																	        }
+																	        .details-table th, .details-table td, .items-table th, .items-table td, .summary-table th, .summary-table td {
+																	            border: 1px solid #000;
+																	            padding: 8px;
+																	            text-align: left;
+																	        }
+																	        .items-table th {
+																	            background-color: #f0f0f0;
+																	        }
+																	        .section {
+																	            margin-bottom: 20px;
+																	        }
+																	        .bank-details {
+																	            margin-top: 20px;
+																	            border: 1px solid #000;
+																	            padding: 10px;
+																	        }
+																	        .bank-details p {
+																	            margin: 5px 0;
+																	        }
+																	        .footer {
+																	            text-align: center;
+																	            margin-top: 20px;
+																	            font-size: 14px;
+																	        }
+																	    </style>
+																	</head>
+																	<body>
+																	    <div class="invoice-container">
+																	        <div class="invoice-header">
+																	            <h1>`;
+																					printContent += bussinessName+"</h1>";
+																	         printContent += "<p>"+address+"</p>";
+																	           printContent +=` <h2>TAX INVOICE</h2>
+																	        </div>
 
-			  
-				selectedRows.forEach(row => {
-				    printContent += "<tr>";
+																	        <div class="section">
+																	            <table class="details-table">
+																	                <tr>
+																	                    <th>Invoice No:</th>`;
+																						
+																	                     printContent +="<td>"+ownerName+"</td>"+
+																	                    "<th>GSTIN:</th>"+
+																	                    "<td>"+gstNo+"</td>";
+																	               printContent +=`  </tr>
+																	                <tr>
+																	                    <th>Invoice Date:</th>
+																	                    <td>`;
+																							 printContent +=getFormattedDate(); printContent +=`</td>
+																	                    <th>Reverse Charge (Yes/No):</th>
+																	                    <td>No</td>
+																	                </tr>
+																	                <tr>
+																	                    <th>Place of Supply of Services:</th>
+																	                    <td>Maharashtra</td>
+																	                    <th>Code:</th>
+																	                    <td></td>
+																	                </tr>
+																	            </table>
+																	        </div>
 
-				    if (Array.isArray(row)) {
-				        // For array-based rows
-				        row.forEach((value, index) => {
-				            if (index === 0) return; // Skip checkbox column
+																	        <div class="section">
+																	            <table class="details-table">
+																	                <tr>
+																	                    <th colspan="2">Details of Receiver/Billed to</th>
+																	                    <th colspan="2">Details of Receiver/Billed to</th>
+																	                </tr>
+																	                <tr>
+																	                    <th>Name:</th>
+																	                    <td>`;printContent +=ownerName; printContent +=`</td>
+																	                    <th>Shipping Address:</th>
+																	                    <td></td>
+																	                </tr>
+																	                <tr>
+																	                    <th>Address:</th>
+																	                    <td></td>
+																	                    <th>Date of Supply of Services:</th>
+																	                    <td>01.10.2024 to 30.10.2024</td>
+																	                </tr>
+																	                <tr>
+																	                    <th>GSTIN:</th>
+																	                    <td></td>
+																	                    <th>Code:</th>
+																	                    <td>27</td>
+																	                </tr>
+																	            </table>
+																	        </div>
 
-				            let displayValue = value || "0"; // Default to "0" if value is empty
-				            if (index === 5 && value === "Select a Vehicle") {
-				                displayValue = "N/A"; // Handle special case for vehicle selection
-				            }
+																	        <div class="section">
+																	            <table class="items-table">
+																	                <thead>
+																						<tr>
+																									                        <th>Treep ID</th>
+																									                        <th>Date</th>
+																									                        <th>Details</th>
+																									                        <th>Customer Name</th>
+																									                        <th>Vehicle Number</th>
+																									                        <th>Diesel (Liter)</th>
+																									                        <th>Advance Payment</th>
+																									                        <th>Total Soil (Brass)</th>
+																									                        <th>Soil Rate per Brass</th>
+																									                        <th>Total Payment</th>
+																							</tr>
+																	                </thead>
+																	                <tbody>
+																	                   
+																    `;
 
-				            printContent += "<td>" + displayValue + "</td>";
-				        });
-				    } else {
-				        // For object-based rows
-				        const keys = ["treepID", "date", "details", "customerName", "vehicleNumber", "diesel", "advancePayment", "totalSoil", "soilRate", "totalPayment"];
-				        keys.forEach(key => {
-				            let value = row[key] || "0"; // Default to "0" if value is empty
-				            if (key === "vehicleNumber" && value === "Select a Vehicle") {
-				                value = "N/A"; // Handle special case for vehicle selection
-				            }
+																  
+																	let totalPaymentSum = 0; // Variable to store the sum of totalPayment
 
-				            printContent += "<td>" + value + "</td>";
-				        });
-				    }
+																	selectedRows.forEach(row => {
+																	    printContent += "<tr>";
 
-				    printContent += "</tr>";
-				});
+																	    row.forEach((value, index) => {
+																	        if (index === 0) return; // Skip checkbox column
+
+																	        let displayValue = value || "0"; // Default to "0" if value is empty
+																			
+																			if (index === 1){
+																				$.ajax({
+																					  url: '/api/treep/updateTreep/'+value,// URL for fetching vehicle data
+																					  type: 'GET',
+																					  success: function (msg) {
+																					 
+																					},
+																					error: function (xhr, status, error) {
+																							console.error("Error fetching vehicle data:", error);
+																							$('.spinner-container').hide(); // Hide the spinner on error as well
+																						}
+																					});
+																		   }
+
+																	        if (index === 5 && value === "Select a Vehicle") {
+																	            displayValue = "N/A"; // Handle special case for vehicle selection
+																	        }
+
+																	        // Calculate totalPayment for row[10]
+																	        if (index === 10) { // Assuming row[10] is for totalPayment
+																	            const totalSoil = parseFloat(row[8]) || 0; // Assuming row[8] is totalSoil
+																	            const soilRate = parseFloat(row[9]) || 0; // Assuming row[9] is soilRate
+																	            const totalPayment = (totalSoil * soilRate).toFixed(2); // Calculate and format totalPayment
+
+																	            displayValue = totalPayment;
+
+																	            totalPaymentSum += parseFloat(totalPayment); // Add totalPayment to the sum
+																	        }
+
+																	        printContent += "<td>" + displayValue + "</td>";
+																	    });
+
+																	    printContent += "</tr>";
+																	});
 
 
-			    printContent += `
-			                </tbody>
-			            </table>
-			        </body>
-			        </html>
-			    `;
+																	const cgst = (totalPaymentSum * 0.09).toFixed(2); 
+																	const sgst = (totalPaymentSum * 0.09).toFixed(2); 
+																	const totalGST = (parseFloat(cgst) + parseFloat(sgst)).toFixed(2); 
+																	const totalPaymentAmount = (parseFloat(totalGST) + parseFloat(totalPaymentSum)).toFixed(2);
+																	const totalPaymentSumWords = numberToWords(totalPaymentSum);
+																    printContent += `
+																
+																			                </tbody>
+																			            </table>
+																			        </div>
 
-			    // Open the content in a new window and print
-			    const printWindow = window.open('', '_blank');
-			    printWindow.document.write(printContent);
-			    printWindow.document.close();
-			    printWindow.print();
+																			        <div class="section">
+																			            <table class="summary-table">
+																			                <tr>
+																			                    <th>Total Invoice Amount in Words:</th>
+																			                    <td colspan="6">`; printContent +="Rs."+totalPaymentSumWords ;printContent += `</td>
+																			                </tr>
+																			                <tr>
+																			                    <th>Less: Discount</th>
+																			                    <td colspan="6">-</td>
+																			                </tr>
+																			                <tr>
+																			                    <th>Net Taxable Value</th>
+																			                    <td colspan="6">`; printContent +=totalPaymentSum ;printContent += `</td>
+																			                </tr>
+																			                <tr>
+																			                    <th>Add: CGST @ 9%</th>
+																			                    <td colspan="6">`; printContent +=cgst ;printContent += `</td>
+																			                </tr>
+																			                <tr>
+																			                    <th>Add: SGST @ 9%</th>
+																			                    <td colspan="6">`; printContent +=sgst ;printContent += `</td>
+																			                </tr>
+																			                <tr>
+																			                    <th>Total Tax Amount</th>
+																			                    <td colspan="6">`; printContent +=totalGST ;printContent += `</td>
+																			                </tr>
+																			                <tr>
+																			                    <th>Total Invoice Value</th>
+																			                    <td colspan="6">`; printContent +=totalPaymentAmount ;printContent += `</td>
+																			                </tr>
+																			            </table>
+																			        </div>
+
+																			        <div class="bank-details">
+																			            <p><strong>Bank Name:</strong>`; printContent +=bankName ;printContent += `</p>
+																			            <p><strong>Bank A/C:</strong> `; printContent +=acNo ;printContent += `</p>
+																			            <p><strong>IFSC:</strong> `; printContent +=ifsc ;printContent += `</p>
+																			        </div>
+
+																			        <div class="footer">
+																			            <p>Certified that the particulars given above are true and correct</p>
+																			            <p>For `; printContent +=bussinessName ;printContent += `</p>
+																			            <p><strong>Authorized Signatory</strong></p>
+																			        </div>
+																			    </div>
+																			</body>
+																			</html>
+																    `;
+
+																    // Open the content in a new window and print
+																    const printWindow = window.open('', '_blank');
+																    printWindow.document.write(printContent);
+																    printWindow.document.close();
+																    printWindow.print();
+													
+													
+													
+								                },
+								                error: function(xhr, status, error) {
+								                    console.error("Error fetching customer data:", error);
+								                }
+								            });
+			    
 			});
 
 

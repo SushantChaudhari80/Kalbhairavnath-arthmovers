@@ -12,7 +12,7 @@ import com.sushant.live.model.DumperTreep;
 @Repository
 public interface DumperTreepRepository extends JpaRepository<DumperTreep, Integer> {
     
-    @Query("SELECT v FROM DumperTreep v WHERE v.omobile = :mobile")
+	@Query("SELECT v FROM DumperTreep v WHERE v.omobile = :mobile AND (v.isBilled IS NULL OR v.isBilled = '')")
     List<DumperTreep> findAllByOwnerMobile(@Param("mobile") String mobile);
 }
 
