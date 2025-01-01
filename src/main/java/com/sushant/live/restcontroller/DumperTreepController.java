@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,8 +50,17 @@ public class DumperTreepController {
 	}
 	
 	@PostMapping("/updateTreep/{id}")
-	public ResponseEntity<List<DumperTreep>> updateTreep(@PathVariable int id){
-		return ResponseEntity.ok(service.getAll());
+	public ResponseEntity<String> updateTreep(@PathVariable int id) {
+	    try {
+	        String response = service.updateTreep(id);
+	        return ResponseEntity.ok(response);
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.badRequest().body(e.getMessage());
+	    } catch (Exception e) {
+	       e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                             .body("An unexpected error occurred. Please try again later.");
+	    }
 	}
 
 }

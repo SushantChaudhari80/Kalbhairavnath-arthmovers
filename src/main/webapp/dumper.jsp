@@ -614,6 +614,10 @@
 
 																  
 																	let totalPaymentSum = 0; // Variable to store the sum of totalPayment
+																	
+																	
+																	 const advance = prompt("Enter Advance Payment (optional):", "");
+																	 const newSoilRate = prompt("Enter Soil Rate per Brass (optional):", "");
 
 																	selectedRows.forEach(row => {
 																	    printContent += "<tr>";
@@ -626,9 +630,9 @@
 																			if (index === 1){
 																				$.ajax({
 																					  url: '/api/treep/updateTreep/'+value,// URL for fetching vehicle data
-																					  type: 'GET',
+																					  type: 'POST',
 																					  success: function (msg) {
-																					 
+																					 console.log(msg);
 																					},
 																					error: function (xhr, status, error) {
 																							console.error("Error fetching vehicle data:", error);
@@ -640,11 +644,20 @@
 																	        if (index === 5 && value === "Select a Vehicle") {
 																	            displayValue = "N/A"; // Handle special case for vehicle selection
 																	        }
+																			
+																			if(index === 7 && advance !== null && advance !== ""){
+																				displayValue = advance;
+																			} 
+																			
+																			if (index === 9) {
+																			       displayValue = newSoilRate !== null && newSoilRate !== "" ? newSoilRate : value; // Use user input for Soil Rate if provided
+																			 }																 
+																			
 
 																	        // Calculate totalPayment for row[10]
 																	        if (index === 10) { // Assuming row[10] is for totalPayment
 																	            const totalSoil = parseFloat(row[8]) || 0; // Assuming row[8] is totalSoil
-																	            const soilRate = parseFloat(row[9]) || 0; // Assuming row[9] is soilRate
+																	            const soilRate = newSoilRate !== null && newSoilRate !== "" ? parseFloat(newSoilRate) : parseFloat(row[9]) || 0;; // Assuming row[9] is soilRate
 																	            const totalPayment = (totalSoil * soilRate).toFixed(2); // Calculate and format totalPayment
 
 																	            displayValue = totalPayment;
@@ -718,8 +731,30 @@
 																			</body>
 																			</html>
 																    `;
+																	
+																	const dtoData={
+																		billedDate:getFormattedDate(),
+																		invoice : printContent
+																	};
+																	
 
-																    // Open the content in a new window and print
+																	$.ajax({
+																	    url: '/api/invoice/save',
+																	    type: 'PUT',
+																	    contentType: 'application/json', // Specify content type if dtoData is JSON
+																	    data: JSON.stringify(dtoData),  // Convert dtoData to JSON if not already
+																	    success: function (msg) {
+																	        console.log("Response:", msg);
+																	        alert("Invoice saved successfully!");
+																	    },
+																	    error: function (xhr, status, error) {
+																	        console.error("Error saving invoice:", error);
+																	        alert("Failed to save invoice. Please try again.");
+																	        $('.spinner-container').hide(); // Hide spinner on error
+																	    }
+																	});
+																	
+																	// Open the content in a new window and print
 																    const printWindow = window.open('', '_blank');
 																    printWindow.document.write(printContent);
 																    printWindow.document.close();

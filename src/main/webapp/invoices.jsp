@@ -185,87 +185,70 @@
 		$(document).ready(function () {
 		    const table = $('#invoiceTable').DataTable({
 		        columns: [
-		            { title: "Customer Name" },
-		            { title: "Paid Amt" },
-		            { title: "Pending Amt" },
-		            { title: "Total Due Amt" },
-		            { title: "Due Date" },
+		            { title: "Invoice ID" },
+		            { title: "Billed Date" },
+		            { title: "Invoice content" },
 		            { title: "Actions" }
 		        ]
 		    });
 
-		    function fetchInvoiceList() {
-		        $.ajax({
-		            url: '/api/payment/getAll/customer',
-		            type: 'GET',
-		            success: function (invoices) {
-		                table.clear(); // Clear existing data in the table
+		    $.ajax({
+		        url: '/api/invoice/getAllInvoice', // URL for fetching invoice data
+		        type: 'GET',
+		        success: function(invoices) {
+		            table.clear(); // Clear existing rows
 
-		                // Fetch additional data for each customer
-		                const fetchDetailsPromises = invoices.map(invoice =>
-												
-						//$.ajax({
-						   //     url: "https://api.example.com/data", // REST endpoint
-						     //  type: "GET", // HTTP method
-						 //       dataType: "json", // Expected data format
-						 //      success: function(response) {
-						                        // Handle success
-						 //                       console.log(response);
-						 //                       $("#result").html(JSON.stringify(response, null, 4)); // Display response
-						 //       },
-						 //                   error: function(xhr, status, error) {
-						 //                       // Handle error
-						 //                       console.error("Error: " + error);
-						 //                       $("#result").html("Error fetching data.");
-						 //     }
-						// });   
-						 $.ajax({
-		                        url: `/api/invoice/getTotalPaid?cName=`+invoice, // Safely encode customer names
-		                        type: 'GET'
-		                    }).then(amt => {
-		                        return [
-		                            invoice || 'N/A',   // Customer Name
-		                            amt || '0',         // Paid Amount
-		                             '',                 // Pending Amount (placeholder)
-		                            '',                 // Total Due Amount (placeholder)
-		                            'N/A',              // Due Date (placeholder)
-		                            '<button id="viewinvoice" class="btn btn-primary view-invoice">View</button>' //  '<button class="btn btn-primary view-invoice" data-customer="' + invoice + '">View</button>' // Actions
-		                        ];
-		                    }).catch(error => {
-		                        console.error(`Error fetching data for ${invoice}:`, error);
-		                        return [
-		                            invoice || 'N/A',
-		                            'Error',
-		                            'Error',
-		                            'Error',
-		                            'Error',
-		                            '<button class="btn btn-danger disabled">Error</button>'
-		                        ];
-		                    })
-		                );
+		            // Loop through each invoice and add it to the DataTable
+		            invoices.forEach(function(invoice) {
+		          
+		                table.row.add([
+		                    invoice.id || '',              // Ensure fallback value if undefined
+		                    invoice.billedDate || '',      // Correct property name for billedDate
+		                    'Click here',             // Convert HTML content to plain text
+		                    'N/A'                          // Placeholder for actions column
+		                ]);
+		            });
 
-		                // Wait for all promises to resolve
-		                Promise.all(fetchDetailsPromises).then(rows => {
-		                    rows.forEach(row => table.row.add(row));
-		                    table.draw(); // Render the table after adding all rows
-		                });
-		            },
-		            error: function (xhr, status, error) {
-		                console.error("Error fetching customer list:", error);
-		                alert('Failed to fetch customer list. Please try again.');
-		            }
-		        });
-		    }
+		            table.draw(false); // Draw the table once all rows are added
 
-		    fetchInvoiceList();
-			$('#invoiceTable').on('click', '.view-invoice', function () {
-			        const customerName = $(this).data('customer');
-			        console.log(`Viewing invoice for customer: ${customerName}`);
-			        // Redirect to invoice model page
-			        //window.location.href = 'invoiceModel.jsp?customer=' + encodeURIComponent(customerName);
-					window.location.href = 'invoiceModel.jsp';
-			    });
+		            // Attach event handler for row click (after DataTable has been populated)
+		            $('#invoiceTable tbody').on('click', 'tr', function() {
+		                const data = table.row(this).data();
+		                const invoiceId = data[0]; // Assuming the first column is the invoice ID
+						
+						$.ajax({
+							 url: '/api/invoice/getById/'+invoiceId,
+							 type: 'GET',
+							 success: function (msg) {
+								const printWindow = window.open('', '_blank');
+										printWindow.document.write(msg); // You can write more details here if needed
+										printWindow.document.close();
+										 printWindow.print();
+							},
+							error: function (xhr, status, error) {
+									 console.error("Error saving invoice:", error);
+									 alert("Failed to save invoice. Please try again.");
+									 $('.spinner-container').hide(); // Hide spinner on error
+								}
+							});	
+
+		                
+		            });
+					$('.spinner-container').hide(); // Hide the spinner after data is loaded
+		        },
+		        error: function(xhr, status, error) {
+		            console.error("Error fetching invoice data:", error);
+		            $('.spinner-container').hide(); // Hide the spinner on error
+		        }
+		    });
 		});
+
+		// Function to convert HTML content to plain text
+		
+
+
+
+		   
 
 
 	</script>
@@ -273,36 +256,14 @@
 </head>
 <body>
 
-    <div class="container">
-        <h1>Invoices Report</h1>
-        <div class="summary">
-            <div class="summary-item">
-                <h3 id="totalInvoices">0</h3>
-                <p>Total Invoices</p>
-            </div>
-            <div class="summary-item">
-                <h3 id="paidInvoices">0</h3>
-                <p>Paid Invoices</p>
-            </div>
-            <div class="summary-item">
-                <h3 id="unpaidInvoices">0</h3>
-                <p>Unpaid Invoices</p>
-            </div>
-            <div class="summary-item">
-                <h3 id="totalAmount">$0.00</h3>
-                <p>Total Amount</p>
-            </div>
-        </div>
 
         <!-- Invoices Table -->
         <table  id="invoiceTable" class="display">
             <thead>
                 <tr>
-                    <th>Customer Name</th>
-                    <th>Paid Amt</th>
-                    <th>Pending Amt</th>
-                    <th>Total Due Amt</th>
-                    <th>Due Date</th>
+                    <th>Invoice ID</th>
+                    <th>Billed Date</th>
+					<th id="content">Invoice content</th>
                     <th>Actions</th>
                 </tr>
             </thead>
