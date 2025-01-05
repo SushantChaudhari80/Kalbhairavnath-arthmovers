@@ -12,7 +12,7 @@ import com.sushant.live.model.InvoiceTemplate;
 @Repository
 public interface InvoiceRepository extends JpaRepository<InvoiceTemplate, String> {
 
-	@Query("SELECT v FROM InvoiceTemplate v WHERE v.omobile = :mobile")
+	@Query("SELECT v FROM InvoiceTemplate v WHERE v.omobile = :mobile order by v.billedDate asc")
 	public List<InvoiceTemplate> getByOmobile(@Param("mobile") String mobile);
 
 	@Query("SELECT v FROM InvoiceTemplate v WHERE v.omobile = :mobile and id=:id")

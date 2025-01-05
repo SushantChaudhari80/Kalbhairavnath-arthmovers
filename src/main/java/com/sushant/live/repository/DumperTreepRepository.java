@@ -19,6 +19,9 @@ public interface DumperTreepRepository extends JpaRepository<DumperTreep, Intege
 	@Modifying
 	@Query("UPDATE DumperTreep SET isBilled = 'true' WHERE omobile = :mobile AND id = :id")
 	void updateTreepById(@Param("id") int id, @Param("mobile") String mobile);
+	
+	@Query("SELECT v FROM DumperTreep v WHERE v.omobile = :mobile AND v.isBilled = 'true'")
+    List<DumperTreep> getBilledTreeps(@Param("mobile") String mobile);
 
 }
 

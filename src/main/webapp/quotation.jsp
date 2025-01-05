@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dumper Quotation</title>
+    <title>Treep Receipt</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 		<style>
 		    /* General Reset */
@@ -249,8 +249,15 @@
             <h1>Quotation</h1>
         </div>
         <form id="quotation-form" class="quotation-form">
-            <label for="customer-name">Customer Name</label>
-            <input type="text" id="customer-name" placeholder="Enter customer name">
+			
+			<div class="filter-item">
+				<label for="customer-name">Select Customer</label>
+				<select id="customer-name">
+					<!-- Driver options will be dynamically appended -->
+				</select>
+			</div>
+          <!--   <label for="customer-name">Customer Name</label>
+            <input type="text" id="customer-name" placeholder="Enter customer name"> -->
 
 			<div class="filter-item">
 			       <label for="vehicaleList">Select Vehicale</label>
@@ -269,10 +276,10 @@
 			</select>
 
             <label for="soil-brass">Number of Brass/Treep Soil</label>
-            <input type="number" id="soil-brass" placeholder="Enter number of brass">
+            <input type="number" id="soil-brass" placeholder="Enter number of brass" value="0">
 
             <label for="soil-rate">Soil Rate per Brass/Treep (₹)</label>
-            <input type="number" id="soil-rate" placeholder="Enter rate per brass" value="1000">
+            <input type="number" id="soil-rate" placeholder="Enter rate per brass" value="0">
         </form>
 
         <div class="quotation-summary" id="quotation-summary">
@@ -346,6 +353,24 @@
 		            console.error("Error fetching vehicle data:", error);
 		        }
 		    });
+			
+			$.ajax({
+				        url: '/api/order/getAll',
+				        type: 'GET',
+				        success: function (vehicles) {
+				            const vehicleList = $('#customer-name');
+				            vehicleList.empty();
+				            vehicleList.append('<option value="">Select a Customer</option>');
+				            vehicles.forEach(function (customer) {
+				                const option = $('<option></option>').val(customer.id).text(customer.customer_name || '');
+				                vehicleList.append(option);
+				            });
+				        },
+				        error: function (xhr, status, error) {
+				            console.error("Error fetching vehicle data:", error);
+				        }
+				    });
+					
 			$.ajax({
 				                url: '/api/customers/get',  // URL for fetching the customer data
 				                type: 'GET',
@@ -392,7 +417,8 @@
 
 		    // Print functionality
 		    document.getElementById('print-btn').addEventListener('click', function () {
-			         	const customerName = document.getElementById('customer-name').value;
+			         	//const customerName = document.getElementById('customer-name').value;
+						const customerName = document.getElementById('customer-name').options[document.getElementById('customer-name').selectedIndex].text;
 					        const soilBrass = document.getElementById('soil-brass').value;
 					        const soilRate = document.getElementById('soil-rate').value;
 
@@ -424,46 +450,35 @@
 		        window.print();
 		    });
 			document.getElementById('save-btn').addEventListener('click', function () {
-					         	const customerName = document.getElementById('customer-name').value;
-							        const diesel = document.getElementById('diesel').value;
-							        const advance = document.getElementById('advance').value;
-							        const soilBrass = document.getElementById('soil-brass').value;
-							        const soilRate = document.getElementById('soil-rate').value;
+				                            const customerName = document.getElementById('customer-name').options[document.getElementById('customer-name').selectedIndex].text;
+									        const soilBrass = document.getElementById('soil-brass').value;
+									        const soilRate = document.getElementById('soil-rate').value;
 
-							        // Calculate total payment
-							        const totalPayment = soilBrass * soilRate;
-									const selectedVehicleText = document.getElementById('vehicaleList').options[document.getElementById('vehicaleList').selectedIndex].text;
+									        // Calculate total payment
+									        const selectedVehicleText = document.getElementById('vehicaleList').options[document.getElementById('vehicaleList').selectedIndex].text;
+											var selectedItems=document.getElementById('material').options[document.getElementById('material').selectedIndex].text;
 
-									var selectedItems='';
-																			if (document.getElementById('checkbox-soil').checked) selectedItems='Soil';
-																			if (document.getElementById('checkbox-bricks').checked) selectedItems='Bricks';
-																			if (document.getElementById('checkbox-crushsand').checked) selectedItems='Crush Sand';
-																			if (document.getElementById('checkbox-sand').checked) selectedItems='Sand';
-							
-
-						               const formData = {
-						                   selectedVehicle: selectedVehicleText,
-						                   customerName:customerName,
-						                   diesel: diesel,
-						                   advance: advance,
-						                   soilBrass: soilBrass,
-						                   soilRate: soilRate,
-						                   totalPayment:totalPayment,
-										   item:selectedItems
-						               };
-			                             console.log(formData);
-						               $.ajax({
-						                   url: '/api/treep/add', // Endpoint URL
-						                   type: 'POST',
-						                   contentType: 'application/json',
-						                   data: JSON.stringify(formData),
-						                   success: function (response) {
-						                       alert(response);
-						                   },
-						                   error: function (xhr, status, error) {
-						                       console.error('Error:', error);
-						                   }
-						               });
+								               const formData = {
+								                   selectedVehicle: selectedVehicleText,
+								                   customerName:customerName,
+								                   soilBrass: soilBrass,
+								                   soilRate: soilRate,
+								                   item:selectedItems,
+												   isBilled:false
+								               };
+				                              console.log(formData);
+								               $.ajax({
+								                   url: '/api/treep/add', // Endpoint URL
+								                   type: 'POST',
+								                   contentType: 'application/json',
+								                   data: JSON.stringify(formData),
+								                   success: function (response) {
+								                       alert(response);
+								                   },
+								                   error: function (xhr, status, error) {
+								                       alert('Error:', error);
+								                   }
+								               });
 				    });
 		});
 

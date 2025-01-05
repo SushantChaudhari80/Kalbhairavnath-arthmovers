@@ -28,6 +28,9 @@ public class DumperTreepService {
 	public List<DumperTreep> getAll(){
 		return repo.findAllByOwnerMobile(SessionManager.getInstance().getUsername());
 	}
+	public List<DumperTreep> getBilledTreeps(){
+		return repo.getBilledTreeps(SessionManager.getInstance().getUsername());
+	}
 	
 	@Transactional
 	public String updateTreep(int id) {

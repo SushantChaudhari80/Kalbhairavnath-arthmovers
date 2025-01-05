@@ -3,293 +3,276 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Payment Management</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Payment Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        /* Global Styles */
-        * {
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7fa;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f5f7fa;
-            color: #34495e;
-            padding: 20px;
-        }
-
-        h1, h2 {
-            color: #2c3e50;
+            color: #333;
         }
 
         .container {
             max-width: 1200px;
-            margin: auto;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .header {
-            background-color: #3498db;
-            color: white;
-            padding: 20px;
+        h1 {
             text-align: center;
-            font-size: 24px;
-            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 30px;
         }
 
-        /* Layout */
-        .layout {
+        .summary {
             display: flex;
+            justify-content: space-between;
+            background-color: #eef2f7;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
             flex-wrap: wrap;
-            gap: 20px;
-            padding: 20px;
         }
 
-        .add-payment, .payment-history {
+        .summary-item {
+            text-align: center;
             flex: 1;
-            min-width: 300px;
-            background-color: #ffffff;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            border-right: 1px solid #ddd;
         }
 
-        /* Add Payment Section */
-        .add-payment h2 {
-            margin-bottom: 20px;
+        .summary-item:last-child {
+            border-right: none;
         }
 
-        .form-group {
-            margin-bottom: 15px;
+        .summary-item h3 {
+            margin: 0;
+            font-size: 24px;
+            color: #34495e;
         }
 
-        .form-group label {
-            display: block;
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        .form-group textarea {
-            height: 100px;
-            resize: none;
-        }
-
-        .form-group button {
-            background-color: #27ae60;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .form-group button:hover {
-            background-color: #229954;
-        }
-
-        /* Payment History Section */
-        .payment-history h2 {
-            margin-bottom: 20px;
-        }
-
-        .payment-list {
-            margin-top: 10px;
-        }
-
-        .date-section {
-            margin-bottom: 20px;
-        }
-
-        .date-header {
-            background-color: #f1f1f1;
-            padding: 10px;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .date-header:hover {
-            background-color: #eaeaea;
-        }
-
-        .date-payments {
-            display: none;
-            margin-top: 10px;
-        }
-
-        .payment-item {
-            background-color: #f9f9f9;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .payment-item .amount {
-            font-weight: bold;
-            color: #2ecc71;
-        }
-
-        .payment-item .details {
-            font-size: 14px;
+        .summary-item p {
+            margin: 5px 0 0;
             color: #7f8c8d;
         }
 
-        .payment-item .timestamp {
-            font-size: 12px;
-            color: #95a5a6;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .layout {
-                flex-direction: column;
-            }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #2980b9;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">Order Payment Management</div>
 
-        <!-- Main Layout -->
-        <div class="layout">
-            <!-- Add Payment Section -->
-            <div class="add-payment">
-                <h2>Add Payment</h2>
-                <form id="add-payment-form">
-                    <div class="form-group">
-                        <label for="order-id">Order ID</label>
-                        <input type="text" id="order-id" name="orderId" placeholder="Enter Order ID" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="amount">Payment Amount</label>
-                        <input type="number" id="amount" name="amount" placeholder="Enter Payment Amount" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="method">Payment Method</label>
-                        <select id="method" name="method" required>
-                            <option value="Cash">Cash</option>
-                            <option value="Credit Card">Credit Card</option>
-                            <option value="Bank Transfer">Bank Transfer</option>
-                            <option value="UPI">UPI</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="note">Payment Note</label>
-                        <textarea id="note" name="note" placeholder="Add any relevant notes..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <button type="button" id="save-payment">Add Payment</button>
-                    </div>
-                </form>
-            </div>
+<div class="container">
+    <h1>Payment History</h1>
 
-            <!-- Payment History Section -->
-            <div class="payment-history">
-                <h2>Payment History</h2>
-                <div class="payment-list" id="payment-list">
-                    <!-- Dynamic payment history will be displayed here -->
-                </div>
-            </div>
+    <!-- Summary Section -->
+    <div class="summary">
+        <div class="summary-item">
+            <h3 id="totalCustomers">0</h3>
+            <p>Total Customers</p>
+        </div>
+        <div class="summary-item">
+            <h3 id="totalProfit">0 RS</h3>
+            <p>Total Profit</p>
+        </div>
+        <div class="summary-item">
+            <h3 id="totalbilled">0 RS</h3>
+            <p>Total Billed</p>
+        </div>
+        <div class="summary-item">
+            <h3 id="dueAmount">0 RS</h3>
+            <p>Due Amount</p>
         </div>
     </div>
+	<div style="text-align: right; margin-bottom: 20px;">
+	    <button id="addPaymentbtn" style="padding: 10px 20px; background-color: #2980b9; color: white; border: none; border-radius: 5px; cursor: pointer;">
+	        Add Payment
+	    </button>
+	</div>
 
-    <script>
-		alert("This page is in development");
-        const paymentListEl = document.getElementById('payment-list');
-        const savePaymentBtn = document.getElementById('save-payment');
+    <!-- Diesel Data Table -->
+    <table id="dieselReport">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Customer Name</th>
+			<th>Paid Amount</th>
+			<th>Total Due</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+	
+	<div id="addPaymentModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center;">
+	    <div style="background: white; padding: 20px; width: 400px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); position: relative;">
+	        <h2 style="margin-top: 0; text-align: center;">Add Payment</h2>
+	        <form id="addPaymentForm">
+				<div class="filter-item">
+				    <label for="customer-name">Select Customer</label>
+					<select id="customer-name"  style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;"></select>
+				 </div>
+	            <div style="margin-bottom: 15px;">
+	                <label for="paymentAmt" style="display: block; margin-bottom: 5px;">Amount</label>
+	                <input type="number" id="paymentAmt" name="paymentAmt" value="0" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+	            </div>
+	 
+	            <div style="text-align: right;">
+	                <button type="button" id="cancelBtn" style="margin-right: 10px; padding: 10px 20px; border: none; background-color: #ccc; border-radius: 5px; cursor: pointer;">
+	                    Cancel
+	                </button>
+	                <button type="submit" style="padding: 10px 20px; background-color: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer;">
+	                    Add
+	                </button>
+	            </div>
+	        </form>
+	    </div>
+	</div>
+</div>
 
-        // Sample Payment Data
-        const paymentHistory = {
-            '2024-12-01': [
-                { amount: 200, method: 'Cash', note: 'Advance payment', timestamp: '10:30 AM' },
-                { amount: 150, method: 'UPI', note: 'Remaining balance', timestamp: '03:15 PM' },
-            ],
-            '2024-12-02': [
-                { amount: 300, method: 'Credit Card', note: 'Order #2345', timestamp: '02:00 PM' },
-            ],
-        };
-
-        // Load Payment History
-        function loadPaymentHistory() {
-            paymentListEl.innerHTML = '';
-            for (const date in paymentHistory) {
-                const dateSection = document.createElement('div');
-                dateSection.className = 'date-section';
-
-                const dateHeader = document.createElement('div');
-                dateHeader.className = 'date-header';
-                dateHeader.textContent = date;
-
-                const datePayments = document.createElement('div');
-                datePayments.className = 'date-payments';
-
-                paymentHistory[date].forEach(payment => {
-                    const paymentItem = document.createElement('div');
-                    paymentItem.className = 'payment-item';
-                    paymentItem.innerHTML = `
-                        <div>
-                            <div class="amount">$${payment.amount}</div>
-                            <div class="details">${payment.method} - ${payment.note}</div>
-                        </div>
-                        <div class="timestamp">${payment.timestamp}</div>
-                    `;
-                    datePayments.appendChild(paymentItem);
-                });
-
-                dateHeader.addEventListener('click', () => {
-                    datePayments.style.display = datePayments.style.display === 'none' ? 'block' : 'none';
-                });
-
-                dateSection.appendChild(dateHeader);
-                dateSection.appendChild(datePayments);
-                paymentListEl.appendChild(dateSection);
-            }
-        }
-
-        // Add New Payment
-        savePaymentBtn.addEventListener('click', () => {
-            const orderId = document.getElementById('order-id').value;
-            const amount = document.getElementById('amount').value;
-            const method = document.getElementById('method').value;
-            const note = document.getElementById('note').value;
-
-            const today = new Date().toISOString().split('T')[0];
-            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-            const newPayment = { amount: parseFloat(amount), method, note, timestamp: time };
-
-            if (!paymentHistory[today]) paymentHistory[today] = [];
-            paymentHistory[today].push(newPayment);
-
-            loadPaymentHistory();
-            alert('Payment added successfully!');
+<script>
+    $(document).ready(function () {
+        const table = $('#dieselReport').DataTable({
+            columns: [
+                { title: "ID" },
+                { title: "Date" },
+                { title: "Customer Name" },
+				{ title: "Paid Amount" },
+				{ title: "Total Due" }
+              
+            ]
         });
 
-        // Initial Load
-        loadPaymentHistory();
-    </script>
+        $.ajax({
+            url: '/api/payment/getAll', // Adjust the endpoint URL if needed
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                let totalAmt = 0;
+                let totalVehicles = new Set();
+
+                table.clear();
+
+                data.forEach(function (record) {
+					console.log(record);
+                   totalAmt += Number(record.payment) || 0;;
+
+                    // Track unique vehicles
+                    totalVehicles.add(record.customerName);
+
+                    table.row.add([
+                        record.id,
+                        record.payment_date || '',
+                        record.customerName || '',
+						record.payment || '',
+						 ''
+                    ]);
+                });
+
+                table.draw();
+
+                // Update summary section
+                $('#totalCustomers').text(totalVehicles.size);
+                $('#totalProfit').text(totalAmt + ' RS');
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching records:", error);
+            }
+        });
+		
+		               $.ajax({
+						        url: '/api/order/getAll',
+						        type: 'GET',
+						        success: function (vehicles) {
+						            const vehicleList = $('#customer-name');
+						            vehicleList.empty();
+						            vehicleList.append('<option value="">Select a Customer</option>');
+						            vehicles.forEach(function (customer) {
+						                const option = $('<option></option>').val(customer.id).text(customer.customer_name || '');
+						                vehicleList.append(option);
+						            });
+						        },
+						        error: function (xhr, status, error) {
+						            console.error("Error fetching vehicle data:", error);
+						        }
+						    });
+		
+		              $('#addPaymentbtn').on('click', function () {
+				            $('#addPaymentModal').fadeIn();
+				        });
+
+				        // Hide the modal
+				        $('#cancelBtn').on('click', function () {
+				            $('#addPaymentModal').fadeOut();
+				        });
+
+				        // Handle form submission
+				        $('#addPaymentForm').on('submit', function (e) {
+				            e.preventDefault();
+							
+							
+
+				            const dieselData = {
+				               customerName:  document.getElementById('customer-name').options[document.getElementById('customer-name').selectedIndex].text,
+				                amount: $('#paymentAmt').val()
+				            };
+
+							console.log(dieselData);
+				            $.ajax({
+				                url: '/api/payment/add', // Adjust the endpoint URL if needed
+				                type: 'POST',
+				                contentType: 'application/json',
+				                data: JSON.stringify(dieselData),
+				                success: function (response) {
+									console.log(response);
+				                    alert(response);
+				                    $('#addPaymentModal').fadeOut();
+				                    $('#addPaymentForm')[0].reset();
+
+				                    // Optionally, refresh the table
+				                    $('#dieselReport').DataTable().ajax.reload();
+				                },
+				                error: function (xhr, status, error) {
+				                    alert('Failed to add diesel record: ' + error);
+				                }
+				            });
+				        });
+
+    });
+</script>
+
 </body>
 </html>

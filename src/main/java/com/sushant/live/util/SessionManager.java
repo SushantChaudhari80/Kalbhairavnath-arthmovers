@@ -32,7 +32,7 @@ public class SessionManager {
 	    	try {
 		    	 HttpClient client = HttpClient.newHttpClient();
 		         HttpRequest request = HttpRequest.newBuilder()
-		                 .uri(new URI("http://localhost:8084/login"))
+		                 .uri(new URI("http://localhost:8084/"))
 		                 .GET()
 		                 .build();
 		         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

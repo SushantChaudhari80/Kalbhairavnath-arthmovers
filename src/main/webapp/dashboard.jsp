@@ -155,7 +155,7 @@
 		           background-color: white;
 		           border-radius: 8px;
 		           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-		           padding: 20px;
+		           padding: 2px;
 		           text-align: center;
 		       }
 
@@ -260,7 +260,7 @@
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            padding: 2px;
             text-align: center;
         }
 
@@ -395,7 +395,27 @@
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script>
 		    $(document).ready(function() {
+				
 				$('.spinner-container').show();
+				$.ajax({
+					                url: '/api/customers/dashboard/utilitis',  // URL for fetching the customer data
+					                type: 'GET',
+					                success: function(utils) {
+					                   console.log(utils);
+									   $("#totalOrders").text(utils.totalOrders);//vehicleCount
+									   $("#vehicleCount").text(utils.totalVehicales);
+									   $("#activeOrders").text(utils.activeOrders);//activeOrders
+									   $("#pendingOrders").text(utils.pendingOrders);//completeOrders
+									   $("#completeOrders").text(utils.completeOrders);
+									   $("#billedTreeps").text(utils.billedTreeps);
+									   $("#unbilledTreeps").text(utils.unbilledTreeps);
+									   $("#diesel").text(utils.diesel + "(L)");
+									   $("#totalDivers").text(utils.totalDivers);
+					                },
+					                error: function(xhr, status, error) {
+					                    console.error("Error fetching customer data:", error);
+					                }
+					            });
 		        // Function to fetch customer data from server using AJAX
 		        function fetchCustomerData() {
 		            $.ajax({
@@ -502,7 +522,6 @@
 	</div>
 
    <div class="dashboard-container">
-       <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 	   <div class="sidebar" id="sidebar">
 	              <div>
 	                  <h2>Transport</h2>
@@ -513,10 +532,11 @@
 	                      <li><a href="drivers.jsp">Drivers</a></li>
 	                      <li><a href="reports.jsp">Reports</a></li>
 	                      <li><a href="orderReport.jsp">Excavator Report</a></li>
-	                      <li><a href="dumper.jsp">Loading Vehicle Report</a></li>
+	                      <li><a href="dumper.jsp">UnBilled Treeps</a></li>
+						  <li><a href="billedTreep.jsp">Billed Treeps</a></li>
 	                      <li><a href="dieselReport.jsp">Diesel Report</a></li>
 	                      <li><a href="payments.jsp">Payments</a></li>
-	                      <li><a href="quotation.jsp">Quotation Generator</a></li>
+	                      <li><a href="quotation.jsp">Treep Generator</a></li>
 	                      <li><a href="invoices.jsp">Invoices</a></li>
 	                      <li><a href="incident.jsp">Incident/Support</a></li>
 	                  </ul>
@@ -537,28 +557,67 @@
 			    <div class="user-section">
 			        <span id="customer-name">Loading....</span>
 			        <img id="customer-picture" src="https://via.placeholder.com/40" alt="User Profile">
+					<input type="button" id="logoutButton" value="Logout" onclick="window.location.href='loginnew.jsp';">
 			    </div>
 			</div>
 
             <!-- Overview Section -->
             <h1 style="color: white;">Dashboard Overview</h1>
             <div class="overview">
-                <div class="card">
-                    <h3>Total Orders</h3>
-                    <p>256</p>
-                </div>
-                <div class="card">
-                    <h3>Vehicles in Use</h3>
-                    <p>32</p>
-                </div>
-                <div class="card">
-                    <h3>Active Deliveries</h3>
-                    <p>14</p>
-                </div>
-                <div class="card">
-                    <h3>Pending Issues</h3>
-                    <p>5</p>
-                </div>
+				<a href="order.jsp" class="card" style="text-decoration: none; color: inherit;">
+				    <div>
+				        <h3>Total Orders</h3>
+				        <p id="totalOrders">000</p>
+				    </div>
+				</a>
+				<a href="vehicales.jsp" class="card" style="text-decoration: none; color: inherit;">
+	                <div class="card">
+	                    <h3>Vehicles in Use</h3>
+	                    <p  id="vehicleCount">000</p>
+	                </div>
+				</a>
+				<a href="activeOrder.jsp" class="card" style="text-decoration: none; color: inherit;">
+	                <div class="card">
+	                    <h3>Active Deliveries</h3>
+	                    <p id="activeOrders">000</p>
+	                </div>
+				</a>
+				<a href="pendingOrder.jsp" class="card" style="text-decoration: none; color: inherit;">	
+	                <div class="card">
+	                    <h3>Pending Issues</h3>
+	                    <p id="pendingOrders">000</p>
+	                </div>
+				</a>
+				<a href="completeOrders.jsp" class="card" style="text-decoration: none; color: inherit;">
+					<div class="card">
+					   <h3>Complete Deliveries</h3>
+					   <p id="completeOrders">000</p>
+					</div>
+				</a>
+				<a href="billedTreep.jsp" class="card" style="text-decoration: none; color: inherit;">
+					<div class="card">
+					   <h3>Billed Treeps</h3>
+					   <p id="billedTreeps">000</p>
+					</div>
+				</a>
+				<a href="dumper.jsp" class="card" style="text-decoration: none; color: inherit;">	
+					<div class="card">
+						<h3>UnBilled Treeps</h3>
+						<p id="unbilledTreeps">000</p>
+					</div>
+				</a>	
+				<a href="dieselReport.jsp" class="card" style="text-decoration: none; color: inherit;">
+					<div class="card">
+						<h3>Diesel</h3>
+						<p id="diesel">000</p>
+					</div>
+				</a>	
+				<a href="drivers.jsp" class="card" style="text-decoration: none; color: inherit;">
+					<div class="card">
+						<h3>Drivers</h3>
+						<p id="totalDivers">000</p>
+					</div>
+				</a>
             </div>
 
             <!-- Orders Section -->

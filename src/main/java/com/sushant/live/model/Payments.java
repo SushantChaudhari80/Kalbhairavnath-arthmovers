@@ -76,4 +76,11 @@ public class Payments {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public String toString() {
+		return "Payments [id=" + id + ", payment_date=" + payment_date + ", customerName=" + customerName + ", payment="
+				+ payment + ", ownerMobile=" + ownerMobile + "]";
+	}
+	
+
 }

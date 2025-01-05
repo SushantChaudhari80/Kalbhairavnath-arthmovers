@@ -618,6 +618,7 @@
 																	
 																	 const advance = prompt("Enter Advance Payment (optional):", "");
 																	 const newSoilRate = prompt("Enter Soil Rate per Brass (optional):", "");
+																	 console.log(selectedRows);
 
 																	selectedRows.forEach(row => {
 																	    printContent += "<tr>";
@@ -657,7 +658,7 @@
 																	        // Calculate totalPayment for row[10]
 																	        if (index === 10) { // Assuming row[10] is for totalPayment
 																	            const totalSoil = parseFloat(row[8]) || 0; // Assuming row[8] is totalSoil
-																	            const soilRate = newSoilRate !== null && newSoilRate !== "" ? parseFloat(newSoilRate) : parseFloat(row[9]) || 0;; // Assuming row[9] is soilRate
+																	            const soilRate = newSoilRate !== null && newSoilRate !== "" ? parseFloat(newSoilRate) : parseFloat(row[9]) || 0; // Assuming row[9] is soilRate
 																	            const totalPayment = (totalSoil * soilRate).toFixed(2); // Calculate and format totalPayment
 
 																	            displayValue = totalPayment;
@@ -671,11 +672,13 @@
 																	    printContent += "</tr>";
 																	});
 
-
+                                                                     console.log(totalPaymentSum);
 																	const cgst = (totalPaymentSum * 0.09).toFixed(2); 
 																	const sgst = (totalPaymentSum * 0.09).toFixed(2); 
 																	const totalGST = (parseFloat(cgst) + parseFloat(sgst)).toFixed(2); 
 																	const totalPaymentAmount = (parseFloat(totalGST) + parseFloat(totalPaymentSum)).toFixed(2);
+																	const totalamounttopay =  (parseFloat(totalGST) + parseFloat(totalPaymentSum)).toFixed(2);
+																	const totaldueamount =  (parseFloat(totalPaymentAmount) - parseFloat(advance)).toFixed(2);
 																	const totalPaymentSumWords = numberToWords(totalPaymentSum);
 																    printContent += `
 																
@@ -685,10 +688,11 @@
 
 																			        <div class="section">
 																			            <table class="summary-table">
-																			                <tr>
-																			                    <th>Total Invoice Amount in Words:</th>
-																			                    <td colspan="6">`; printContent +="Rs."+totalPaymentSumWords ;printContent += `</td>
-																			                </tr>
+																							<tr>
+																								<th>Total Invoice Amount in Words:</th>
+																								<td colspan="6">`; printContent +="Rs."+totalPaymentSumWords ;printContent += `</td>
+																							</tr>
+																							
 																			                <tr>
 																			                    <th>Less: Discount</th>
 																			                    <td colspan="6">-</td>
@@ -713,6 +717,15 @@
 																			                    <th>Total Invoice Value</th>
 																			                    <td colspan="6">`; printContent +=totalPaymentAmount ;printContent += `</td>
 																			                </tr>
+																							<tr>
+																								<th>Total Amount to pay:</th>
+																								<td colspan="6">`; printContent +="Rs."+advance ;printContent += `</td>
+																							</tr>
+																							<tr>
+																							   <th>Total Due Amount :</th>
+																								<td colspan="6">`; printContent +="Rs."+totaldueamount ;printContent += `</td>
+																							</tr>
+																																										               
 																			            </table>
 																			        </div>
 

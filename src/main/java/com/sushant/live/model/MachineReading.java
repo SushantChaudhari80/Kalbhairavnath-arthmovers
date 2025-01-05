@@ -50,6 +50,10 @@ public class MachineReading {
 	private String machineNumber;
 	
 	private String OrderName;
+	
+	private String petrolPump;
+	
+	private String fuelRate;
 
 	public int getId() {
 		return id;
@@ -150,14 +154,34 @@ public class MachineReading {
 	public String getOrderName() {
 		return OrderName;
 	}
+	
+	
+
+	public String getPetrolPump() {
+		return petrolPump;
+	}
+
+	public void setPetrolPump(String petrolPump) {
+		this.petrolPump = petrolPump;
+	}
 
 	public void setOrderName(String orderName) {
 		OrderName = orderName;
 	}
 
+	public String getFuelRate() {
+		return fuelRate;
+	}
+
+	public void setFuelRate(String fuelRate) {
+		this.fuelRate = fuelRate;
+	}
+
+	
+
 	public MachineReading(int id, String date, byte[] startReadingImg, String startReading, byte[] endReadingImg,
 			String endReading, String maintenance, byte[] dieselImg, String diesel, String onwerMobile,
-			String driverName, String machineNumber, String orderName) {
+			String driverName, String machineNumber, String orderName, String petrolPump, String fuelRate) {
 		super();
 		this.id = id;
 		this.date = date;
@@ -172,6 +196,8 @@ public class MachineReading {
 		this.driverName = driverName;
 		this.machineNumber = machineNumber;
 		OrderName = orderName;
+		this.petrolPump = petrolPump;
+		this.fuelRate = fuelRate;
 	}
 
 	public MachineReading() {
@@ -185,11 +211,10 @@ public class MachineReading {
 				+ ", startReading=" + startReading + ", endReadingImg=" + Arrays.toString(endReadingImg)
 				+ ", endReading=" + endReading + ", Maintenance=" + Maintenance + ", dieselImg="
 				+ Arrays.toString(dieselImg) + ", diesel=" + diesel + ", onwerMobile=" + onwerMobile + ", driverName="
-				+ driverName + ", machineNumber=" + machineNumber + ", OrderName=" + OrderName + "]";
+				+ driverName + ", machineNumber=" + machineNumber + ", OrderName=" + OrderName + ", petrolPump="
+				+ petrolPump + "]";
 	}
 
-	
-	
+    
 
-	
 }

@@ -4,9 +4,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sushant.live.dto.DashboardUtilities;
 import com.sushant.live.model.Customer;
 import com.sushant.live.repository.VehicaleRepository;
 import com.sushant.live.service.CustomerService;
+import com.sushant.live.service.UtilitiService;
 import com.sushant.live.util.SessionManager;
 
 import java.io.IOException;
@@ -18,6 +20,9 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+    
+    @Autowired
+    private UtilitiService utilitiSerice;
     
     @GetMapping("/get")
     public ResponseEntity<Customer> getCustomer() {
@@ -63,6 +68,12 @@ public class CustomerController {
         customerService.addCustomer(customer);
 
         return ResponseEntity.ok("Customer added successfully");
+    }
+    
+    @GetMapping("/dashboard/utilitis")
+    public ResponseEntity<DashboardUtilities> getUtilities() {
+    	return ResponseEntity.ok(utilitiSerice.collectUtilities());
+    	
     }
 
 }

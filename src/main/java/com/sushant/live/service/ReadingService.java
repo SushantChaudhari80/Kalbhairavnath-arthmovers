@@ -1,11 +1,13 @@
 package com.sushant.live.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import com.sushant.live.dto.DieselDTO;
 import com.sushant.live.dto.ReadingDTO;
 import com.sushant.live.model.Coustomer_order;
 import com.sushant.live.model.MachineReading;
@@ -61,15 +63,16 @@ public class ReadingService {
 	            return "Reading Added Successfully.";
 
 	        } else {
+	        	System.out.println("Updating Existing Reading with values : START READING :"+existingReading.getStartReadingImg().length+"END REDAING"+existingReading.getEndReadingImg().length+"DISEL  : "+existingReading.getDieselImg().length);
 	            // Update existing record
 	            boolean isUpdated = false;
 
 	            // Update only if the DTO provides new data, otherwise keep the existing value
-	            if (dto.getStartReading() != null) {
+	            if (dto.getStartReading() != null && existingReading.getStartReadingImg() == null) {
 	                existingReading.setStartReadingImg(dto.getStartReading());
 	                isUpdated = true;
 	            }
-	            if (dto.getEndReading() != null) {
+	            if (dto.getEndReading() != null && existingReading.getEndReadingImg() == null) {
 	                existingReading.setEndReadingImg(dto.getEndReading());
 	                isUpdated = true;
 	            }
@@ -85,15 +88,26 @@ public class ReadingService {
 
 	            // Update maintenance
 	            existingReading.setMaintenance(sumField(existingReading.getMaintenance(), dto.getMaintenance()));
+	            
+	            Coustomer_order order = orderRepo.findAllByMachine(dto.getSelectedOwnerMobile(), dto.getMachineNumber());
+	            if (order != null) {
+	            	existingReading.setOrderName(order.getCustomer_name());
+	            } else {
+	                return "Order details not found for the given machine.";
+	            }
 
 	            // Save updated reading
+	            System.out.println("Updating Existing Reading with final values : START READING :"+existingReading.getStartReadingImg().length+"END REDAING"+existingReading.getEndReadingImg().length+"DISEL  : "+existingReading.getDieselImg().length);
 	            repo.save(existingReading);
 	            return "Reading Updated Successfully.";
 	        }
 
-	    } catch (Exception e) {
+	    }catch(IncorrectResultSizeDataAccessException e) {
+	    	return "Reading Already Submited Twice."; 
+	    }
+	    catch (Exception e) {
 	        e.printStackTrace();
-	        return "An error occurred: " + e.getMessage();
+	        return "An error occurred: " + e.getLocalizedMessage();
 	    }
 	}
 
@@ -117,6 +131,30 @@ public class ReadingService {
 	public List<MachineReading> getAll(){
 		return repo.getAll(SessionManager.getInstance().getUsername());
 		
+	}
+	public List<MachineReading> getDisel(){
+		return repo.getDiesel(SessionManager.getInstance().getUsername());
+		
+	}
+	
+	public String addDiesel(DieselDTO dto) {
+		try {
+			LocalDate today = LocalDate.now();
+	        String formattedDate = today.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+			MachineReading reading = new MachineReading();
+			reading.setDate(formattedDate);
+			reading.setDiesel(dto.getFuelInLtr());
+			reading.setMachineNumber(dto.getVehicleNumber());
+			reading.setPetrolPump(dto.getPetrolPump());
+			reading.setFuelRate(dto.getRate());
+			reading.setOnwerMobile(SessionManager.getInstance().getUsername());
+			
+			repo.save(reading);
+			return "Diesel added successfully for Vehicle "+dto.getVehicleNumber();
+		}catch(Exception e) {
+			e.printStackTrace();
+			return e.getLocalizedMessage();
+		}
 	}
 	
 	

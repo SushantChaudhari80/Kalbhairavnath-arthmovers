@@ -1,17 +1,20 @@
 package com.sushant.live.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class PaymentDTO {
 
-	String customer_name ;
+	 @JsonProperty("customerName")
+	String customerName ;
 	
 	String amount;
 
 	public String getCustomer_name() {
-		return customer_name;
+		return customerName;
 	}
 
 	public void setCustomer_name(String customer_name) {
-		this.customer_name = customer_name;
+		this.customerName = customer_name;
 	}
 
 	public String getAmount() {
@@ -24,7 +27,7 @@ public class PaymentDTO {
 
 	public PaymentDTO(String customer_name, String amount) {
 		super();
-		this.customer_name = customer_name;
+		this.customerName = customer_name;
 		this.amount = amount;
 	}
 
@@ -32,6 +35,12 @@ public class PaymentDTO {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	@Override
+	public String toString() {
+		return "PaymentDTO [customerName=" + customerName + ", amount=" + amount + "]";
+	}
+	
 	
 	
 }

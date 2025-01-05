@@ -116,6 +116,11 @@
             <p>Average Fuel Consumption</p>
         </div>
     </div>
+	<div style="text-align: right; margin-bottom: 20px;">
+	    <button id="addDieselBtn" style="padding: 10px 20px; background-color: #2980b9; color: white; border: none; border-radius: 5px; cursor: pointer;">
+	        Add Diesel
+	    </button>
+	</div>
 
     <!-- Diesel Data Table -->
     <table id="dieselReport">
@@ -124,6 +129,8 @@
             <th>ID</th>
             <th>Date</th>
             <th>Vehicle Number</th>
+			<th>Fuel Pump</th>
+			<th>Rate(L)</th>
             <th>Fuel Used (L)</th>
             <th>Amount</th>
         </tr>
@@ -131,6 +138,47 @@
         <tbody>
         </tbody>
     </table>
+	
+	<div id="addDieselModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center;">
+	    <div style="background: white; padding: 20px; width: 400px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); position: relative;">
+	        <h2 style="margin-top: 0; text-align: center;">Add Diesel</h2>
+	        <form id="addDieselForm">
+				<div class="filter-item">
+				   <label for="vehicaleList">Select Vehicale</label>
+					<select id="vehicaleList" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;"></select>
+				 </div>
+	            <div style="margin-bottom: 15px;">
+	                <label for="fuelInLtr" style="display: block; margin-bottom: 5px;">Fuel in Ltr</label>
+	                <input type="number" id="fuelInLtr" name="fuelInLtr" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+	            </div>
+	            <div style="margin-bottom: 15px;">
+	                <label for="petrolPump" style="display: block; margin-bottom: 5px;">Select Petrol Pump</label>
+	                <select id="petrolPump" name="petrolPump" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+	                    <option value="">-- Select Petrol Pump --</option>
+	                    <option value="Indian Oil Corporation (IOCL)">Indian Oil Corporation (IOCL)</option>
+	                    <option value="Bharat Petroleum Corporation Limited (BPCL)">Bharat Petroleum Corporation Limited (BPCL)</option>
+	                    <option value="Hindustan Petroleum Corporation Limited (HPCL)">Hindustan Petroleum Corporation Limited (HPCL)</option>
+						<option value="Reliance Petroleum">Reliance Petroleum</option>
+						<option value="Shell India">Shell India</option>
+						<option value="Essar Oil (Now Nayara Energy)">Essar Oil (Now Nayara Energy)</option>
+						<option value="ONGC (Oil and Natural Gas Corporation)">ONGC (Oil and Natural Gas Corporation)</option>
+	                </select>
+	            </div>
+	            <div style="margin-bottom: 15px;">
+	                <label for="rate" style="display: block; margin-bottom: 5px;">Rate</label>
+	                <input type="number" id="rate" name="rate" required step="0.01" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+	            </div>
+	            <div style="text-align: right;">
+	                <button type="button" id="cancelBtn" style="margin-right: 10px; padding: 10px 20px; border: none; background-color: #ccc; border-radius: 5px; cursor: pointer;">
+	                    Cancel
+	                </button>
+	                <button type="submit" style="padding: 10px 20px; background-color: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer;">
+	                    Add
+	                </button>
+	            </div>
+	        </form>
+	    </div>
+	</div>
 </div>
 
 <script>
@@ -140,14 +188,34 @@
                 { title: "ID" },
                 { title: "Date" },
                 { title: "Vehicle Number" },
+				{ title: "Fuel Pump" },
+				{ title: "Rate(L)" },
                 { title: "Fuel Used (L)" },
                 { title: "Amount" }
             ]
         });
+		
+		$.ajax({
+				        url: '/api/vehicles/getAll',
+				        type: 'GET',
+				        success: function (vehicles) {
+				            const vehicleList = $('#vehicaleList'); // Target the select element
+				            vehicleList.empty(); // Clear any previous options
+				            vehicleList.append('<option value="">Select a Vehicale</option>'); // Placeholder option
+
+				            vehicles.forEach(function (vehicle) {
+				                const option = $('<option></option>').val(vehicle.id).text(vehicle.machine_number || vehicle.machineNumber);
+				                vehicleList.append(option); // Append the option to the select element
+				            });
+				        },
+				        error: function (xhr, status, error) {
+				            console.error("Error fetching vehicle data:", error);
+				        }
+				    });
 
         // Fetch data and populate the table
         $.ajax({
-            url: '/vehicle/getAll', // Adjust the endpoint URL if needed
+            url: '/vehicle/getDisel', // Adjust the endpoint URL if needed
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -157,8 +225,10 @@
                 table.clear();
 
                 data.forEach(function (record) {
-                    let fuelUsed = Number(record.disel) || 0;
-                    let amount = fuelUsed * 92; // Assume 92 is the fuel price per liter
+					console.log(record);
+                    let fuelUsed = Number(record.diesel) || 0;
+					let rate = Number(record.fuelRate) || 0;
+                    let amount = fuelUsed * rate; // Assume 92 is the fuel price per liter
                     totalFuel += fuelUsed;
 
                     // Track unique vehicles
@@ -168,7 +238,9 @@
                         record.id,
                         record.date || '',
                         record.machineNumber || '',
-                        fuelUsed,
+						record.petrolPump || '',
+						record.fuelRate || '',
+                        record.diesel || '',
                         amount.toFixed(2) // Round the amount to 2 decimal places
                     ]);
                 });
@@ -183,6 +255,48 @@
                 console.error("Error fetching records:", error);
             }
         });
+		
+		$('#addDieselBtn').on('click', function () {
+		            $('#addDieselModal').fadeIn();
+		        });
+
+		        // Hide the modal
+		        $('#cancelBtn').on('click', function () {
+		            $('#addDieselModal').fadeOut();
+		        });
+
+		        // Handle form submission
+		        $('#addDieselForm').on('submit', function (e) {
+		            e.preventDefault();
+
+		            const dieselData = {
+			
+		                vehicleNumber:  $('#vehicaleList option:selected').text(),
+		                fuelInLtr: $('#fuelInLtr').val(),
+		                petrolPump: $('#petrolPump').val(),
+		                rate: $('#rate').val()
+		            };
+
+		            $.ajax({
+		                url: '/api/diesel/addDiesel', // Adjust the endpoint URL if needed
+		                type: 'POST',
+		                contentType: 'application/json',
+		                data: JSON.stringify(dieselData),
+		                success: function (response) {
+							console.log(response);
+		                    alert(response);
+		                    $('#addDieselModal').fadeOut();
+		                    $('#addDieselForm')[0].reset();
+
+		                    // Optionally, refresh the table
+		                    $('#dieselReport').DataTable().ajax.reload();
+		                },
+		                error: function (xhr, status, error) {
+		                    alert('Failed to add diesel record: ' + error);
+		                }
+		            });
+		        });
+		
     });
 </script>
 

@@ -459,7 +459,7 @@
 		// Fetch orders and populate the table
 		function fetchOrders(filters = {}) {
 		    $.ajax({
-		        url: '/api/order/getAll',
+		        url: '/api/order/getAll/pending',
 		        type: 'GET',
 		        data: filters, // Pass filters if any
 		        success: function(orders) {

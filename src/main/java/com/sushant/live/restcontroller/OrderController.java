@@ -31,6 +31,26 @@ public class OrderController {
     	List<Coustomer_order> list = orderService.getAllOrders();
         return ResponseEntity.ok(list);
     }
+	@GetMapping("/getAll/active")
+	public ResponseEntity<List<Coustomer_order>> getActiveOrderList() {
+    	System.out.println("VehicaleController : getVehicaleList()");
+    	List<Coustomer_order> list = orderService.getActiveOrders();
+        return ResponseEntity.ok(list);
+    }
+	
+	@GetMapping("/getAll/pending")
+	public ResponseEntity<List<Coustomer_order>> getPendingOrderList() {
+    	System.out.println("VehicaleController : getVehicaleList()");
+    	List<Coustomer_order> list = orderService.getPendingOrders();
+        return ResponseEntity.ok(list);
+    }
+	
+	@GetMapping("/getAll/complete")
+	public ResponseEntity<List<Coustomer_order>> getCompleteOrderList() {
+    	System.out.println("VehicaleController : getVehicaleList()");
+    	List<Coustomer_order> list = orderService.getCompleteOrders();
+        return ResponseEntity.ok(list);
+    }
 	
 	@GetMapping("/getById")
 	public ResponseEntity<Coustomer_order> getOrderById(@RequestParam int id) {
@@ -49,7 +69,7 @@ public class OrderController {
 	        newOrder.setMachins(orderDTO.getMachine_numbers());
 	        newOrder.setAddress(orderDTO.getAddress());
 	        newOrder.setAdvance(orderDTO.getAdvance());
-	        newOrder.setStatus("In Progress");
+	        newOrder.setStatus("Active");
 	        newOrder.setOnwerMobile(SessionManager.getInstance().getUsername());
 	        LocalDate today = LocalDate.now();
 	  	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");

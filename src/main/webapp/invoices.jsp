@@ -196,11 +196,10 @@
 		        url: '/api/invoice/getAllInvoice', // URL for fetching invoice data
 		        type: 'GET',
 		        success: function(invoices) {
-		            table.clear(); // Clear existing rows
-
+		            table.clear(); // Clear existing 
 		            // Loop through each invoice and add it to the DataTable
 		            invoices.forEach(function(invoice) {
-		          
+						console.log(invoice);
 		                table.row.add([
 		                    invoice.id || '',              // Ensure fallback value if undefined
 		                    invoice.billedDate || '',      // Correct property name for billedDate

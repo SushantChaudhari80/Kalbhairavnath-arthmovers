@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sushant.live.dto.DieselDTO;
 import com.sushant.live.dto.ReadingDTO;
 import com.sushant.live.model.MachineReading;
 import com.sushant.live.repository.ReadingRepository;
@@ -121,6 +122,19 @@ public class MachineReadingController {
         repo.save(reading);
 
         return ResponseEntity.ok("Reading updated successfully");
+    }
+    
+    @PostMapping("/api/diesel/addDiesel")
+    public ResponseEntity<String> addDiesel(@RequestBody DieselDTO dto){
+    	System.out.println(dto.toString());
+    	return ResponseEntity.ok(machineReadingService.addDiesel(dto));
+    }
+    
+    @GetMapping("/vehicle/getDisel")
+    public  ResponseEntity<List<MachineReading>> getDisel(){
+    	System.out.println("MachineReadingController : getAllbyOnwer()");
+    	List<MachineReading> list =  machineReadingService.getDisel();
+    	return ResponseEntity.ok(list);
     }
 
     

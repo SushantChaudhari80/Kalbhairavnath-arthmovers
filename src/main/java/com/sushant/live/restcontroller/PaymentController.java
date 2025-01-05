@@ -38,7 +38,7 @@ public class PaymentController {
 	
 	@PostMapping("/add")
 	public ResponseEntity<String> addNewPayment(@RequestBody PaymentDTO dto){
-		System.out.println("from PaymentController : ");
+		System.out.println("from PaymentController : " + dto.toString());
 		Payments amt = new Payments();
 		amt.setCustomerName(dto.getCustomer_name());
 		    LocalDate today = LocalDate.now();
@@ -47,7 +47,9 @@ public class PaymentController {
 	  	amt.setPayment_date(formattedDate);
 	  	amt.setPayment(dto.getAmount());
 	  	amt.setOwnerMobile(SessionManager.getInstance().getUsername());
+	  	System.out.println(amt.toString());
 	  	String msg = service.addNew(amt);
+	  	
 	  	return  ResponseEntity.ok(msg);
 	}
 	

@@ -36,7 +36,7 @@ public class DumperTreepController {
 		treep.setSelectedVehicle(dto.getSelectedVehicle());
 		treep.setSoilBrass(dto.getSoilBrass());
 		treep.setSoilRate(dto.getSoilRate());
-		treep.setTotalPayment(dto.getTotalPayment());
+		treep.setTotalPayment((""+Integer.parseInt(dto.getSoilRate())*Integer.parseInt(dto.getSoilBrass())));
 		treep.setItem(dto.getItem());
 		treep.setCreateDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		treep.setOmobile(SessionManager.getInstance().getUsername());
@@ -47,6 +47,11 @@ public class DumperTreepController {
 	@GetMapping("/getAll")
 	public ResponseEntity<List<DumperTreep>> getAll(){
 		return ResponseEntity.ok(service.getAll());
+	}
+	
+	@GetMapping("/getAll/billed")
+	public ResponseEntity<List<DumperTreep>> getBilledTreeps(){
+		return ResponseEntity.ok(service.getBilledTreeps());
 	}
 	
 	@PostMapping("/updateTreep/{id}")
