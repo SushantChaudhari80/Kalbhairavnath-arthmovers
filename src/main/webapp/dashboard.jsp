@@ -395,8 +395,11 @@
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script>
 		    $(document).ready(function() {
-				
+				$('#sidebar').hide();
 				$('.spinner-container').show();
+				$('#menubtn').on('click', function () {
+				    $('#sidebar').slideToggle(); // Toggles with a sliding effect
+				});
 				$.ajax({
 					                url: '/api/customers/dashboard/utilitis',  // URL for fetching the customer data
 					                type: 'GET',
@@ -492,10 +495,7 @@
 				       }
 				   });
 		    });
-			function toggleSidebar() {
-			            const sidebar = document.getElementById('sidebar');
-			            sidebar.classList.toggle('hidden');
-			        }
+	
 		</script>
 </head>
 <body>
@@ -524,6 +524,7 @@
    <div class="dashboard-container">
 	   <div class="sidebar" id="sidebar">
 	              <div>
+					<span id="closeSideBar" style="position: absolute; top: 10px; right: 10px; font-size: 24px; cursor: pointer;">&times;</span>
 	                  <h2>Transport</h2>
 	                  <ul class="nav-links">
 	                      <li><a href="dashboard.jsp">Dashboard</a></li>
@@ -551,9 +552,13 @@
             <!-- Header -->
            
             <div class="header">
-			    <div class="search-bar">
-			        <input type="text" placeholder="Search...">
-			    </div>
+				
+				<div style="display: flex;"> 
+					<input type="button" id="menubtn" value="&#9776;" onclick="toggleSidebar()" style="height=50px; width=50px; margin-right=10px">
+					<div class="search-bar">
+						<input type="text" placeholder="Search...">
+					</div>
+				</div>
 			    <div class="user-section">
 			        <span id="customer-name">Loading....</span>
 			        <img id="customer-picture" src="https://via.placeholder.com/40" alt="User Profile">
