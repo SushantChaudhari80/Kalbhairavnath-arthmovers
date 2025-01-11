@@ -63,7 +63,7 @@ public class ReadingService {
 	            return "Reading Added Successfully.";
 
 	        } else {
-	        	System.out.println("Updating Existing Reading with values : START READING :"+existingReading.getStartReadingImg().length+"END REDAING"+existingReading.getEndReadingImg().length+"DISEL  : "+existingReading.getDieselImg().length);
+	        	//System.out.println("Updating Existing Reading with values : START READING :"+existingReading.getStartReadingImg().length+"END REDAING"+existingReading.getEndReadingImg().length+"DISEL  : "+existingReading.getDieselImg().length);
 	            // Update existing record
 	            boolean isUpdated = false;
 

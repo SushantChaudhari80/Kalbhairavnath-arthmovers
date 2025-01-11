@@ -116,11 +116,20 @@
             <p>Due Amount</p>
         </div>
     </div>
-	<div style="text-align: right; margin-bottom: 20px;">
-	    <button id="addPaymentbtn" style="padding: 10px 20px; background-color: #2980b9; color: white; border: none; border-radius: 5px; cursor: pointer;">
+	<div style="display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-bottom: 20px;">
+	    <label for="customer-name1" style="margin-right: 10px;">Select Customer</label>
+	    <select id="customer-name1" style="width: 20%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+	        <!-- Options will go here -->
+	    </select>
+	    <button id="viewCustomerBtn" style="padding: 10px 20px; background-color: #2980b9; color: white; border: none; border-radius: 5px; cursor: pointer;">
+	        View
+	    </button>
+	    <button id="addPaymentBtn" style="padding: 10px 20px; background-color: #2980b9; color: white; border: none; border-radius: 5px; cursor: pointer;">
 	        Add Payment
 	    </button>
 	</div>
+
+
 
     <!-- Diesel Data Table -->
     <table id="dieselReport">
@@ -207,6 +216,11 @@
                 // Update summary section
                 $('#totalCustomers').text(totalVehicles.size);
                 $('#totalProfit').text(totalAmt + ' RS');
+				//$('#dieselReport tbody').on('click', 'tr', function() {
+					//	const data = table.row(this).data();
+					//	const customerName = data[2];
+					//	window.location.href = 'paymentReport.jsp?customerName='+customerName;
+				//});
             },
             error: function (xhr, status, error) {
                 console.error("Error fetching records:", error);
@@ -218,11 +232,16 @@
 						        type: 'GET',
 						        success: function (vehicles) {
 						            const vehicleList = $('#customer-name');
+									const customerList = $('#customer-name1');
 						            vehicleList.empty();
 						            vehicleList.append('<option value="">Select a Customer</option>');
+									customerList.empty();
+									customerList.append('<option value="">Select a Customer</option>');
 						            vehicles.forEach(function (customer) {
 						                const option = $('<option></option>').val(customer.id).text(customer.customer_name || '');
 						                vehicleList.append(option);
+										const option1 = $('<option></option>').val(customer.id).text(customer.customer_name || '');
+										customerList.append(option1);
 						            });
 						        },
 						        error: function (xhr, status, error) {
@@ -230,9 +249,17 @@
 						        }
 						    });
 		
-		              $('#addPaymentbtn').on('click', function () {
+		              $('#addPaymentBtn').on('click', function () {
 				            $('#addPaymentModal').fadeIn();
 				        });
+						$('#viewCustomerBtn').on('click', function () {
+							const customerName=  document.getElementById('customer-name1').options[document.getElementById('customer-name1').selectedIndex].text;
+							if(customerName === 'Select a Customer' ){
+								alert('Please Select Customer Name to view Due payments.');
+							}else{
+							window.location.href = 'paymentReport.jsp?customerName='+customerName;
+							}
+						});
 
 				        // Hide the modal
 				        $('#cancelBtn').on('click', function () {

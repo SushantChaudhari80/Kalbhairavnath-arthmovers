@@ -143,7 +143,7 @@
         </div>
 		<div>
 		    <label for="startReading">Start Reading:</label>
-		    <input type="text" id="startReading" name="startReading" required>
+		    <input type="text" id="startReading" name="startReading" >
 		</div>
 
         <div>
@@ -152,7 +152,7 @@
         </div>
 		<div>
 		    <label for="endReading">End Reading:</label>
-		    <input type="text" id="endReading" name="endReading" required>
+		    <input type="text" id="endReading" name="endReading" >
 		</div>
 
         <div>
@@ -161,7 +161,7 @@
         </div>
 		<div>
 		    <label for="diesel">Diesel:</label>
-		    <input type="text" id="diesel" name="diesel" required>
+		    <input type="text" id="diesel" name="diesel" >
 		</div>
 
         <button type="submit">Update Reading</button>

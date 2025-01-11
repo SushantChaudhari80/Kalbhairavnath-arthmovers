@@ -581,7 +581,7 @@
 																	                    <th>Address:</th>
 																	                    <td></td>
 																	                    <th>Date of Supply of Services:</th>
-																	                    <td>01.10.2024 to 30.10.2024</td>
+																	                    <td>DD/MM/YYYY</td>
 																	                </tr>
 																	                <tr>
 																	                    <th>GSTIN:</th>
