@@ -398,7 +398,12 @@
 				$('#sidebar').hide();
 				$('.spinner-container').show();
 				$('#menubtn').on('click', function () {
-				    $('#sidebar').slideToggle(); // Toggles with a sliding effect
+				    $('#sidebar').show(); // Toggles with a sliding effect closeSideBar
+					$('#menubtn').hide();
+				});
+				$('#closeSideBar').on('click', function () {
+					 $('#sidebar').hide(); // Toggles with a sliding effect closeSideBar
+					 $('#menubtn').show();
 				});
 				$.ajax({
 					                url: '/api/customers/dashboard/utilitis',  // URL for fetching the customer data
@@ -524,7 +529,7 @@
    <div class="dashboard-container">
 	   <div class="sidebar" id="sidebar">
 	              <div>
-					<span id="closeSideBar" style="position: absolute; top: 10px; right: 10px; font-size: 24px; cursor: pointer;">&times;</span>
+					<span id="closeSideBar">&times;</span>
 	                  <h2>Transport</h2>
 	                  <ul class="nav-links">
 	                      <li><a href="dashboard.jsp">Dashboard</a></li>
@@ -537,6 +542,7 @@
 						  <li><a href="billedTreep.jsp">Billed Treeps</a></li>
 	                      <li><a href="dieselReport.jsp">Diesel Report</a></li>
 	                      <li><a href="payments.jsp">Payments</a></li>
+						  <li><a href="">Genral Vouchers</a></li>
 	                      <li><a href="quotation.jsp">Treep Generator</a></li>
 	                      <li><a href="invoices.jsp">Invoices</a></li>
 	                      <li><a href="incident.jsp">Incident/Support</a></li>
@@ -554,7 +560,8 @@
             <div class="header">
 				
 				<div style="display: flex;"> 
-					<input type="button" id="menubtn" value="&#9776;" onclick="toggleSidebar()" style="height=50px; width=50px; margin-right=10px">
+					<span id="menubtn" onclick="toggleSidebar()" style="margin-right=10px;margin-top=10px;padding=10px">&#9776;</span>
+					
 					<div class="search-bar">
 						<input type="text" placeholder="Search...">
 					</div>

@@ -165,6 +165,7 @@
 		    // Initialize DataTable when the document is ready
 		    const table = $('#orderTable').DataTable({
 		        columns: [
+				    { title: "Select" },
 		            { title: "Order ID" },
 		            { title: "Customer Name" },
 		            { title: "Vehicale Number" },
@@ -189,6 +190,7 @@
 		                let totalHours = calculateTotalHours(record.startReading, record.endReading);
 
 		                table.row.add([
+					    	`<input type="checkbox" class="row-select" data-id="${record.id}">`,
 		                    record.id,
 		                    record.orderName || '',
 		                    record.machineNumber || '', // Ensure 'machineNumber' exists in your data
@@ -196,7 +198,7 @@
 		                    totalHours,
 		                    record.disel || '' // Fixed typo 'disel' to 'diesel'
 		                ]);
-		            });
+					});
 
 		            // Draw the table after all rows are added
 		            table.draw();
@@ -238,6 +240,322 @@
 		        e.preventDefault(); // Prevent form submission if it's within a form
 		        // Add filter logic here if necessary
 		    });
+			
+			$('#generateInvoice').on('click', function () {
+						  
+						$.ajax({
+										                url: '/api/customers/get',  // URL for fetching the customer data
+										                type: 'GET',
+										                success: function(customer) {
+										                   console.log(customer);
+														    const mobile=customer.mobile;
+														 	const ownerName=customer.name;
+															const bussinessName=customer.bussinessName;
+															const gstNo=customer.gstNo;
+															const acNo=customer.acNo;
+															const ifsc=customer.ifsc;
+															const bankName=customer.bankName;
+															const address=customer.address;
+															
+															
+															const selectedRows = [];
+															$('#orderTable tbody .row-checkbox:checked').each(function () {
+															    const rowIndex = $(this).closest('tr').index(); // Get the index of the row
+															    const rowData = table.row(rowIndex).data(); // Fetch data for the row
+
+															    if (rowData) {
+															        selectedRows.push(rowData);
+															    }
+															});
+
+															if (selectedRows.length === 0) {
+															    alert('No rows selected for the invoice!');
+															    return;
+															}
+
+															console.log("Selected Rows:", selectedRows);
+
+																		    // Generate the print content
+																		    let printContent = `
+																			<!DOCTYPE html>
+																			<html lang="en">
+																			<head>
+																			    <meta charset="UTF-8">
+																			    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+																			    <title>Tax Invoice</title>
+																			    <style>
+																			        body {
+																			            font-family: Arial, sans-serif;
+																			            margin: 0;
+																			            padding: 0;
+																			            background-color: #f9f9f9;
+																			        }
+																			        .invoice-container {
+																			            width: 90%;
+																			            margin: 20px auto;
+																			            background: #fff;
+																			            border: 1px solid #000;
+																			            padding: 20px;
+																			            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+																			        }
+																			        .invoice-header {
+																			            text-align: center;
+																			            margin-bottom: 20px;
+																			        }
+																			        .invoice-header h1 {
+																			            margin: 0;
+																			            font-size: 24px;
+																			        }
+																			        .invoice-header p {
+																			            margin: 5px 0;
+																			        }
+																			        h2 {
+																			            text-align: center;
+																			            margin: 20px 0;
+																			            font-size: 18px;
+																			            text-decoration: underline;
+																			        }
+																			        .details-table, .items-table, .summary-table {
+																			            width: 100%;
+																			            border-collapse: collapse;
+																			            margin-bottom: 20px;
+																			        }
+																			        .details-table th, .details-table td, .items-table th, .items-table td, .summary-table th, .summary-table td {
+																			            border: 1px solid #000;
+																			            padding: 8px;
+																			            text-align: left;
+																			        }
+																			        .items-table th {
+																			            background-color: #f0f0f0;
+																			        }
+																			        .section {
+																			            margin-bottom: 20px;
+																			        }
+																			        .bank-details {
+																			            margin-top: 20px;
+																			            border: 1px solid #000;
+																			            padding: 10px;
+																			        }
+																			        .bank-details p {
+																			            margin: 5px 0;
+																			        }
+																			        .footer {
+																			            text-align: center;
+																			            margin-top: 20px;
+																			            font-size: 14px;
+																			        }
+																			    </style>
+																			</head>
+																			<body>
+																			    <div class="invoice-container">
+																			        <div class="invoice-header">
+																			            <h1>`;
+																							printContent += bussinessName+"</h1>";
+																			         printContent += "<p>"+address+"</p>";
+																			           printContent +=` <h2>TAX INVOICE</h2>
+																			        </div>
+
+																			        <div class="section">
+																			            <table class="details-table">
+																			                <tr>
+																			                    <th>Invoice No:</th>`;
+																								
+																			                     printContent +="<td>"+ownerName+"</td>"+
+																			                    "<th>GSTIN:</th>"+
+																			                    "<td>"+gstNo+"</td>";
+																			               printContent +=`  </tr>
+																			                <tr>
+																			                    <th>Invoice Date:</th>
+																			                    <td>`;
+																									 printContent +=getFormattedDate(); printContent +=`</td>
+																			                    <th>Reverse Charge (Yes/No):</th>
+																			                    <td>No</td>
+																			                </tr>
+																			                <tr>
+																			                    <th>Place of Supply of Services:</th>
+																			                    <td>Maharashtra</td>
+																			                    <th>Code:</th>
+																			                    <td></td>
+																			                </tr>
+																			            </table>
+																			        </div>
+
+																			        <div class="section">
+																			            <table class="details-table">
+																			                <tr>
+																			                    <th colspan="2">Details of Receiver/Billed to</th>
+																			                    <th colspan="2">Details of Receiver/Billed to</th>
+																			                </tr>
+																			                <tr>
+																			                    <th>Name:</th>
+																			                    <td>`;printContent +=ownerName; printContent +=`</td>
+																			                    <th>Shipping Address:</th>
+																			                    <td></td>
+																			                </tr>
+																			                <tr>
+																			                    <th>Address:</th>
+																			                    <td></td>
+																			                    <th>Date of Supply of Services:</th>
+																			                    <td>DD/MM/YYYY</td>
+																			                </tr>
+																			                <tr>
+																			                    <th>GSTIN:</th>
+																			                    <td></td>
+																			                    <th>Code:</th>
+																			                    <td>27</td>
+																			                </tr>
+																			            </table>
+																			        </div>
+
+																			        <div class="section">
+																			            <table class="items-table">
+																			                <thead>
+																								<tr>
+																											                        <th>Customer Name</th>
+																											                        <th>Machine Number</th>
+																											                        <th>Date</th>
+																											                        <th>Total Hours</th>
+																											                        <th>Amount</th>
+																											                        
+																									</tr>
+																			                </thead>
+																			                <tbody>
+																			                   
+																		    `;
+
+																			const advance = prompt("Enter Advance Payment (optional):", "");
+																			const newSoilRate = prompt("Enter Soil Rate per Brass (optional):", "");
+																			selectedRows.forEach(row => {
+																			            const customerName = row[2] || "N/A";
+																			            const machineNumber = row[3] || "N/A";
+																			            const date = row[4] || "N/A";
+																			            const totalHours = parseFloat(row[5]) || 0;
+																			            const amount = (totalHours * newSoilRate).toFixed(2);
+
+																			            totalPaymentSum += parseFloat(amount);
+
+																			            printContent += `
+																			                <tr>
+																			                    <td>${customerName}</td>
+																			                    <td>${machineNumber}</td>
+																			                    <td>${date}</td>
+																			                    <td>${totalHours}</td>
+																			                    <td>${amount}</td>
+																			                </tr>
+																			            `;
+																			        });
+
+			                                                                 console.log(totalPaymentSum);
+																			const cgst = (totalPaymentSum * 0.09).toFixed(2); 
+																			const sgst = (totalPaymentSum * 0.09).toFixed(2); 
+																			const totalGST = (parseFloat(cgst) + parseFloat(sgst)).toFixed(2); 
+																			const totalPaymentAmount = (parseFloat(totalGST) + parseFloat(totalPaymentSum)).toFixed(2);
+																			const totalamounttopay =  (parseFloat(totalGST) + parseFloat(totalPaymentSum)).toFixed(2);
+																			const totaldueamount =  (parseFloat(totalPaymentAmount) - parseFloat(advance)).toFixed(2);
+																			const totalPaymentSumWords = numberToWords(totalPaymentSum);
+																		    printContent += `
+																		
+																					                </tbody>
+																					            </table>
+																					        </div>
+
+																					        <div class="section">
+																					            <table class="summary-table">
+																									<tr>
+																										<th>Total Invoice Amount in Words:</th>
+																										<td colspan="6">`; printContent +="Rs."+totalPaymentSumWords ;printContent += `</td>
+																									</tr>
+																									
+																					                <tr>
+																					                    <th>Less: Discount</th>
+																					                    <td colspan="6">-</td>
+																					                </tr>
+																					                <tr>
+																					                    <th>Net Taxable Value</th>
+																					                    <td colspan="6">`; printContent +=totalPaymentSum ;printContent += `</td>
+																					                </tr>
+																					                <tr>
+																					                    <th>Add: CGST @ 9%</th>
+																					                    <td colspan="6">`; printContent +=cgst ;printContent += `</td>
+																					                </tr>
+																					                <tr>
+																					                    <th>Add: SGST @ 9%</th>
+																					                    <td colspan="6">`; printContent +=sgst ;printContent += `</td>
+																					                </tr>
+																					                <tr>
+																					                    <th>Total Tax Amount</th>
+																					                    <td colspan="6">`; printContent +=totalGST ;printContent += `</td>
+																					                </tr>
+																					                <tr>
+																					                    <th>Total Invoice Value</th>
+																					                    <td colspan="6">`; printContent +=totalPaymentAmount ;printContent += `</td>
+																					                </tr>
+																									<tr>
+																										<th>Total Amount to pay:</th>
+																										<td colspan="6">`; printContent +="Rs."+advance ;printContent += `</td>
+																									</tr>
+																									<tr>
+																									   <th>Total Due Amount :</th>
+																										<td colspan="6">`; printContent +="Rs."+totaldueamount ;printContent += `</td>
+																									</tr>
+																																												               
+																					            </table>
+																					        </div>
+
+																					        <div class="bank-details">
+																					            <p><strong>Bank Name:</strong>`; printContent +=bankName ;printContent += `</p>
+																					            <p><strong>Bank A/C:</strong> `; printContent +=acNo ;printContent += `</p>
+																					            <p><strong>IFSC:</strong> `; printContent +=ifsc ;printContent += `</p>
+																					        </div>
+
+																					        <div class="footer">
+																					            <p>Certified that the particulars given above are true and correct</p>
+																					            <p>For `; printContent +=bussinessName ;printContent += `</p>
+																					            <p><strong>Authorized Signatory</strong></p>
+																					        </div>
+																					    </div>
+																					</body>
+																					</html>
+																		    `;
+																			
+																			const dtoData={
+																				billedDate:getFormattedDate(),
+																				invoice : printContent
+																			};
+																			
+
+																			$.ajax({
+																			    url: '/api/invoice/save',
+																			    type: 'PUT',
+																			    contentType: 'application/json', // Specify content type if dtoData is JSON
+																			    data: JSON.stringify(dtoData),  // Convert dtoData to JSON if not already
+																			    success: function (msg) {
+																			        console.log("Response:", msg);
+																			        alert("Invoice saved successfully!");
+																			    },
+																			    error: function (xhr, status, error) {
+																			        console.error("Error saving invoice:", error);
+																			        alert("Failed to save invoice. Please try again.");
+																			        $('.spinner-container').hide(); // Hide spinner on error
+																			    }
+																			});
+																			
+																			// Open the content in a new window and print
+																		    const printWindow = window.open('', '_blank');
+																		    printWindow.document.write(printContent);
+																		    printWindow.document.close();
+																		    printWindow.print();
+															
+															
+															
+										                },
+										                error: function(xhr, status, error) {
+										                    console.error("Error fetching customer data:", error);
+										                }
+										            });
+					    
+					});
+
 		});
 
 	</script>
@@ -269,6 +587,8 @@
                 </select>
             </div>
             <button id="fltButton" class="btn-filter">Filter</button>
+			<button id="generateInvoice" class="btn-filter" style="background-color: #2980b9; color: white;">Generate Invoice</button>
+
         </div>
 
         <!-- Summary Section -->
@@ -295,6 +615,7 @@
         <table id="orderTable">
             <thead>
                 <tr >
+					<th>Select</th>
                     <th>Order ID</th>
                     <th>Customer Name</th>
 					<th>Vehicale Number</th>
