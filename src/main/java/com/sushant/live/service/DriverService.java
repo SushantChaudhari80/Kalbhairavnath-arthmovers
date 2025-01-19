@@ -1,10 +1,12 @@
 package com.sushant.live.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sushant.live.mapper.VehicaleDriverProjection;
 import com.sushant.live.model.VehicaleDriver;
 import com.sushant.live.repository.DriverRepository;
 import com.sushant.live.util.SessionManager;
@@ -30,7 +32,22 @@ public class DriverService {
 	    }
 	    
 	    public List<VehicaleDriver> getAllDrivers(String ownerMobile) {
-	    	return driverRepo.findAllByOwnerMobile(ownerMobile);
+	    	List<VehicaleDriver> list = new ArrayList();
+	    	List<VehicaleDriverProjection> rr= driverRepo.findAllMachineDrivers(ownerMobile);
+	    	for(VehicaleDriverProjection p : rr) {
+	    		VehicaleDriver dr= new VehicaleDriver();
+	    		dr.setId(p.getId().intValue());
+	    		dr.setDriverName(p.getDriverName());
+	    		dr.setDriverMobile(p.getDriverMobile());
+	    		dr.setDriverAddress(p.getDriverAddress());
+	    		dr.setDriverAadhar(p.getDriverAadhar());
+	    		dr.setDriverLiencense(p.getDriverLiencense());
+	    		dr.setMachineNumber(p.getMachineNumber());
+	    		dr.setOnwerMobile(p.getOnwerMobile());
+	    		dr.setOwnerMobile(p.getOnwerMobile());
+	    		list.add(dr);
+	    	}
+	    	return list;
 	    }
 	    
 	    public List<VehicaleDriver> getByNumber(String i) {

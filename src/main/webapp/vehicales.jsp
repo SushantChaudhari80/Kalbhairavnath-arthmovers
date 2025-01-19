@@ -328,7 +328,8 @@
 						                           const data = table.row(this).data();
 						                           const vId = data[0]; // Assuming ID is in the first column
 						                           const vNumber = data[1];
-						                           window.location.href = 'machinReport.jsp?driverId='+vId+'&driverName='+vNumber;
+												   const vType = data[3];
+						                           window.location.href = 'machinReport.jsp?vType='+vType+'&driverName='+vNumber;
 						                       });
 	                    $('.spinner-container').hide(); // Hide the spinner
 	                },

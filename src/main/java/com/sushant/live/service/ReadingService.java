@@ -3,6 +3,8 @@ package com.sushant.live.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -11,7 +13,6 @@ import com.sushant.live.dto.DieselDTO;
 import com.sushant.live.dto.ReadingDTO;
 import com.sushant.live.model.Coustomer_order;
 import com.sushant.live.model.MachineReading;
-import com.sushant.live.model.VehicaleDriver;
 import com.sushant.live.repository.DriverRepository;
 import com.sushant.live.repository.OrderRepository;
 import com.sushant.live.repository.ReadingRepository;
@@ -63,7 +64,13 @@ public class ReadingService {
 	            return "Reading Added Successfully.";
 
 	        } else {
-	        	//System.out.println("Updating Existing Reading with values : START READING :"+existingReading.getStartReadingImg().length+"END REDAING"+existingReading.getEndReadingImg().length+"DISEL  : "+existingReading.getDieselImg().length);
+	         try {	
+               System.out.println("Updating Existing Reading with values : START READING :"+existingReading.getStartReadingImg().length);
+               System.out.println("DISEL  : "+existingReading.getDieselImg().length);
+               System.out.println("END REDAING : "+existingReading.getEndReadingImg().length);
+             }catch(Exception e) {
+	        	 System.out.println(e.getLocalizedMessage());
+	         }
 	            // Update existing record
 	            boolean isUpdated = false;
 
@@ -76,11 +83,14 @@ public class ReadingService {
 	                existingReading.setEndReadingImg(dto.getEndReading());
 	                isUpdated = true;
 	            }
-	            if (dto.getDisel() != null) {
+	            try {
+	            if (dto.getDisel() != null && existingReading.getDieselImg() == null || existingReading.getDieselImg().length==0  ) {
 	                existingReading.setDieselImg(dto.getDisel());
 	                isUpdated = true;
 	            }
-
+	            }catch(Exception e) {
+	            	System.out.println(e.getLocalizedMessage());
+	            }
 	            // If no updates are made, return appropriate message
 	            if (!isUpdated) {
 	                return "Reading Already Submitted.";
@@ -96,8 +106,14 @@ public class ReadingService {
 	                return "Order details not found for the given machine.";
 	            }
 
-	            // Save updated reading
-	            System.out.println("Updating Existing Reading with final values : START READING :"+existingReading.getStartReadingImg().length+"END REDAING"+existingReading.getEndReadingImg().length+"DISEL  : "+existingReading.getDieselImg().length);
+	            try {	
+	                System.out.println("Updating Existing Reading with New values : START READING :"+existingReading.getStartReadingImg().length);
+	                System.out.println("END REDAING : "+existingReading.getEndReadingImg().length);
+	                System.out.println("DISEL  : "+existingReading.getDieselImg().length);
+	 	         }catch(Exception e) {
+	 	        	 System.out.println(e.getLocalizedMessage());
+	 	         }
+	            
 	            repo.save(existingReading);
 	            return "Reading Updated Successfully.";
 	        }
@@ -118,7 +134,9 @@ public class ReadingService {
 	        int newVal = newValue != null ? Integer.parseInt(newValue) : 0;
 	        return String.valueOf(existing + newVal);
 	    } catch (NumberFormatException e) {
-	        throw new IllegalArgumentException("Invalid numeric data.");
+	    	System.err.println(e.getLocalizedMessage());
+	    	return existingValue;
+	        //throw new IllegalArgumentException("Invalid numeric data.");
 	    }
 	}
 
@@ -130,6 +148,10 @@ public class ReadingService {
 	
 	public List<MachineReading> getAll(){
 		return repo.getAll(SessionManager.getInstance().getUsername());
+		
+	}
+	public List<MachineReading> getAllBilled(){
+		return repo.getAllBilled(SessionManager.getInstance().getUsername());
 		
 	}
 	public List<MachineReading> getDisel(){
@@ -155,6 +177,20 @@ public class ReadingService {
 			e.printStackTrace();
 			return e.getLocalizedMessage();
 		}
+	}
+	
+	@Transactional
+	public String updateReading(int id) {
+	    if (id <= 0) {
+	        throw new IllegalArgumentException("Invalid Treep ID");
+	    }
+	    try {
+	        repo.updateReadingById(id, SessionManager.getInstance().getUsername());
+	        return "Reading updated successfully";
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	        throw new RuntimeException("Failed to update Treep. Please contact support.");
+	    }
 	}
 	
 	

@@ -2,6 +2,7 @@ package com.sushant.live.restcontroller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +67,13 @@ public class MachineReadingController {
     	List<MachineReading> list =  machineReadingService.getAll();
     	return ResponseEntity.ok(list);
     }
+    
+    @GetMapping("/vehicle/getAll/billed")
+    public  ResponseEntity<List<MachineReading>> getAllBilled(){
+    	System.out.println("MachineReadingController : getAllbyOnwer()");
+    	List<MachineReading> list =  machineReadingService.getAllBilled();
+    	return ResponseEntity.ok(list);
+    }
 //    @GetMapping("/vehicle/getAllRecord")
 //    public  ResponseEntity<List<MachineReading>> getAllRecord(@RequestParam String machinN){
 //    	
@@ -97,11 +105,22 @@ public class MachineReadingController {
                                                 @RequestParam(value = "dieselImg", required = false) MultipartFile dieselImg) {
         // Retrieve the existing reading record
     	MachineReading reading = repo.findById(id).orElseThrow(() -> new RuntimeException("Reading not found"));
-
+    	System.out.println(reading.getStartReading() +":"+reading.getEndReading()+":"+reading.getDiesel() );
+       System.out.println(startReading +":"+endReading+":"+diesel);
         // Update reading counts
-        reading.setStartReading(startReading);
-        reading.setEndReading(endReading);
-        reading.setDiesel(diesel);
+    	if( startReading != null && startReading != "" && startReading.length()>0) {
+    		System.out.println("Setting Start reading");
+    		reading.setStartReading(startReading);
+    	}
+        if(endReading != null && endReading != "" && endReading.length()>0) {
+        	System.out.println("Setting end reading");
+        	reading.setEndReading(endReading);
+        	}
+        if(diesel != null && diesel!="" && diesel.length()>0) {
+        	System.out.println("Setting disel"); 
+        	reading.setDiesel(diesel);
+        	}
+        
 
 //        // Handle image updates if present
 //        try {
@@ -126,7 +145,7 @@ public class MachineReadingController {
     
     @PostMapping("/api/diesel/addDiesel")
     public ResponseEntity<String> addDiesel(@RequestBody DieselDTO dto){
-    	System.out.println(dto.toString());
+    	//System.out.println(dto.toString());
     	return ResponseEntity.ok(machineReadingService.addDiesel(dto));
     }
     
@@ -136,6 +155,20 @@ public class MachineReadingController {
     	List<MachineReading> list =  machineReadingService.getDisel();
     	return ResponseEntity.ok(list);
     }
+    
+    @PostMapping("/api/reading/updateReading/{id}")
+	public ResponseEntity<String> updateReading(@PathVariable int id) {
+	    try {
+	        String response = machineReadingService.updateReading(id);
+	        return ResponseEntity.ok(response);
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.badRequest().body(e.getMessage());
+	    } catch (Exception e) {
+	       e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                             .body("An unexpected error occurred. Please try again later.");
+	    }
+	}
 
     
 }

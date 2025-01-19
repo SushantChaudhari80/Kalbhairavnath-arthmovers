@@ -16,4 +16,7 @@ public interface PaymentRepository extends JpaRepository<Payments , Integer> {
 	 @Query(value = "SELECT SUM(payment) FROM payment WHERE owner_mobile = :ownerMobile AND customer_name = :cName", nativeQuery = true)
 	public String getTotalAmt(@Param("ownerMobile") String ownerMobile ,@Param("cName") String cName );
 
+	 @Query(value = "select * from payment where owner_mobile= :ownerMobile and customer_name=:name" , nativeQuery = true)
+		public List<Payments> getByCustomerName(@Param("ownerMobile") String ownerMobile,@Param("name") String name);
+
 }

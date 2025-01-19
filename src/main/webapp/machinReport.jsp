@@ -139,9 +139,10 @@
 	    }
 
 	    // Retrieve the driverId from the URL
-	    const driverId = getQueryParameter('driverId');
+	    const vType = getQueryParameter('vType');
 	    const driverName = getQueryParameter('driverName');
-	    console.log(driverId , driverName);
+		
+		console.log(vType , driverName);
 		$('#machin-number').text(driverName || 'No Name Provided'); 
 		
 		$(document).ready(function() {
@@ -306,18 +307,22 @@
 		                    record.endReading || '',
 		                    totalHours || '',
 		                    record.maintenance || '',
-							record.disel || '',
+							record.diesel || '',
 		                    record.driverName || ''
 		                ]);
 		            });
 
 		            // Draw the table after all rows are added
 		            table.draw();
+					if(vType === 'Dumper'){
+							$('.table-container').hide();	
+					}
 					$('#readingTable tbody').on('click', 'tr', function() {
 											                           const data = table.row(this).data();
 											                           const vId = data[0]; // Assuming ID is in the first col
 											                           window.location.href = 'approveCount.jsp?rowId='+vId;
 											                       });
+																   
 		        },
 		        error: function (xhr, status, error) {
 		            console.error("Error fetching records:", error);

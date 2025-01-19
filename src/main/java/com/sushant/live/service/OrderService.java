@@ -50,6 +50,10 @@ public class OrderService {
 	 
 	 public boolean updateOrder(Coustomer_order order) {
 	        try {
+	        	if(order.getMachins() != null) {
+	        	orderRepository.removeMachin(order.getMachins() , order.getId());
+	        	}
+	        	System.out.println(order.toString());
 	        	orderRepository.save(order);
 	            return true;
 	        } catch (Exception e) {

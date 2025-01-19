@@ -54,6 +54,19 @@ public class MachineReading {
 	private String petrolPump;
 	
 	private String fuelRate;
+	
+	@Column(name = "billed")
+	private String billed;
+	
+	
+
+	public String getIsBilled() {
+		return billed;
+	}
+
+	public void setIsBilled(String isBilled) {
+		this.billed = isBilled;
+	}
 
 	public int getId() {
 		return id;
@@ -179,9 +192,11 @@ public class MachineReading {
 
 	
 
+	
 	public MachineReading(int id, String date, byte[] startReadingImg, String startReading, byte[] endReadingImg,
 			String endReading, String maintenance, byte[] dieselImg, String diesel, String onwerMobile,
-			String driverName, String machineNumber, String orderName, String petrolPump, String fuelRate) {
+			String driverName, String machineNumber, String orderName, String petrolPump, String fuelRate,
+			String isBilled) {
 		super();
 		this.id = id;
 		this.date = date;
@@ -198,6 +213,7 @@ public class MachineReading {
 		OrderName = orderName;
 		this.petrolPump = petrolPump;
 		this.fuelRate = fuelRate;
+		this.billed = isBilled;
 	}
 
 	public MachineReading() {
@@ -205,15 +221,15 @@ public class MachineReading {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public String toString() {
-		return "MachineReading [id=" + id + ", date=" + date + ", startReadingImg=" + Arrays.toString(startReadingImg)
-				+ ", startReading=" + startReading + ", endReadingImg=" + Arrays.toString(endReadingImg)
-				+ ", endReading=" + endReading + ", Maintenance=" + Maintenance + ", dieselImg="
-				+ Arrays.toString(dieselImg) + ", diesel=" + diesel + ", onwerMobile=" + onwerMobile + ", driverName="
-				+ driverName + ", machineNumber=" + machineNumber + ", OrderName=" + OrderName + ", petrolPump="
-				+ petrolPump + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "MachineReading [id=" + id + ", date=" + date + ", startReadingImg=" + Arrays.toString(startReadingImg)
+//				+ ", startReading=" + startReading + ", endReadingImg=" + Arrays.toString(endReadingImg)
+//				+ ", endReading=" + endReading + ", Maintenance=" + Maintenance + ", dieselImg="
+//				+ Arrays.toString(dieselImg) + ", diesel=" + diesel + ", onwerMobile=" + onwerMobile + ", driverName="
+//				+ driverName + ", machineNumber=" + machineNumber + ", OrderName=" + OrderName + ", petrolPump="
+//				+ petrolPump + "]";
+//	}
 
     
 

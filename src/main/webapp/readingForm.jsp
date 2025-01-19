@@ -73,6 +73,7 @@
 	<script>
 	    $(document).ready(function () {
 	        // Function to get query parameter from URL
+			$('#endReading').prop('disabled', true).val('');
 	        function getQueryParameter(param) {
 	            const urlParams = new URLSearchParams(window.location.search);
 	            return urlParams.get(param);
@@ -223,7 +224,7 @@
 	        <!-- Input for Maintenance -->
 	        <div class="form-group">
 	            <label for="maintenanceNumber">Maintenance</label>
-	            <input type="number" id="maintenanceNumber" name="maintenanceNumber" />
+	            <input type="number" id="maintenanceNumber" name="maintenanceNumber" value="0"/>
 	        </div>
 			
 			<div class="form-group">

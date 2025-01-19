@@ -403,7 +403,7 @@
 
 		    // Update summary dynamically
 		    document.getElementById('quotation-form').addEventListener('input', function () {
-		        const customerName = document.getElementById('customer-name').value;
+		        const customerName = document.getElementById('customer-name').options[document.getElementById('customer-name').selectedIndex].text;
 		        const soilBrass = document.getElementById('soil-brass').value;
 		        const soilRate = document.getElementById('soil-rate').value;
               

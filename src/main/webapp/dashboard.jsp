@@ -398,7 +398,7 @@
 				$('#sidebar').hide();
 				$('.spinner-container').show();
 				$('#menubtn').on('click', function () {
-				    $('#sidebar').show(); // Toggles with a sliding effect closeSideBar
+				    $('#sidebar').fadeIn(); // Toggles with a sliding effect closeSideBar
 					$('#menubtn').hide();
 				});
 				$('#closeSideBar').on('click', function () {
@@ -538,11 +538,12 @@
 	                      <li><a href="drivers.jsp">Drivers</a></li>
 	                      <li><a href="reports.jsp">Reports</a></li>
 	                      <li><a href="orderReport.jsp">Excavator Report</a></li>
+						  <li><a href="billedReadings.jsp">Billed Readings</a></li>
 	                      <li><a href="dumper.jsp">UnBilled Treeps</a></li>
 						  <li><a href="billedTreep.jsp">Billed Treeps</a></li>
 	                      <li><a href="dieselReport.jsp">Diesel Report</a></li>
 	                      <li><a href="payments.jsp">Payments</a></li>
-						  <li><a href="">Genral Vouchers</a></li>
+						  <li><a href="genralVouchers.jsp">Genral Vouchers</a></li>
 	                      <li><a href="quotation.jsp">Treep Generator</a></li>
 	                      <li><a href="invoices.jsp">Invoices</a></li>
 	                      <li><a href="incident.jsp">Incident/Support</a></li>

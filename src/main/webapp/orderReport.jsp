@@ -157,18 +157,23 @@
 
 	   <!-- Include DataTables JavaScript -->
 	   <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+	   <jsp:include page="utility.jsp" />
 	<script>
 		$(document).ready(function() {
-		    // Show spinner if needed (add your spinner logic)
+		    // Show spinner if needed
 		    $('.spinner-container').show();
-		    
-		    // Initialize DataTable when the document is ready
+
+		    // Initialize DataTable
 		    const table = $('#orderTable').DataTable({
 		        columns: [
-				    { title: "Select" },
+		            {
+		                title: "<input type='checkbox' id='selectAll'>",
+		                orderable: false,
+		                className: 'select-checkbox',
+		            },
 		            { title: "Order ID" },
 		            { title: "Customer Name" },
-		            { title: "Vehicale Number" },
+		            { title: "Vehicle Number" },
 		            { title: "Date" },
 		            { title: "Total Hours" },
 		            { title: "Diesel" }
@@ -180,38 +185,38 @@
 		        url: '/vehicle/getAll', // Adjust the endpoint URL if needed
 		        type: 'GET',
 		        dataType: 'json',
-		        success: function (data) {
+		        success: function(data) {
 		            console.log(data);
-		            // Clear the table before adding new rows
 		            table.clear();
 
-		            // Loop through each record and add it to the table
-		            data.forEach(function (record) {
-		                let totalHours = calculateTotalHours(record.startReading, record.endReading);
+		            data.forEach(function(record) {
+		                const totalHours = calculateTotalHours(record.startReading, record.endReading);
 
 		                table.row.add([
-					    	`<input type="checkbox" class="row-select" data-id="${record.id}">`,
+		                    `<input type="checkbox" class="row-checkbox" data-id="${record.id}">`,
 		                    record.id,
 		                    record.orderName || '',
-		                    record.machineNumber || '', // Ensure 'machineNumber' exists in your data
+		                    record.machineNumber || '',
 		                    record.date || '',
 		                    totalHours,
-		                    record.disel || '' // Fixed typo 'disel' to 'diesel'
+		                    record.diesel || '' // Fixed typo
 		                ]);
-					});
+		            });
 
-		            // Draw the table after all rows are added
 		            table.draw();
+		            $('.spinner-container').hide();
 		        },
-		        error: function (xhr, status, error) {
+		        error: function(xhr, status, error) {
 		            console.error("Error fetching records:", error);
+		            alert("Failed to load data. Please try again.");
+		            $('.spinner-container').hide();
 		        }
 		    });
 
 		    // Function to calculate total hours
 		    function calculateTotalHours(start, end) {
 		        if (start && end) {
-		            return end - start; // Simple difference, adjust if necessary
+		            return end - start;
 		        }
 		        return 'N/A';
 		    }
@@ -220,61 +225,68 @@
 		    $.ajax({
 		        url: '/api/vehicles/getAll',
 		        type: 'GET',
-		        success: function (vehicles) {
-		            const vehicleList = $('#vehicaleList'); // Target the select element
-		            vehicleList.empty(); // Clear any previous options
-		            vehicleList.append('<option value="">Select a Vehicale</option>'); // Placeholder option
+		        success: function(vehicles) {
+		            const vehicleList = $('#vehicaleList');
+		            vehicleList.empty();
+		            vehicleList.append('<option value="">Select a Vehicle</option>');
 
-		            vehicles.forEach(function (vehicle) {
-		                const option = $('<option></option>').val(vehicle.id).text(vehicle.machine_number || vehicle.machineNumber);
-		                vehicleList.append(option); // Append the option to the select element
+		            vehicles.forEach(function(vehicle) {
+		                const option = $('<option></option>')
+		                    .val(vehicle.id)
+		                    .text(vehicle.machine_number || vehicle.machineNumber);
+		                vehicleList.append(option);
 		            });
 		        },
-		        error: function (xhr, status, error) {
+		        error: function(xhr, status, error) {
 		            console.error("Error fetching vehicle data:", error);
+		            alert("Failed to load vehicle list. Please try again.");
 		        }
 		    });
 
-		    // Filter button event (optional logic for filtering)
-		    $('#fltButton').on('click', function (e) {
-		        e.preventDefault(); // Prevent form submission if it's within a form
-		        // Add filter logic here if necessary
-		    });
-			
-			$('#generateInvoice').on('click', function () {
-						  
-						$.ajax({
-										                url: '/api/customers/get',  // URL for fetching the customer data
-										                type: 'GET',
-										                success: function(customer) {
-										                   console.log(customer);
-														    const mobile=customer.mobile;
-														 	const ownerName=customer.name;
-															const bussinessName=customer.bussinessName;
-															const gstNo=customer.gstNo;
-															const acNo=customer.acNo;
-															const ifsc=customer.ifsc;
-															const bankName=customer.bankName;
-															const address=customer.address;
-															
-															
-															const selectedRows = [];
-															$('#orderTable tbody .row-checkbox:checked').each(function () {
-															    const rowIndex = $(this).closest('tr').index(); // Get the index of the row
-															    const rowData = table.row(rowIndex).data(); // Fetch data for the row
+			function getFormattedDate() {
+				const today = new Date();
+				const dd = String(today.getDate()).padStart(2, '0'); // Get day and add leading zero if needed
+				const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based, add 1 and leading zero
+				 const yyyy = today.getFullYear(); // Get full year
 
-															    if (rowData) {
-															        selectedRows.push(rowData);
-															    }
-															});
+				return dd+'/'+mm+'/'+yyyy;
+			}
 
-															if (selectedRows.length === 0) {
-															    alert('No rows selected for the invoice!');
-															    return;
-															}
+		    // Generate Invoice
+		    $('#generateInvoice').on('click', function() {
+		        $.ajax({
+		            url: '/api/customers/get',
+		            type: 'GET',
+		            success: function(customer) {
+		                console.log(customer);
 
-															console.log("Selected Rows:", selectedRows);
+		                const {
+		                    mobile,
+		                    name: ownerName,
+		                    bussinessName,
+		                    gstNo,
+		                    acNo,
+		                    ifsc,
+		                    bankName,
+		                    address
+		                } = customer;
 
+		                const selectedRows = [];
+		                $('#orderTable tbody .row-checkbox:checked').each(function() {
+		                    const rowIndex = $(this).closest('tr').index();
+		                    const rowData = table.row(rowIndex).data();
+
+		                    if (rowData) {
+		                        selectedRows.push(rowData);
+		                    }
+		                });
+
+		                if (selectedRows.length === 0) {
+		                    alert('No rows selected for the invoice!');
+		                    return;
+		                }
+
+		                console.log("Selected Rows:", selectedRows);
 																		    // Generate the print content
 																		    let printContent = `
 																			<!DOCTYPE html>
@@ -422,32 +434,59 @@
 																			                <tbody>
 																			                   
 																		    `;
-
+																			let totalPaymentSum = 0; 
 																			const advance = prompt("Enter Advance Payment (optional):", "");
-																			const newSoilRate = prompt("Enter Soil Rate per Brass (optional):", "");
+																			const gst = prompt("Enter GST % (optional/0.09):", ""); 
+																			
+																			let newSoilRate;
+
+																			do {
+																			    newSoilRate = prompt("Enter rate per Hour (mandatory):", "");
+																			    
+																			    // Check if the user clicked "Cancel" or left the input blank
+																			    if (newSoilRate === null) {
+																			        alert("You must enter a rate to proceed.");
+																			    } else if (newSoilRate.trim() === "") {
+																			        alert("Rate cannot be empty. Please enter a valid rate.");
+																			    }
+
+																			} while (newSoilRate === null || newSoilRate.trim() === "");
+																			let  totalHours = 0.0;
 																			selectedRows.forEach(row => {
-																			            const customerName = row[2] || "N/A";
-																			            const machineNumber = row[3] || "N/A";
-																			            const date = row[4] || "N/A";
-																			            const totalHours = parseFloat(row[5]) || 0;
-																			            const amount = (totalHours * newSoilRate).toFixed(2);
-
-																			            totalPaymentSum += parseFloat(amount);
-
-																			            printContent += `
-																			                <tr>
-																			                    <td>${customerName}</td>
-																			                    <td>${machineNumber}</td>
-																			                    <td>${date}</td>
-																			                    <td>${totalHours}</td>
-																			                    <td>${amount}</td>
-																			                </tr>
-																			            `;
-																			        });
+																				printContent += "<tr>";
+																				row.forEach((value, index) => {
+																					if (index === 0) return; 
+																					if (index === 1) {
+																						$.ajax({
+																							  url: '/api/reading/updateReading/'+value,// URL for fetching vehicle data
+																								  type: 'POST',
+																								  success: function (msg) {
+																								     console.log(msg);
+																								   },
+																								   error: function (xhr, status, error) {
+																									console.error("Error fetching vehicle data:", error);
+																									$('.spinner-container').hide(); // Hide the spinner on error as well
+																								}
+																					});
+																					return; 																
+																					}
+																					if (index === 6) return;
+																					let displayValue = value || "0";
+																					if(index===5){
+																						totalHours = parseFloat(row[5]) || 0;
+																						displayValue = totalHours;
+																					}
+																					printContent += "<td>" + displayValue + "</td>";
+																					  });
+																					  const amount = (totalHours * newSoilRate).toFixed(2);
+																					  totalPaymentSum += parseFloat(amount);
+																					  printContent += "<td>" + amount + "</td>";
+																					  printContent += "</tr>";  
+																			  });
 
 			                                                                 console.log(totalPaymentSum);
-																			const cgst = (totalPaymentSum * 0.09).toFixed(2); 
-																			const sgst = (totalPaymentSum * 0.09).toFixed(2); 
+																			const cgst = (totalPaymentSum * gst).toFixed(2); 
+																			const sgst = (totalPaymentSum * gst).toFixed(2); 
 																			const totalGST = (parseFloat(cgst) + parseFloat(sgst)).toFixed(2); 
 																			const totalPaymentAmount = (parseFloat(totalGST) + parseFloat(totalPaymentSum)).toFixed(2);
 																			const totalamounttopay =  (parseFloat(totalGST) + parseFloat(totalPaymentSum)).toFixed(2);
@@ -475,11 +514,11 @@
 																					                    <td colspan="6">`; printContent +=totalPaymentSum ;printContent += `</td>
 																					                </tr>
 																					                <tr>
-																					                    <th>Add: CGST @ 9%</th>
+																					                    <th>Add: CGST @ `; printContent +=gst ;printContent += `%</th>
 																					                    <td colspan="6">`; printContent +=cgst ;printContent += `</td>
 																					                </tr>
 																					                <tr>
-																					                    <th>Add: SGST @ 9%</th>
+																					                    <th>Add: SGST @`; printContent +=gst ;printContent += `%</th>
 																					                    <td colspan="6">`; printContent +=sgst ;printContent += `</td>
 																					                </tr>
 																					                <tr>
@@ -555,6 +594,10 @@
 										            });
 					    
 					});
+					$('#selectAll').on('change', function () {
+					           const isChecked = this.checked;
+					           $('.row-checkbox').prop('checked', isChecked);
+					       });
 
 		});
 
@@ -615,7 +658,7 @@
         <table id="orderTable">
             <thead>
                 <tr >
-					<th>Select</th>
+					<th></th>
                     <th>Order ID</th>
                     <th>Customer Name</th>
 					<th>Vehicale Number</th>

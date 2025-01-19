@@ -618,6 +618,7 @@
 																	
 																	 const advance = prompt("Enter Advance Payment (optional):", "");
 																	 const newSoilRate = prompt("Enter Soil Rate per Brass (optional):", "");
+																	 const gst = prompt("Enter GST % (optional/0.09):", "");
 																	 console.log(selectedRows);
 
 																	selectedRows.forEach(row => {
@@ -673,8 +674,8 @@
 																	});
 
                                                                      console.log(totalPaymentSum);
-																	const cgst = (totalPaymentSum * 0.09).toFixed(2); 
-																	const sgst = (totalPaymentSum * 0.09).toFixed(2); 
+																	const cgst = (totalPaymentSum * gst).toFixed(2); 
+																	const sgst = (totalPaymentSum * gst).toFixed(2); 
 																	const totalGST = (parseFloat(cgst) + parseFloat(sgst)).toFixed(2); 
 																	const totalPaymentAmount = (parseFloat(totalGST) + parseFloat(totalPaymentSum)).toFixed(2);
 																	const totalamounttopay =  (parseFloat(totalGST) + parseFloat(totalPaymentSum)).toFixed(2);
@@ -702,11 +703,11 @@
 																			                    <td colspan="6">`; printContent +=totalPaymentSum ;printContent += `</td>
 																			                </tr>
 																			                <tr>
-																			                    <th>Add: CGST @ 9%</th>
+																			                    <th>Add: CGST @`; printContent +=gst ;printContent += `%</th>
 																			                    <td colspan="6">`; printContent +=cgst ;printContent += `</td>
 																			                </tr>
 																			                <tr>
-																			                    <th>Add: SGST @ 9%</th>
+																			                    <th>Add: SGST @ `; printContent +=gst ;printContent += `%</th>
 																			                    <td colspan="6">`; printContent +=sgst ;printContent += `</td>
 																			                </tr>
 																			                <tr>

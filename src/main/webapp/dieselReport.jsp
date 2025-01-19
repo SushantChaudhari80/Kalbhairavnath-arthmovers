@@ -139,14 +139,31 @@
         </tbody>
     </table>
 	
-	<div id="addDieselModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center;">
-	    <div style="background: white; padding: 20px; width: 400px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); position: relative;">
+	<div id="addDieselModal" 
+	     style="display: none; 
+	            position: fixed; 
+	            top: 0; 
+	            left: 0; 
+	            width: 100%; 
+	            height: 100%; 
+	            background-color: rgba(0, 0, 0, 0.5); 
+	            display: flex; 
+	            justify-content: center; 
+	            align-items: center; 
+	            z-index: 9999;">
+	    <div style="background: white; 
+	                padding: 20px; 
+	                width: 500px; 
+	                max-width: 90%; 
+	                border-radius: 8px; 
+	                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+	                position: relative;">
 	        <h2 style="margin-top: 0; text-align: center;">Add Diesel</h2>
 	        <form id="addDieselForm">
-				<div class="filter-item">
-				   <label for="vehicaleList">Select Vehicale</label>
-					<select id="vehicaleList" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;"></select>
-				 </div>
+	            <div class="filter-item">
+	                <label for="vehicaleList">Select Vehicle</label>
+	                <select id="vehicaleList" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;"></select>
+	            </div>
 	            <div style="margin-bottom: 15px;">
 	                <label for="fuelInLtr" style="display: block; margin-bottom: 5px;">Fuel in Ltr</label>
 	                <input type="number" id="fuelInLtr" name="fuelInLtr" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
@@ -158,10 +175,10 @@
 	                    <option value="Indian Oil Corporation (IOCL)">Indian Oil Corporation (IOCL)</option>
 	                    <option value="Bharat Petroleum Corporation Limited (BPCL)">Bharat Petroleum Corporation Limited (BPCL)</option>
 	                    <option value="Hindustan Petroleum Corporation Limited (HPCL)">Hindustan Petroleum Corporation Limited (HPCL)</option>
-						<option value="Reliance Petroleum">Reliance Petroleum</option>
-						<option value="Shell India">Shell India</option>
-						<option value="Essar Oil (Now Nayara Energy)">Essar Oil (Now Nayara Energy)</option>
-						<option value="ONGC (Oil and Natural Gas Corporation)">ONGC (Oil and Natural Gas Corporation)</option>
+	                    <option value="Reliance Petroleum">Reliance Petroleum</option>
+	                    <option value="Shell India">Shell India</option>
+	                    <option value="Essar Oil (Now Nayara Energy)">Essar Oil (Now Nayara Energy)</option>
+	                    <option value="ONGC (Oil and Natural Gas Corporation)">ONGC (Oil and Natural Gas Corporation)</option>
 	                </select>
 	            </div>
 	            <div style="margin-bottom: 15px;">
@@ -179,10 +196,12 @@
 	        </form>
 	    </div>
 	</div>
+
 </div>
 
 <script>
     $(document).ready(function () {
+		$('#addDieselModal').hide();
         const table = $('#dieselReport').DataTable({
             columns: [
                 { title: "ID" },

@@ -189,7 +189,8 @@
 		            { title: "Billed Date" },
 		            { title: "Invoice content" },
 		            { title: "Actions" }
-		        ]
+		        ],
+				order: [[1, 'desc']]
 		    });
 
 		    $.ajax({

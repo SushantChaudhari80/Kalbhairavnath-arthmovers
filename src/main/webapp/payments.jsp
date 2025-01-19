@@ -174,6 +174,7 @@
 
 <script>
     $(document).ready(function () {
+		$('#container').fadeIn();
         const table = $('#dieselReport').DataTable({
             columns: [
                 { title: "ID" },

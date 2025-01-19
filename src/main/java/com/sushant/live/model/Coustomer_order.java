@@ -132,6 +132,13 @@ public class Coustomer_order {
 		public Coustomer_order() {
 			super();
 		}
+
+		@Override
+		public String toString() {
+			return "Coustomer_order [id=" + id + ", customer_name=" + customer_name + ", advance=" + advance
+					+ ", status=" + status + ", order_date=" + order_date + ", deliveryDate=" + deliveryDate
+					+ ", machins=" + machins + ", address=" + address + ", onwerMobile=" + onwerMobile + "]";
+		}
 	    
 	    
 	    
