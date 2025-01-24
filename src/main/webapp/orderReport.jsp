@@ -158,6 +158,7 @@
 	   <!-- Include DataTables JavaScript -->
 	   <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 	   <jsp:include page="utility.jsp" />
+	   <jsp:include page="url.jsp" />
 	<script>
 		$(document).ready(function() {
 		    // Show spinner if needed
@@ -182,7 +183,7 @@
 
 		    // Fetch and populate vehicle data into the table
 		    $.ajax({
-		        url: '/vehicle/getAll', // Adjust the endpoint URL if needed
+		        url: prod_url+'/vehicle/getAll', // Adjust the endpoint URL if needed
 		        type: 'GET',
 		        dataType: 'json',
 		        success: function(data) {
@@ -223,7 +224,7 @@
 
 		    // Fetch vehicle list for the dropdown
 		    $.ajax({
-		        url: '/api/vehicles/getAll',
+		        url: prod_url+'/api/vehicles/getAll',
 		        type: 'GET',
 		        success: function(vehicles) {
 		            const vehicleList = $('#vehicaleList');
@@ -255,7 +256,7 @@
 		    // Generate Invoice
 		    $('#generateInvoice').on('click', function() {
 		        $.ajax({
-		            url: '/api/customers/get',
+		            url: prod_url+'/api/customers/get',
 		            type: 'GET',
 		            success: function(customer) {
 		                console.log(customer);
@@ -458,7 +459,7 @@
 																					if (index === 0) return; 
 																					if (index === 1) {
 																						$.ajax({
-																							  url: '/api/reading/updateReading/'+value,// URL for fetching vehicle data
+																							  url: prod_url+'/api/reading/updateReading/'+value,// URL for fetching vehicle data
 																								  type: 'POST',
 																								  success: function (msg) {
 																								     console.log(msg);
@@ -564,7 +565,7 @@
 																			
 
 																			$.ajax({
-																			    url: '/api/invoice/save',
+																			    url: prod_url+'/api/invoice/save',
 																			    type: 'PUT',
 																			    contentType: 'application/json', // Specify content type if dtoData is JSON
 																			    data: JSON.stringify(dtoData),  // Convert dtoData to JSON if not already

@@ -180,6 +180,7 @@
 
 	<!-- Include DataTables JavaScript -->
 	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+	<jsp:include page="url.jsp" />
 	<script>
 	
 		$(document).ready(function () {
@@ -194,7 +195,7 @@
 		    });
 
 		    $.ajax({
-		        url: '/api/invoice/getAllInvoice', // URL for fetching invoice data
+		        url: prod_url+'/api/invoice/getAllInvoice', // URL for fetching invoice data
 		        type: 'GET',
 		        success: function(invoices) {
 		            table.clear(); // Clear existing 
@@ -217,7 +218,7 @@
 		                const invoiceId = data[0]; // Assuming the first column is the invoice ID
 						
 						$.ajax({
-							 url: '/api/invoice/getById/'+invoiceId,
+							 url: prod_url+'/api/invoice/getById/'+invoiceId,
 							 type: 'GET',
 							 success: function (msg) {
 								const printWindow = window.open('', '_blank');

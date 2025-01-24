@@ -107,6 +107,7 @@
             }
         }
     </style>
+	<jsp:include page="url.jsp" />
 	<script>
 	    document.getElementById("password").addEventListener("input", function () {
 	        const passwordInput = this.value;

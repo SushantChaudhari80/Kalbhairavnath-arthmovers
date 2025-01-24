@@ -328,6 +328,7 @@
 
 	   <!-- Include DataTables JavaScript -->
 	   <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+	   <jsp:include page="url.jsp" />
 	   <script>
 		$(document).ready(function() {
 		    $('.spinner-container').show();
@@ -357,7 +358,7 @@
 			    alert('View details for order ID: ' + orderId);
                  
 				                $.ajax({
-								        url: '/api/order/getById?id=' + orderId,
+								        url: prod_url+'/api/order/getById?id=' + orderId,
 								        type: 'GET',
 								        success: function(order) {
 											// Dynamically set values inside the modal based on the returned order data
@@ -390,7 +391,7 @@
 			    
 			    // Fetch order details by ID
 			    $.ajax({
-			        url: '/api/order/getById?id='+orderId,  // Your API URL for fetching order details
+			        url: prod_url+'/api/order/getById?id='+orderId,  // Your API URL for fetching order details
 			        type: 'GET',
 			        success: function(order) {
 			            // Populate the update modal with the order details
@@ -428,7 +429,7 @@
 
 			    // Send the updated order data via AJAX
 			    $.ajax({
-			        url: '/api/order/update',  // Your API URL for updating the order
+			        url: prod_url+'/api/order/update',  // Your API URL for updating the order
 			        type: 'POST',
 			        contentType: 'application/json',
 			        data: JSON.stringify(updatedOrder),
@@ -459,7 +460,7 @@
 		// Fetch orders and populate the table
 		function fetchOrders(filters = {}) {
 		    $.ajax({
-		        url: '/api/order/getAll/complete',
+		        url: prod_url+'/api/order/getAll/complete',
 		        type: 'GET',
 		        data: filters, // Pass filters if any
 		        success: function(orders) {
@@ -515,7 +516,7 @@
 		
 		function fetchVehiclesList() {
 		        $.ajax({
-		            url: '/api/vehicles/getAll', // URL for fetching vehicle data
+		            url: prod_url+'/api/vehicles/getAll', // URL for fetching vehicle data
 		            type: 'GET',
 		            success: function(vehicles) {
 		            	const vehicleContainer = document.getElementById('vehicleContainer'); // Get the container div

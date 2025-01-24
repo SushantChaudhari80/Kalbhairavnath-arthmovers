@@ -70,6 +70,7 @@
 
 	<!-- Include DataTables JavaScript -->
 	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+	<jsp:include page="url.jsp" />
 	<script>
 	    $(document).ready(function () {
 	        // Function to get query parameter from URL
@@ -85,7 +86,7 @@
 
 	        // Populate driver list based on selected owner
 	        $.ajax({
-	            url: '/api/driver/getAllByOnwer?ownerMobile=' + selectedOwnerMobile,
+	            url: prod_url+'/api/driver/getAllByOnwer?ownerMobile=' + selectedOwnerMobile,
 	            type: 'GET',
 	            success: function (drivers) {
 	                const driverList = $('#driverList'); // Target the select element
@@ -120,7 +121,7 @@
 			        console.log(drId);
 					
 					$.ajax({
-					            url: '/api/driver/getById?drId=' + drId,
+					            url: prod_url+'/api/driver/getById?drId=' + drId,
 					            type: 'GET',
 					            success: function (driver) {
 									console.log(driver);
@@ -170,7 +171,7 @@
 
 	            // Submit form data via AJAX
 	            $.ajax({
-	                url: '/driver/reading/submit',  // REST endpoint
+	                url: prod_url+'/driver/reading/submit',  // REST endpoint
 	                type: 'POST',
 					processData: false, // Prevent query string serialization
 					contentType: false, // Let browser set Content-Type

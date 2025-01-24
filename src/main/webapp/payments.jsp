@@ -171,7 +171,7 @@
 	    </div>
 	</div>
 </div>
-
+<jsp:include page="url.jsp" />
 <script>
     $(document).ready(function () {
 		$('#container').fadeIn();
@@ -187,7 +187,7 @@
         });
 
         $.ajax({
-            url: '/api/payment/getAll', // Adjust the endpoint URL if needed
+            url: prod_url+'/api/payment/getAll', // Adjust the endpoint URL if needed
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -229,7 +229,7 @@
         });
 		
 		               $.ajax({
-						        url: '/api/order/getAll',
+						        url: prod_url+'/api/order/getAll',
 						        type: 'GET',
 						        success: function (vehicles) {
 						            const vehicleList = $('#customer-name');
@@ -280,7 +280,7 @@
 
 							console.log(dieselData);
 				            $.ajax({
-				                url: '/api/payment/add', // Adjust the endpoint URL if needed
+				                url: prod_url+'/api/payment/add', // Adjust the endpoint URL if needed
 				                type: 'POST',
 				                contentType: 'application/json',
 				                data: JSON.stringify(dieselData),

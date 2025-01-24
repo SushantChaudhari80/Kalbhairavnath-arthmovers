@@ -88,6 +88,7 @@
         }
     </style>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<jsp:include page="url.jsp" />
 	<script>
 	$(document).ready(function() {
 		$('.spinner-container').hide();
@@ -100,7 +101,7 @@
 	        var pass  = document.getElementsByName('password')[0].value;
 
 	        $.ajax({
-	            url: '/login/user?email='+email+'&pass='+pass,
+	            url: prod_url+'/login/user?email='+email+'&pass='+pass,
 	            type: 'GET',
 	            dataType: 'json',
 	            success: function(response) {

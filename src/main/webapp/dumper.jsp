@@ -292,6 +292,7 @@
 	<!-- Include DataTables JavaScript -->
 	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 	<jsp:include page="utility.jsp" />
+	<jsp:include page="url.jsp" />
 	<script>
 		$(document).ready(function () {
 		    $('.spinner-container').show();
@@ -350,7 +351,7 @@
 		    // Function to fetch vehicle data from the server using AJAX
 		    function fetchVehiclesList() {
 		        $.ajax({
-		            url: '/api/treep/getAll', // URL for fetching vehicle data
+		            url: prod_url+'/api/treep/getAll', // URL for fetching vehicle data
 		            type: 'GET',
 		            success: function (vehicles) {
 		                table.clear(); // Clear existing rows
@@ -429,7 +430,7 @@
 			$('#printInvoiceBtn').on('click', function () {
 				  
 				$.ajax({
-								                url: '/api/customers/get',  // URL for fetching the customer data
+								                url: prod_url+'/api/customers/get',  // URL for fetching the customer data
 								                type: 'GET',
 								                success: function(customer) {
 								                   console.log(customer);
@@ -631,7 +632,7 @@
 																			
 																			if (index === 1){
 																				$.ajax({
-																					  url: '/api/treep/updateTreep/'+value,// URL for fetching vehicle data
+																					  url: prod_url+'/api/treep/updateTreep/'+value,// URL for fetching vehicle data
 																					  type: 'POST',
 																					  success: function (msg) {
 																					 console.log(msg);
@@ -753,7 +754,7 @@
 																	
 
 																	$.ajax({
-																	    url: '/api/invoice/save',
+																	    url: prod_url+'/api/invoice/save',
 																	    type: 'PUT',
 																	    contentType: 'application/json', // Specify content type if dtoData is JSON
 																	    data: JSON.stringify(dtoData),  // Convert dtoData to JSON if not already

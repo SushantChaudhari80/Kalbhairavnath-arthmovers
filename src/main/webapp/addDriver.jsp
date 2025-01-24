@@ -187,7 +187,7 @@
 
 	<!-- Include DataTables JavaScript -->
 	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-
+	<jsp:include page="url.jsp" />
 <script>
     document.getElementById('addDriverForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -219,7 +219,7 @@
             const driverAadhar = document.getElementById('driverAadhar').value; //driverLiecense
 			const driverLiecense = document.getElementById('driverLiecense').value;
             $.ajax({
-                url: '/api/driver/add',  // URL for adding the vehicle
+                url: prod_url+'/api/driver/add',  // URL for adding the vehicle
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({

@@ -198,7 +198,7 @@
 	</div>
 
 </div>
-
+<jsp:include page="url.jsp" />
 <script>
     $(document).ready(function () {
 		$('#addDieselModal').hide();
@@ -215,7 +215,7 @@
         });
 		
 		$.ajax({
-				        url: '/api/vehicles/getAll',
+				        url:  prod_url+'/api/vehicles/getAll',
 				        type: 'GET',
 				        success: function (vehicles) {
 				            const vehicleList = $('#vehicaleList'); // Target the select element
@@ -234,7 +234,7 @@
 
         // Fetch data and populate the table
         $.ajax({
-            url: '/vehicle/getDisel', // Adjust the endpoint URL if needed
+            url:  prod_url+'/vehicle/getDisel', // Adjust the endpoint URL if needed
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -297,7 +297,7 @@
 		            };
 
 		            $.ajax({
-		                url: '/api/diesel/addDiesel', // Adjust the endpoint URL if needed
+		                url:  prod_url+'/api/diesel/addDiesel', // Adjust the endpoint URL if needed
 		                type: 'POST',
 		                contentType: 'application/json',
 		                data: JSON.stringify(dieselData),

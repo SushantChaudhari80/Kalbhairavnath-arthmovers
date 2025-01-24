@@ -156,6 +156,7 @@
     </form>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<jsp:include page="url.jsp" />
 <script>
     // Simple JavaScript to handle form submission (placeholder, adjust as needed)
     document.getElementById('addVehicleForm').addEventListener('submit', function(event) {
@@ -165,7 +166,7 @@
     const company = document.getElementById('company').value;
     const v_type =  $('#v_type option:selected').text();
     $.ajax({
-        url: '/api/vehicles/add',  // URL for adding the vehicle
+        url: prod_url+'/api/vehicles/add',  // URL for adding the vehicle
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({

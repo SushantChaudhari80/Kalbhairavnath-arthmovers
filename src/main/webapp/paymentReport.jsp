@@ -40,6 +40,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
 	 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+	 <jsp:include page="url.jsp" />
 </head>
 <body>
     <div class="container">
@@ -162,7 +163,7 @@
 			$('#customerName').text(customerName);
 			
             $.ajax({
-                url: '/api/payment/getAll/byCustomerName?cName='+customerName,
+                url: prod_url+'/api/payment/getAll/byCustomerName?cName='+customerName,
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
@@ -225,7 +226,7 @@
                 }
             });
 			$.ajax({
-			                url: '/api/payment/getAll/payments/byCustomerName?cName='+customerName,
+			                url: prod_url+'/api/payment/getAll/payments/byCustomerName?cName='+customerName,
 			                type: 'GET',
 			                dataType: 'json',
 			                success: function (data) {

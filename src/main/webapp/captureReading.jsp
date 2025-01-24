@@ -184,13 +184,14 @@
 
 			<!-- Include DataTables JavaScript -->
 			<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+			<jsp:include page="url.jsp" />
 	<script>
 		$(document).ready(function() {
 		    $('#from1').hide();
 		    
 		    // Fetching owners and populating the select dropdown
 		    $.ajax({
-		        url: '/api/customers/getAll', // Adjust this URL to match your API endpoint
+		        url: prod_url+'/api/customers/getAll', // Adjust this URL to match your API endpoint
 		        type: 'GET',
 		        success: function(onwers) {
 		            const onwerList = $('#onwerList'); // Target the select element

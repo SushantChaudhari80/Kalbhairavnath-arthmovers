@@ -245,7 +245,7 @@
 
     <!-- Include DataTables JavaScript -->
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-
+	<jsp:include page="url.jsp" />
     <script>
         // Function to retrieve query parameters from URL
         function getQueryParameter(param) {
@@ -270,7 +270,7 @@
 				    });
 					
 					$.ajax({
-					            url: '/api/driver/payment/getAll?driverName='+driverName, // Replace with your API endpoint for removal
+					            url: prod_url+'/api/driver/payment/getAll?driverName='+driverName, // Replace with your API endpoint for removal
 						        type: 'GET',
 						        success: function(records) {
 									console.log(records);
@@ -324,7 +324,7 @@
 		        // Log the data or perform AJAX request to save payment details
 		        console.log('Payment Submitted:', { driverName, amount });
 				$.ajax({
-					        url: '/api/driver/payment/save?driverName='+driverName+'&amount='+amount, // Replace with your API endpoint for removal
+					        url: prod_url+'/api/driver/payment/save?driverName='+driverName+'&amount='+amount, // Replace with your API endpoint for removal
 					        type: 'GET',
 					        success: function(response) {
 								alert(response);

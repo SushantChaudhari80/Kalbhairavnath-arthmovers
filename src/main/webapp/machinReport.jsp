@@ -131,6 +131,7 @@
 
 		<!-- Include DataTables JavaScript -->
 		<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+		<jsp:include page="url.jsp" />
 	<script>
 	 // Function to retrieve query parameters from URL
 	    function getQueryParameter(param) {
@@ -155,7 +156,7 @@
 
 		    // Fetch drivers and display them
 		    $.ajax({
-		        url: '/api/driver/getByMachineNumber?i=' + driverName,
+		        url: prod_url+'/api/driver/getByMachineNumber?i=' + driverName,
 		        type: 'GET',
 		        success: function(drivers) {
 		            if (drivers.length > 0) {
@@ -182,7 +183,7 @@
 		    $('.modal-backdrop').show(); // Show the backdrop
 
 		    $.ajax({
-		        url: '/api/driver/getAll', // Adjust this URL to match your API endpoint
+		        url: prod_url+'/api/driver/getAll', // Adjust this URL to match your API endpoint
 		        type: 'GET',
 		        success: function(drivers) {
 		            const driverList = $('#driverList'); // Target the select element
@@ -209,7 +210,7 @@
 		        // Perform the assignment logic here
 		        console.log('Assigning driver ID ' + selectedDriverId + ' to machine ' + machineNumber);
 				$.ajax({
-					        url: '/api/driver/assignDriver?mNumber='+machineNumber+'&DriverId='+selectedDriverId, // Adjust this URL to match your API endpoint
+					        url: prod_url+'/api/driver/assignDriver?mNumber='+machineNumber+'&DriverId='+selectedDriverId, // Adjust this URL to match your API endpoint
 					        type: 'GET',
 					        success: function(msg) {
 					           alert(msg);
@@ -247,7 +248,7 @@
 		    
 		    // Now, make an AJAX call to remove the driver from the server
 		    $.ajax({
-		        url: '/api/driver/remove?DriverName='+selectedDriverId, // Replace with your API endpoint for removal
+		        url: prod_url+'/api/driver/remove?DriverName='+selectedDriverId, // Replace with your API endpoint for removal
 		        type: 'GET',
 		        success: function(response) {
 		            console.log( response);
@@ -287,7 +288,7 @@
 
 		    // Make the AJAX request to fetch records
 		    $.ajax({
-		        url: '/vehicle/getRecords?machinN=' + machinN, // Adjust the endpoint URL if needed
+		        url: prod_url+'/vehicle/getRecords?machinN=' + machinN, // Adjust the endpoint URL if needed
 		        type: 'GET',
 		        dataType: 'json',
 		        success: function (data) {

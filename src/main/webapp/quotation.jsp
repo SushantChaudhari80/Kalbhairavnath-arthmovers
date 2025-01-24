@@ -325,6 +325,7 @@
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
 
 	 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+	 <jsp:include page="url.jsp" />
 	<script>
 		
 		$(document).ready(function () {
@@ -338,7 +339,7 @@
 			}
 		  
 		    $.ajax({
-		        url: '/api/vehicles/getAll/loading',
+		        url: prod_url+'/api/vehicles/getAll/loading',
 		        type: 'GET',
 		        success: function (vehicles) {
 		            const vehicleList = $('#vehicaleList');
@@ -355,7 +356,7 @@
 		    });
 			
 			$.ajax({
-				        url: '/api/order/getAll',
+				        url: prod_url+'/api/order/getAll',
 				        type: 'GET',
 				        success: function (vehicles) {
 				            const vehicleList = $('#customer-name');
@@ -372,7 +373,7 @@
 				    });
 					
 			$.ajax({
-				                url: '/api/customers/get',  // URL for fetching the customer data
+				                url: prod_url+'/api/customers/get',  // URL for fetching the customer data
 				                type: 'GET',
 				                success: function(customer) {
 				                   console.log(customer);
@@ -436,7 +437,7 @@
 				               };
                               console.log(formData);
 				               $.ajax({
-				                   url: '/api/treep/add', // Endpoint URL
+				                   url: prod_url+'/api/treep/add', // Endpoint URL
 				                   type: 'POST',
 				                   contentType: 'application/json',
 				                   data: JSON.stringify(formData),
@@ -468,7 +469,7 @@
 								               };
 				                              console.log(formData);
 								               $.ajax({
-								                   url: '/api/treep/add', // Endpoint URL
+								                   url: prod_url+'/api/treep/add', // Endpoint URL
 								                   type: 'POST',
 								                   contentType: 'application/json',
 								                   data: JSON.stringify(formData),

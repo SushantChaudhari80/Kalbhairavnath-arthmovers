@@ -120,7 +120,7 @@
             </form>
         </div>
     </div>
-
+	<jsp:include page="url.jsp" />
     <script>
         $(document).ready(function () {
             const voucherTable = $('#voucherTable').DataTable();
@@ -128,7 +128,7 @@
             // Fetch and populate vouchers
             function fetchVouchers() {
                 $.ajax({
-                    url: '/api/voucher/getAll',
+                    url: prod_url+'/api/voucher/getAll',
                     method: 'GET',
                     success: function (data) {
                         voucherTable.clear();
@@ -151,7 +151,7 @@
 										console.log(' '+vId);
 									    if (confirm('Are you sure you want to delete this voucher?')) {
 									        $.ajax({
-									            url: '/api/voucher/delete/?id='+vId,
+									            url: prod_url+'/api/voucher/delete/?id='+vId,
 									            method: 'GET',
 									            success: function () {
 									                alert('Voucher deleted successfully!');
@@ -191,7 +191,7 @@
                     comment: $('#comment').val()
                 };
                 $.ajax({
-                    url: '/api/voucher/add',
+                    url: prod_url+'/api/voucher/add',
                     method: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(newVoucher),
@@ -207,7 +207,7 @@
                 });
             });
 			$.ajax({
-					        url: '/api/vehicles/getAll',
+					        url: prod_url+'/api/vehicles/getAll',
 					        type: 'GET',
 					        success: function(vehicles) {
 					            const vehicleList = $('#vehicaleList');
@@ -228,7 +228,7 @@
 					    });
 
 						$.ajax({
-							        url: '/api/driver/getAll', // Adjust this URL to match your API endpoint
+							        url: prod_url+'/api/driver/getAll', // Adjust this URL to match your API endpoint
 							        type: 'GET',
 							        success: function(drivers) {
 							            const driverList = $('#driverList'); // Target the select element

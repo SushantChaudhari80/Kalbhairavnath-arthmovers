@@ -292,6 +292,7 @@
 	<!-- Include DataTables JavaScript -->
 	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 	<jsp:include page="utility.jsp" />
+	<jsp:include page="url.jsp" />
 	<script>
 		$(document).ready(function () {
 		    $('.spinner-container').show();
@@ -345,7 +346,7 @@
 		    // Function to fetch vehicle data from the server using AJAX
 		    function fetchVehiclesList() {
 		        $.ajax({
-		            url: '/api/treep/getAll/billed', // URL for fetching vehicle data
+		            url: prod_url+'/api/treep/getAll/billed', // URL for fetching vehicle data
 		            type: 'GET',
 		            success: function (vehicles) {
 		                table.clear(); // Clear existing rows

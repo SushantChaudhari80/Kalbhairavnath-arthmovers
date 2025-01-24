@@ -158,6 +158,7 @@
 	   <!-- Include DataTables JavaScript -->
 	   <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 	   <jsp:include page="utility.jsp" />
+	   <jsp:include page="url.jsp" />
 	<script>
 		$(document).ready(function() {
 		    // Show spinner if needed
@@ -182,7 +183,7 @@
 
 		    // Fetch and populate vehicle data into the table
 		    $.ajax({
-		        url: '/vehicle/getAll/billed', // Adjust the endpoint URL if needed
+		        url: prod_url+'/vehicle/getAll/billed', // Adjust the endpoint URL if needed
 		        type: 'GET',
 		        dataType: 'json',
 		        success: function(data) {
@@ -223,7 +224,7 @@
 
 		    // Fetch vehicle list for the dropdown
 		    $.ajax({
-		        url: '/api/vehicles/getAll',
+		        url: prod_url+'/api/vehicles/getAll',
 		        type: 'GET',
 		        success: function(vehicles) {
 		            const vehicleList = $('#vehicaleList');

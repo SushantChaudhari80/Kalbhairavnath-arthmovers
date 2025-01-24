@@ -393,6 +393,7 @@
     </style>
     
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<jsp:include page="url.jsp" />
 		<script>
 		    $(document).ready(function() {
 				$('#sidebar').hide();
@@ -406,7 +407,7 @@
 					 $('#menubtn').show();
 				});
 				$.ajax({
-					                url: '/api/customers/dashboard/utilitis',  // URL for fetching the customer data
+					                url: prod_url+'/api/customers/dashboard/utilitis',  // URL for fetching the customer data
 					                type: 'GET',
 					                success: function(utils) {
 					                   console.log(utils);
@@ -427,7 +428,7 @@
 		        // Function to fetch customer data from server using AJAX
 		        function fetchCustomerData() {
 		            $.ajax({
-		                url: '/api/customers/get',  // URL for fetching the customer data
+		                url: prod_url+'/api/customers/get',  // URL for fetching the customer data
 		                type: 'GET',
 		                success: function(customer) {
 		                    // Update the UI with the customer data
@@ -457,7 +458,7 @@
 
 				       // Fetch user information
 				       $.ajax({
-				           url: '/api/customers/get', // Adjust this endpoint as necessary
+				           url: prod_url+'/api/customers/get', // Adjust this endpoint as necessary
 				           type: 'GET',
 				           success: function (customer) {
 				               // Populate modal fields

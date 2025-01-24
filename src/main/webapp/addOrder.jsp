@@ -156,13 +156,14 @@
     </form>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<jsp:include page="url.jsp" />
 <script>
 	
 	$(document).ready(function() {
 	    // Function to fetch vehicle data from server using AJAX
 	    function fetchVehiclesList() {
 	        $.ajax({
-	            url: '/api/vehicles/getAll', // URL for fetching vehicle data
+	            url: prod_url+'/api/vehicles/getAll', // URL for fetching vehicle data
 	            type: 'GET',
 	            success: function(vehicles) {
 	            	const vehicleContainer = document.getElementById('vehicleContainer'); // Get the container div
@@ -217,7 +218,7 @@
 	    console.log(selectedVehicles); // For debugging
 
 	    $.ajax({
-	        url: '/api/order/add',  // URL for adding the order
+	        url: prod_url+'/api/order/add',  // URL for adding the order
 	        type: 'POST',
 	        contentType: 'application/json',
 	        data: JSON.stringify({
@@ -229,7 +230,7 @@
 	        success: function(msg) {
 				
 				$.ajax({
-					        url: '/api/payment/add',  // URL for adding the order
+					        url: prod_url+'/api/payment/add',  // URL for adding the order
 					        type: 'POST',
 					        contentType: 'application/json',
 					        data: JSON.stringify({

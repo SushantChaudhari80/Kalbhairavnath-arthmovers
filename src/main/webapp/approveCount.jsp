@@ -170,7 +170,7 @@
 	       <span class="close-btn" id="closePreview">X</span>
 	       <img id="previewImage" src="" alt="Preview Image">
 	   </div>
-
+	   <jsp:include page="url.jsp" />
     <script>
 		function getQueryParameter(param) {
 			        const urlParams = new URLSearchParams(window.location.search);
@@ -183,7 +183,7 @@
             
             // Fetch data using AJAX
             $.ajax({
-                url: '/admin/reading/getById',
+                url: prod_url+'/admin/reading/getById',
                 method: 'GET',
                 dataType: 'json',
 				data:{"id":readingId},
@@ -213,7 +213,7 @@
                 const formData = new FormData(this);
                      formData.append('id', readingId);
                 $.ajax({
-                    url: '/admin/reading',
+                    url: prod_url+'/admin/reading',
                     method: 'PUT',
                     data: formData,
                     processData: false,
