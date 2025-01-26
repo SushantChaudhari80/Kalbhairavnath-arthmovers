@@ -10,22 +10,23 @@
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <style>
         /* Modal Centering */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
+		.modal { 
+		    display: flex; /* Hidden by default */
+		    position: fixed; 
+		    top: 0; 
+		    left: 0; 
+		    width: 100%; 
+		    height: 100%; 
+		    background-color: rgba(0, 0, 0, 0.5);  /* Flexbox for centering */
+		    justify-content: center; /* Horizontal centering */
+		    align-items: center; /* Vertical centering */
+		    z-index: 1000; 
+		}
+
         .modal-content {
             background: white;
             padding: 20px;
-            width: 400px;
+            width: 350px;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
@@ -77,6 +78,7 @@
                     <th>ID</th>
                     <th>Machine Number</th>
                     <th>Driver Name</th>
+					<th>Amount</th>
                     <th>Create Date</th>
                     <th>Comment</th>
                     <th>Actions</th>
@@ -95,15 +97,19 @@
             <form id="addVoucherForm">
 				<div class="form-group">
 				    <label for="vehicaleList">Select Vehicale</label>
-					<select id="vehicaleList" style="width: 300px; height: 40px; padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
+					<select id="vehicaleList" style="width: 350px; height: 40px; padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
 											        <!-- Driver options will be dynamically appended -->
 					</select>
 				</div>
                 <div class="form-group">
 					<label for="driverList">Driver Name</label>
-					<select id="driverList" style="width: 300px; height: 40px; padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
+					<select id="driverList" style="width: 350px; height: 40px; padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
 							        <!-- Driver options will be dynamically appended -->
 					</select>
+				</div>
+				<div class="form-group">
+				      <label for="amount">Amount</label>
+				      <input type="textnumber" id="amount" name="amount" required>
 				</div>
                 <div class="form-group">
                     <label for="createDate">Create Date</label>
@@ -123,7 +129,20 @@
 	<jsp:include page="url.jsp" />
     <script>
         $(document).ready(function () {
-            const voucherTable = $('#voucherTable').DataTable();
+			$('#addVoucherModal').hide();
+            const voucherTable = $('#voucherTable').DataTable({
+				columns:[
+				         { title: "ID" },
+				         { title: "Machine Number" },
+				         { title: "Driver Name" },
+						 { title: "Amount" },
+						 { title: "Create Date" },
+						 { title: "Comment" },
+						 { title: "Actions" }
+				             
+				      ],
+					order: [[1, 'desc']]
+			});
 
             // Fetch and populate vouchers
             function fetchVouchers() {
@@ -137,6 +156,7 @@
                                 voucher.id,
                                 voucher.machineNumber,
                                 voucher.driverName,
+								voucher.amount,
                                 voucher.createDate,
                                 voucher.comment,
 								`<button class="deleteBtn" data-id="${voucher.id}" style="padding: 5px 10px; background-color: #ff4d4d; color: white; border: none; border-radius: 4px; cursor: pointer;">
@@ -187,7 +207,8 @@
                 const newVoucher = {
                     machineNumber: document.getElementById('vehicaleList').options[document.getElementById('vehicaleList').selectedIndex].text,
                     driverName: document.getElementById('driverList').options[document.getElementById('driverList').selectedIndex].text,
-                    createDate: $('#createDate').val(),
+					amount: $('#amount').val(),
+					createDate: $('#createDate').val(),
                     comment: $('#comment').val()
                 };
                 $.ajax({

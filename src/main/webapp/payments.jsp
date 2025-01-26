@@ -183,7 +183,8 @@
 				{ title: "Paid Amount" },
 				{ title: "Total Due" }
               
-            ]
+            ],
+			order: [[1, 'desc']]
         });
 
         $.ajax({
@@ -291,7 +292,8 @@
 				                    $('#addPaymentForm')[0].reset();
 
 				                    // Optionally, refresh the table
-				                    $('#dieselReport').DataTable().ajax.reload();
+									window.location.reload();
+
 				                },
 				                error: function (xhr, status, error) {
 				                    alert('Failed to add diesel record: ' + error);

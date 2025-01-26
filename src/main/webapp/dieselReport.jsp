@@ -211,7 +211,8 @@
 				{ title: "Rate(L)" },
                 { title: "Fuel Used (L)" },
                 { title: "Amount" }
-            ]
+            ],
+			order: [[1, 'desc']]
         });
 		
 		$.ajax({

@@ -90,6 +90,12 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<jsp:include page="url.jsp" />
 	<script>
+		window.onload = function() {
+		           history.pushState(null, null, window.location.href);
+		           window.onpopstate = function() {
+		               history.pushState(null, null, window.location.href);
+		           };
+		       };
 	$(document).ready(function() {
 		$('.spinner-container').hide();
 	});

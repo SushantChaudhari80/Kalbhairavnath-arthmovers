@@ -311,7 +311,7 @@
 		            { title: "Soil Rate per Brass" },
 		            { title: "Total Payment" }
 		        ],
-		        order: [[1, 'asc']], // Order by Treep ID by default
+		        order: [[1, 'desc']], // Order by Treep ID by default
 		    });
 
 		    let selectedRows = [];

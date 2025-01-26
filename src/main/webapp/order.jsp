@@ -345,7 +345,8 @@
 		            { title: "Delivery Date" },
 		            { title: "Machines" },
 		            { title: "Actions" }
-		        ]
+		        ],
+				order: [[1, 'desc']]
 		    });
 
 		    // Fetch orders when the page loads

@@ -29,6 +29,7 @@ public class VoucherController {
     // Endpoint to add a new voucher
     @PostMapping("/add")
     public ResponseEntity<Vouchers> addVoucher(@RequestBody Vouchers voucher) {
+    	voucher.setoNumber(SessionManager.getInstance().getUsername()); 
         Vouchers savedVoucher = voucherService.addVoucher(voucher);
         savedVoucher.setoNumber(SessionManager.getInstance().getUsername()); 
         return ResponseEntity.ok(savedVoucher);
@@ -47,9 +48,10 @@ public class VoucherController {
 
     // (Optional) Endpoint to delete a voucher by ID /api/voucher/delete
     @GetMapping("/delete")
-    public ResponseEntity<Void> deleteVoucher(@PathVariable int id) {
+    public ResponseEntity<Void> deleteVoucher(@PathVariable String id) {
+    	int idd=Integer.parseInt(id);
     	  System.out.println("Deleting Voucher with ID: " + id);
-        voucherService.deleteVoucherById(id);
+        voucherService.deleteVoucherById(idd);
         return ResponseEntity.noContent().build();
     }
 }

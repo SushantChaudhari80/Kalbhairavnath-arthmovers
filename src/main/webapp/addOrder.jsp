@@ -243,6 +243,12 @@
 								    // Display success message
 								    document.getElementById('successMessage').style.display = 'block';
 								    document.getElementById('errorMessage').style.display = 'none';
+									if (confirm("Want to go to the Order page?")) {
+									    window.location.href = "order.jsp"; // Redirect to the order page
+									} else {
+									    window.location.reload(); // Reload the current page
+									}
+									
 								} else {
 								    // Display error message
 								    document.getElementById('successMessage').style.display = 'none';

@@ -441,6 +441,7 @@
 		                },
 		                error: function(xhr, status, error) {
 		                    console.error("Error fetching customer data:", error);
+							window.location.href="loginnew.jsp";
 		                }
 		            });
 		        }
@@ -551,7 +552,7 @@
 	                  </ul>
 	              </div>
 	              <div class="footer">
-	                  <p>&copy; Tanvi Enterprises</p>
+	                  <p>&copy; Tanvi Software Solution</p>
 	              </div>
 	    </div>
 
@@ -562,7 +563,7 @@
             <div class="header">
 				
 				<div style="display: flex;"> 
-					<span id="menubtn" onclick="toggleSidebar()" style="margin-right=10px;margin-top=10px;padding=10px">&#9776;</span>
+					<span id="menubtn" style="margin-right=10px;margin-top=10px;padding=10px">&#9776;</span>
 					
 					<div class="search-bar">
 						<input type="text" placeholder="Search...">

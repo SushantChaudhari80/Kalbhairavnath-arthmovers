@@ -178,7 +178,8 @@
 		            { title: "Date" },
 		            { title: "Total Hours" },
 		            { title: "Diesel" }
-		        ]
+		        ],
+				order: [[2, 'desc']]
 		    });
 
 		    // Fetch and populate vehicle data into the table
