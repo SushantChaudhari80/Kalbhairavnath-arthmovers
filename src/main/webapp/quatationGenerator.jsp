@@ -57,6 +57,8 @@
 
 			       .details {
 			           font-size: 14px;
+			           display: flex;
+			           justify-content: space-between;
 			       }
 
 			       .details div {
@@ -81,6 +83,7 @@
 		        width: 100%;
 		        max-width: 800px;
 		        background: #fff;
+		        margin-left: 20px;
 		        padding: 20px;
 		        border-radius: 10px;
 		        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -239,14 +242,23 @@
 		            width: 100%;
 		        }
 		    }
+		     .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .table, .table th, .table td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
 		</style>
-
 	
 </head>
 <body>
     <div class="quotation-container">
         <div class="quotation-header">
-            <h1>Generate Treep</h1>
+            <h1>Quotation</h1>
         </div>
         <form id="quotation-form" class="quotation-form">
 			
@@ -255,70 +267,133 @@
 				<select id="customer-name">
 					<!-- Driver options will be dynamically appended -->
 				</select>
-			</div>
-          <!--   <label for="customer-name">Customer Name</label>
-            <input type="text" id="customer-name" placeholder="Enter customer name"> -->
-
-			<div class="filter-item">
-			       <label for="vehicaleList">Select Vehicale</label>
-					<select id="vehicaleList">
-										        <!-- Driver options will be dynamically appended -->
-					</select>
-			 </div>
+		
 			 
 			<label for="material">Select Material:</label>
 			<select id="material" name="material">
-				<option >Select</option>
+				<option value="Other">Other</option>
+				<option value="Sand">Sand</option>
+				<option value="Bricks">Bricks</option>
+				 <option value="Crush Sand">Crush Sand</option>
+				 <option value="Cement">Cement</option>
+				 <option value="Steel">Steel</option>
 			    <option value="Soil">Soil</option>
-			    <option value="Bricks">Bricks</option>
-			    <option value="Crush Sand">Crush Sand</option>
-			    <option value="Sand">Sand</option>
 			</select>
 
-            <label for="soil-brass">Number of Brass/Treep Soil</label>
+            <label for="soil-brass">Qty</label>
             <input type="number" id="soil-brass" placeholder="Enter number of brass" value="0">
 
-            <label for="soil-rate">Soil Rate per Brass/Treep (₹)</label>
+            <label for="soil-rate">Rate</label>
             <input type="number" id="soil-rate" placeholder="Enter rate per brass" value="0">
         </form>
-        <div class="quotation-summary" id="quotation-summary">
-            <h2>Receipt</h2>
+  </div>
+  <div>
+       <div class="quotation-summary" id="quotation-summary">
+            <h2>Quatation</h2>
             
-			<div class="receipt">
-			       <div class="header">
-			           <div>
-						<img src="img/logo.png" alt="Logo" style="max-width: 70%; height: auto;"/>
-					</div>
-			           <p id="summary-oname">Loading</p>
-			           <p id="address"></p>
-			           <p>Sand, Bricks, Crush Sand, Cement, Steel, Soil</p>
-			           <p>And all building Material</p>
-			       </div>
+    			<div class="receipt">
+    			       <div class="header">
+          			    <div>
+              						<img src="img/logo.png" alt="Logo" style="max-width: 70%; height: auto;"/>
+          					</div>
+      			           <p id="summary-oname">Loading</p>
+      			           <p id="address"></p>
+      			           <p>Sand, Bricks, Crush Sand, Cement, Steel, Soil</p>
+      			           <p>And all building Material</p>
+			           </div>
 			       <div class="divider"></div>
 			       <div class="details">
-						<div style="display: flex; justify-content: space-between; align-items: center;">
-						    <span>Bill No: <span id="">2102</span></span>
-						    <span>Date: <span id="summary-date">____________</span></span>
-						</div>
-			           <div>Customer Name   : <span id="summary-customer-name">____________</span></div>
-			           <div>Owner Name      : <span id="summary-oname-recept">____________</span></div>
-			           <div>Vehicle Number  : <span id="summary-vehicle-number">____________</span></div>
-			           <div>Material        : <span id="summary-soil">____________</span></div>
-					   <div>Qty(Brass/Trip) : <span id="summary-soil-brass">____________</span></div>
-					   <div>Rate            : <span id="summary-soil-rate"></span></div>
+    						<div>
+    						   <div>Customer Name   : <span id="summary-customer-name">____________</span></div>
+    						   <div>Address   : <span id="summary-customer-address">____________</span></div>
+    						</div>
+    						<div style="display:flex;flex-direction:column">
+    			         <span>Bill No: <span id="">2102</span></span>
+    						   <span>Date: <span id="summary-date">____________</span></span>
+    			         <span>GST NO: <span id="summary-no">____________</span></span>
+			         </div>
 			       </div>
-			       <div class="footer">
+			       <table class="table">
+			       <thead>
+		                <tr>
+		                    <th>Sr No</th>
+		                    <th>Item Deatils</th>
+		                    <th>Qty</th>
+		                    <th>Rate</th>
+		                    <th>Amount</th>
+		                </tr>
+		           </thead>   
+		           <tbody>
+	                 <tr>
+	                    <td>1.</td>
+	                    <td>Sand</td>
+	                    <td id="sandQty"></td>
+	                    <td id="sandRate"></td>
+	                    <td id="sTotal">0</td>
+	                </tr>
+	                <tr>
+	                    <td>2.</td>
+	                    <td>Bricks</td>
+	                    <td id="brickQty"></td>
+	                    <td id="brickrate"></td>
+	                    <td id="bTotal">0</td> 
+	                </tr>
+	                <tr>
+	                    <td>3.</td>
+	                    <td>Crush Sand</td>
+	                    <td id="cQty"></td>
+	                    <td id="cRate"></td>
+	                    <td id="cTotal">0</td> 
+	                </tr>
+	                <tr>
+	                    <td>4.</td>
+	                    <td>Cement</td>
+	                    <td id="cementQty"></td>
+	                    <td id="cementRate"></td>
+	                    <td id="cementTotal">0</td>
+	                </tr>
+	                <tr>
+	                    <td>5.</td>
+	                    <td>Steel</td>
+	                    <td id="steelQty"></td>
+	                    <td id="steelRate"></td>
+	                    <td id="steelTotal">0</td> 
+	                </tr>
+	                <tr>
+	                    <td>6.</td>
+	                    <td>Soil</td>
+	                    <td id="soilQty"></td>
+	                    <td id="soilRate"></td>
+	                    <td id="soilTotal">0</td>
+	                </tr>
+	                <tr>
+	                    <td>7.</td>
+	                    <td>Others</td>
+	                    <td id="otherQty"></td>
+	                    <td id="otherRate"></td>
+	                    <td id="otherTotal">0</td>
+	                </tr>
+	                <tr>
+	                  <td colspan=4>Total Amount</td>
+	                  <td id="totalAmount">0</td>
+	                </tr>
+	               </tbody>  
+            </table>
+			       <div style="width:100%; display:flex; flex-direction:column">
 			           <div>Recipiant sign</div>
 			           <div id="signatureId"></div>
 			       </div>
 			   </div>
 			
         </div>
+</div>
 
-        <button class="print-btn" id="print-btn">Download as PDF</button>
-		<button class="print-btn" id="save-btn">Save</button>
-    </div>
 
+<br><br>
+		<div>
+			 <button class="print-btn" id="print-btn">Print</button>
+			 <button class="print-btn" id="save-btn">Save</button> 
+		</div>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
@@ -362,7 +437,7 @@
 				            vehicleList.empty();
 				            vehicleList.append('<option value="">Select a Customer</option>');
 				            vehicles.forEach(function (customer) {
-				                const option = $('<option></option>').val(customer.id).text(customer.customer_name || '');
+				                const option = $('<option></option>').val(customer.address).text(customer.customer_name || '');
 				                vehicleList.append(option);
 				            });
 				        },
@@ -391,34 +466,156 @@
 				            });
 
 		    // Update summary when dropdown changes
-		    $('#vehicaleList').on('change', function () {
-		        const selectedVehicle = $(this).find('option:selected').text();
-		        document.getElementById('summary-vehicle-number').innerText = selectedVehicle || '-';
+		    $('#material').on('change', function () {
+		        const material = $(this).find('option:selected').text();
+		        if(material === 'Bricks'){
+		        	const soilBrass = document.getElementById('soil-brass').value;
+			        const soilRate = document.getElementById('soil-rate').value;
+			        
+			        $("#brickQty").text(soilBrass);
+			        $("#brickrate").text(soilRate); 
+			        $("#bTotal").text(soilBrass * soilRate); 
+		        }
+		        if(material === 'Other'){
+		        	const soilBrass = document.getElementById('soil-brass').value;
+			        const soilRate = document.getElementById('soil-rate').value;
+			        
+			        $("#otherQty").text(soilBrass);
+			        $("#otherRate").text(soilRate); 
+			        $("#otherTotal").text(soilBrass * soilRate); 
+		        }
+		        if(material === 'Sand'){
+		        	const soilBrass = document.getElementById('soil-brass').value;
+			        const soilRate = document.getElementById('soil-rate').value;
+			        
+			        $("#sandQty").text(soilBrass);
+			        $("#sandRate").text(soilRate); 
+			        $("#sTotal").text(soilBrass * soilRate); 
+		        }
+		        if(material === 'Crush Sand'){
+		        	const soilBrass = document.getElementById('soil-brass').value;
+			        const soilRate = document.getElementById('soil-rate').value;
+			        
+			        $("#cQty").text(soilBrass);
+			        $("#cRate").text(soilRate); 
+			        $("#cTotal").text(soilBrass * soilRate); 
+		        }
+		        if(material === 'Cement'){
+		        	const soilBrass = document.getElementById('soil-brass').value;
+			        const soilRate = document.getElementById('soil-rate').value;
+			        
+			        $("#cementQty").text(soilBrass);
+			        $("#cementRate").text(soilRate); 
+			        $("#cementTotal").text(soilBrass * soilRate); 
+		        }
+		        if(material === 'Steel'){
+		        	const soilBrass = document.getElementById('soil-brass').value;
+			        const soilRate = document.getElementById('soil-rate').value;
+			        
+			        $("#steelQty").text(soilBrass);
+			        $("#steelRate").text(soilRate); 
+			        $("#steelTotal").text(soilBrass * soilRate); 
+		        }
+		        if(material === 'Soil'){
+		        	const soilBrass = document.getElementById('soil-brass').value;
+			        const soilRate = document.getElementById('soil-rate').value;
+			        
+			        $("#soilQty").text(soilBrass);
+			        $("#soilRate").text(soilRate); 
+			        $("#soilTotal").text(soilBrass * soilRate); 
+		        }
 		    });
 			
-			$('#material').on('change', function () {
+			/* $('#material').on('change', function () {
 				        const item = $(this).find('option:selected').text();
 				        document.getElementById('summary-soil').innerText = item || '-';
-			});
+			}); */
+			
+			
 
 		    // Update summary dynamically
 		    document.getElementById('quotation-form').addEventListener('input', function () {
 		        const customerName = document.getElementById('customer-name').options[document.getElementById('customer-name').selectedIndex].text;
-		        const soilBrass = document.getElementById('soil-brass').value;
-		        const soilRate = document.getElementById('soil-rate').value;
-              
+		        const material = document.getElementById('material').options[document.getElementById('material').selectedIndex].text;
+                const address = document.getElementById('customer-name').options[document.getElementById('customer-name').selectedIndex].value;
+                     
+                const a1 = parseFloat(document.getElementById('sTotal').innerText) || 0;
+                const a2 = parseFloat(document.getElementById('bTotal').innerText) || 0;
+                const a3 = parseFloat(document.getElementById('cTotal').innerText) || 0;
+                const a4 = parseFloat(document.getElementById('cementTotal').innerText) || 0;
+                const a5 = parseFloat(document.getElementById('steelTotal').innerText) || 0;
+                const a6 = parseFloat(document.getElementById('soilTotal').innerText) || 0;
+                const a7 = parseFloat(document.getElementById('otherTotal').innerText) || 0;
 
+                const total = a1 + a2 + a3 + a4 + a5 + a6 + a7;
+
+                document.getElementById('totalAmount').innerText = total;
+               
 		        document.getElementById('summary-customer-name').innerText = customerName || '-';
-		      
-		        document.getElementById('summary-soil-brass').innerText = soilBrass || '-';
-		        document.getElementById('summary-soil-rate').innerText = soilRate || '-';
+		        document.getElementById('summary-customer-address').innerText = address || '-';
+		        if(material === 'Bricks'){
+		        	const soilBrass = document.getElementById('soil-brass').value;
+			        const soilRate = document.getElementById('soil-rate').value;
+			        
+			        $("#brickQty").text(soilBrass);
+			        $("#brickrate").text(soilRate); 
+			        $("#bTotal").text(soilBrass * soilRate); 
+		        }
+		        if(material === 'Other'){
+		        	const soilBrass = document.getElementById('soil-brass').value;
+			        const soilRate = document.getElementById('soil-rate').value;
+			        
+			        $("#otherQty").text(soilBrass);
+			        $("#otherRate").text(soilRate); 
+			        $("#otherTotal").text(soilBrass * soilRate); 
+		        }
+		        if(material === 'Sand'){
+		        	const soilBrass = document.getElementById('soil-brass').value;
+			        const soilRate = document.getElementById('soil-rate').value;
+			        
+			        $("#sandQty").text(soilBrass);
+			        $("#sandRate").text(soilRate); 
+			        $("#sTotal").text(soilBrass * soilRate); 
+		        }
+		        if(material === 'Crush Sand'){
+		        	const soilBrass = document.getElementById('soil-brass').value;
+			        const soilRate = document.getElementById('soil-rate').value;
+			        
+			        $("#cQty").text(soilBrass);
+			        $("#cRate").text(soilRate); 
+			        $("#cTotal").text(soilBrass * soilRate); 
+		        }
+		        if(material === 'Cement'){
+		        	const soilBrass = document.getElementById('soil-brass').value;
+			        const soilRate = document.getElementById('soil-rate').value;
+			        
+			        $("#cementQty").text(soilBrass);
+			        $("#cementRate").text(soilRate); 
+			        $("#cementTotal").text(soilBrass * soilRate); 
+		        }
+		        if(material === 'Steel'){
+		        	const soilBrass = document.getElementById('soil-brass').value;
+			        const soilRate = document.getElementById('soil-rate').value;
+			        
+			        $("#steelQty").text(soilBrass);
+			        $("#steelRate").text(soilRate); 
+			        $("#steelTotal").text(soilBrass * soilRate); 
+		        }
+		        if(material === 'Soil'){
+		        	const soilBrass = document.getElementById('soil-brass').value;
+			        const soilRate = document.getElementById('soil-rate').value;
+			        
+			        $("#soilQty").text(soilBrass);
+			        $("#soilRate").text(soilRate); 
+			        $("#soilTotal").text(soilBrass * soilRate); 
+		        }
 		        
 				});
 
 		    // Print functionality
 		    document.getElementById('print-btn').addEventListener('click', function () {
 			         	//const customerName = document.getElementById('customer-name').value;
-						const customerName = document.getElementById('customer-name').options[document.getElementById('customer-name').selectedIndex].text;
+						/* const customerName = document.getElementById('customer-name').options[document.getElementById('customer-name').selectedIndex].text;
 					        const soilBrass = document.getElementById('soil-brass').value;
 					        const soilRate = document.getElementById('soil-rate').value;
 
@@ -446,7 +643,7 @@
 				                   error: function (xhr, status, error) {
 				                       console.error('Error:', error);
 				                   }
-				               });
+				               }); */
 		        window.print();
 		    });
 			document.getElementById('save-btn').addEventListener('click', function () {

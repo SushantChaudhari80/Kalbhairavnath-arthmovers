@@ -89,6 +89,20 @@
 		    <artifactId>ojdbc11</artifactId>
 		    <version>21.9.0.0</version> <!-- Use the latest compatible version -->
 		</dependency>
+		
+		<dependency>
+		    <groupId>jakarta.servlet</groupId>
+		    <artifactId>jakarta.servlet-api</artifactId>
+		    <version>5.0.0</version> <!-- Adjust version based on your needs -->
+		    <scope>provided</scope>
+		</dependency>
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>javax.servlet-api</artifactId>
+		    <version>4.0.1</version> <!-- Change version if needed -->
+		    <scope>provided</scope>
+		</dependency>
+
 
 	</dependencies>
 	
