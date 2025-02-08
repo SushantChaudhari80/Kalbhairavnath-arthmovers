@@ -239,11 +239,47 @@
 		            width: 100%;
 		        }
 		    }
+			.spinner-container {
+					    display: none; /* Hidden by default; show it when needed */
+					    position: fixed;
+					    top: 0;
+					    left: 0;
+					    width: 100%;
+					    height: 100%;
+					    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+					    backdrop-filter: blur(5px); /* Blur effect */
+					    z-index: 999; /* Above other elements */
+					    justify-content: center; /* Center spinner horizontally */
+					    align-items: center; /* Center spinner vertically */
+					}
+
+					.spinner {
+						position: fixed;
+						z-index: 999;
+						top: 50%;
+						left: 50%;
+						transform: translate(-50%, -50%);
+						border: 5px solid #f3f3f3;
+						border-top: 5px solid #3498db;
+						border-radius: 50%;
+						width: 30px;
+						height: 30px;
+						animation: spin 1s linear infinite;
+					}
+
+					@keyframes spin {
+					    0% { transform: rotate(0deg); }
+					    100% { transform: rotate(360deg); }
+					}
 		</style>
 
 	
 </head>
 <body>
+	<div class="spinner-container">
+			    <div class="spinner"></div>
+			</div>
+
     <div class="quotation-container">
         <div class="quotation-header">
             <h1>Generate Treep</h1>
@@ -328,6 +364,7 @@
 	<script>
 		
 		$(document).ready(function () {
+			$('.spinner-container').show();
 			function getFormattedDate() {
 			    const today = new Date();
 			    const dd = String(today.getDate()).padStart(2, '0'); // Get day and add leading zero if needed
@@ -348,9 +385,11 @@
 		                const option = $('<option></option>').val(vehicle.id).text(vehicle.machine_number || vehicle.machineNumber);
 		                vehicleList.append(option);
 		            });
+					
 		        },
 		        error: function (xhr, status, error) {
 		            console.error("Error fetching vehicle data:", error);
+				
 		        }
 		    });
 			
@@ -384,6 +423,7 @@
 									const formattedDate = getFormattedDate();
 									console.log(formattedDate);
 									document.getElementById('summary-date').innerText = formattedDate || '-';
+									$('.spinner-container').hide();
 				                },
 				                error: function(xhr, status, error) {
 				                    console.error("Error fetching customer data:", error);
@@ -417,6 +457,7 @@
 
 		    // Print functionality
 		    document.getElementById('print-btn').addEventListener('click', function () {
+				$('.spinner-container').show();
 			         	//const customerName = document.getElementById('customer-name').value;
 						const customerName = document.getElementById('customer-name').options[document.getElementById('customer-name').selectedIndex].text;
 					        const soilBrass = document.getElementById('soil-brass').value;
@@ -442,14 +483,17 @@
 				                   data: JSON.stringify(formData),
 				                   success: function (response) {
 				                       console.log(response);
+									   $('.spinner-container').hide();
 				                   },
 				                   error: function (xhr, status, error) {
 				                       console.error('Error:', error);
+									   $('.spinner-container').hide();
 				                   }
 				               });
 		        window.print();
 		    });
 			document.getElementById('save-btn').addEventListener('click', function () {
+				$('.spinner-container').show();
 				                            const customerName = document.getElementById('customer-name').options[document.getElementById('customer-name').selectedIndex].text;
 									        const soilBrass = document.getElementById('soil-brass').value;
 									        const soilRate = document.getElementById('soil-rate').value;
@@ -473,6 +517,7 @@
 								                   contentType: 'application/json',
 								                   data: JSON.stringify(formData),
 								                   success: function (response) {
+													$('.spinner-container').hide();
 								                       alert(response);
 								                   },
 								                   error: function (xhr, status, error) {

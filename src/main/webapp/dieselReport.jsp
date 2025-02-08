@@ -87,12 +87,47 @@
         tr:hover {
             background-color: #f1f1f1;
         }
+		.spinner-container {
+		    display: none; /* Hidden by default; show it when needed */
+		    position: fixed;
+		    top: 0;
+		    left: 0;
+		    width: 100%;
+		    height: 100%;
+		    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+		    backdrop-filter: blur(5px); /* Blur effect */
+		    z-index: 999; /* Above other elements */
+		    justify-content: center; /* Center spinner horizontally */
+		    align-items: center; /* Center spinner vertically */
+		}
+
+		.spinner {
+			position: fixed;
+			z-index: 999;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			border: 5px solid #f3f3f3;
+			border-top: 5px solid #3498db;
+			border-radius: 50%;
+			width: 30px;
+			height: 30px;
+			animation: spin 1s linear infinite;
+		}
+
+		@keyframes spin {
+		    0% { transform: rotate(0deg); }
+		    100% { transform: rotate(360deg); }
+		}		
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
+	<div class="spinner-container">
+			    <div class="spinner"></div>
+			</div>
 
 <div class="container">
     <h1>Diesel Consumption Report</h1>
@@ -201,6 +236,7 @@
 <jsp:include page="url.jsp" />
 <script>
     $(document).ready(function () {
+		$('.spinner-container').show();
 		$('#addDieselModal').hide();
         const table = $('#dieselReport').DataTable({
             columns: [
@@ -212,7 +248,7 @@
                 { title: "Fuel Used (L)" },
                 { title: "Amount" }
             ],
-			order: [[1, 'desc']]
+			order: [[0, 'desc']]
         });
 		
 		$.ajax({
@@ -270,8 +306,10 @@
                 // Update summary section
                 $('#totalVehicles').text(totalVehicles.size);
                 $('#totalFuelUsed').text(totalFuel + ' L');
+				$('.spinner-container').hide();
             },
             error: function (xhr, status, error) {
+				$('.spinner-container').hide();
                 console.error("Error fetching records:", error);
             }
         });
@@ -288,7 +326,7 @@
 		        // Handle form submission
 		        $('#addDieselForm').on('submit', function (e) {
 		            e.preventDefault();
-
+					$('.spinner-container').show();
 		            const dieselData = {
 			
 		                vehicleNumber:  $('#vehicaleList option:selected').text(),
@@ -308,10 +346,11 @@
 		                    $('#addDieselModal').fadeOut();
 		                    $('#addDieselForm')[0].reset();
 
-		                    // Optionally, refresh the table
-		                    $('#dieselReport').DataTable().ajax.reload();
+							window.location.reload(true);
+							$('.spinner-container').hide();
 		                },
 		                error: function (xhr, status, error) {
+							$('.spinner-container').hide();
 		                    alert('Failed to add diesel record: ' + error);
 		                }
 		            });

@@ -6,7 +6,7 @@
     <title>Payment History</title>
     <style>
         body {
-			background: linear-gradient(to bottom right, #cffcb5, #fec7cd);
+			
 			font-family: Arial, sans-serif;
             margin: 20px;
         }

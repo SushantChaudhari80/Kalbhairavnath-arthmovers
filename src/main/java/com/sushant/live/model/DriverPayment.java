@@ -1,9 +1,11 @@
 package com.sushant.live.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
@@ -13,7 +15,12 @@ public class DriverPayment {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-incrementing ID
     private int id;
+//	@Id
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "driver_payment_seq")
+//    @SequenceGenerator(name = "driver_payment_seq", sequenceName = "driver_payment_seq", allocationSize = 1)
+//    private int id;
 	
+	@Column(name = "payment_date")
 	private String date ;
 	
 	private String amount ;

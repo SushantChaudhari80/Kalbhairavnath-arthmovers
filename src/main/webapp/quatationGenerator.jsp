@@ -285,6 +285,8 @@
 
             <label for="soil-rate">Rate</label>
             <input type="number" id="soil-rate" placeholder="Enter rate per brass" value="0">
+			
+			<input  type="button" id="calculate" value="Calculate total"></input>
         </form>
   </div>
   <div>
@@ -392,7 +394,7 @@
 <br><br>
 		<div>
 			 <button class="print-btn" id="print-btn">Print</button>
-			 <button class="print-btn" id="save-btn">Save</button> 
+			 <!--<button class="print-btn" id="save-btn">Save</button>--> 
 		</div>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -454,7 +456,8 @@
 									$('#summary-oname').text(customer.name+','+customer.mobile);
 									$('#summary-oname-recept').text(customer.name);
 									$('#address').text(customer.address);//signatureId
-									$('#signatureId').text('For '+customer.bussinessName);
+									$('#signatureId').text('For '+customer.bussinessName);//summary-no
+									$('#summary-no').text(customer.gstNo);
 									$('.spinner-container').hide();
 									const formattedDate = getFormattedDate();
 									console.log(formattedDate);
@@ -538,19 +541,7 @@
 		        const customerName = document.getElementById('customer-name').options[document.getElementById('customer-name').selectedIndex].text;
 		        const material = document.getElementById('material').options[document.getElementById('material').selectedIndex].text;
                 const address = document.getElementById('customer-name').options[document.getElementById('customer-name').selectedIndex].value;
-                     
-                const a1 = parseFloat(document.getElementById('sTotal').innerText) || 0;
-                const a2 = parseFloat(document.getElementById('bTotal').innerText) || 0;
-                const a3 = parseFloat(document.getElementById('cTotal').innerText) || 0;
-                const a4 = parseFloat(document.getElementById('cementTotal').innerText) || 0;
-                const a5 = parseFloat(document.getElementById('steelTotal').innerText) || 0;
-                const a6 = parseFloat(document.getElementById('soilTotal').innerText) || 0;
-                const a7 = parseFloat(document.getElementById('otherTotal').innerText) || 0;
 
-                const total = a1 + a2 + a3 + a4 + a5 + a6 + a7;
-
-                document.getElementById('totalAmount').innerText = total;
-               
 		        document.getElementById('summary-customer-name').innerText = customerName || '-';
 		        document.getElementById('summary-customer-address').innerText = address || '-';
 		        if(material === 'Bricks'){
@@ -646,6 +637,21 @@
 				               }); */
 		        window.print();
 		    });
+			document.getElementById('calculate').addEventListener('click', function () {
+				const a1 = parseFloat(document.getElementById('sTotal').innerText) || 0;
+				    const a2 = parseFloat(document.getElementById('bTotal').innerText) || 0;
+				    const a3 = parseFloat(document.getElementById('cTotal').innerText) || 0;
+				    const a4 = parseFloat(document.getElementById('cementTotal').innerText) || 0;
+				    const a5 = parseFloat(document.getElementById('steelTotal').innerText) || 0;
+				    const a6 = parseFloat(document.getElementById('soilTotal').innerText) || 0;
+				    const a7 = parseFloat(document.getElementById('otherTotal').innerText) || 0;
+
+				    // Calculate the grand total
+				    const total = a1 + a2 + a3 + a4 + a5 + a6 + a7;
+
+				    // Update the total amount in the table
+				    document.getElementById('totalAmount').innerText = total.toFixed(2);
+				});
 			document.getElementById('save-btn').addEventListener('click', function () {
 				                            const customerName = document.getElementById('customer-name').options[document.getElementById('customer-name').selectedIndex].text;
 									        const soilBrass = document.getElementById('soil-brass').value;

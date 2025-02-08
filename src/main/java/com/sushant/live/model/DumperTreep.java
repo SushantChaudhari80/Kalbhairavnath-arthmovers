@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 
 @Entity
 public class DumperTreep {
@@ -11,6 +12,10 @@ public class DumperTreep {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-incrementing ID
     private int id;
+//	 @Id
+//	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "treep_seq")
+//	 @SequenceGenerator(name = "treep_seq", sequenceName = "treep_seq", allocationSize = 1)
+//	 private int id;
 	
 	private String selectedVehicle;
 	

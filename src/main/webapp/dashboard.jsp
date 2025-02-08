@@ -6,6 +6,7 @@
     <title>Transport Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+	
         * {
             margin: 0;
             padding: 0;
@@ -209,13 +210,13 @@
         /* Header */
         .header {
             width: 100%;
-            height: 60px;
+            height: 50px;
             background-color: #fff;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
-            border-bottom: 1px solid #ddd;
+            padding: 0 10px;
+            border-bottom: 2px solid #ddd;
         }
 
         .header .search-bar input {
@@ -321,39 +322,40 @@
             .main-content {
                 padding: 10px;
             }
-			.spinner-container {
-					    display: none; /* Hidden by default; show it when needed */
-					    position: fixed;
-					    top: 0;
-					    left: 0;
-					    width: 100%;
-					    height: 100%;
-					    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-					    backdrop-filter: blur(5px); /* Blur effect */
-					    z-index: 999; /* Above other elements */
-					    justify-content: center; /* Center spinner horizontally */
-					    align-items: center; /* Center spinner vertically */
-					}
-
-					.spinner {
-						position: fixed;
-						z-index: 999;
-						top: 50%;
-						left: 50%;
-						transform: translate(-50%, -50%);
-						border: 5px solid #f3f3f3;
-						border-top: 5px solid #3498db;
-						border-radius: 50%;
-						width: 30px;
-						height: 30px;
-						animation: spin 1s linear infinite;
-					}
-
-					@keyframes spin {
-					    0% { transform: rotate(0deg); }
-					    100% { transform: rotate(360deg); }
-					}
+			
         }
+		.spinner-container {
+							    display: none; /* Hidden by default; show it when needed */
+							    position: fixed;
+							    top: 0;
+							    left: 0;
+							    width: 100%;
+							    height: 100%;
+							    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+							    backdrop-filter: blur(5px); /* Blur effect */
+							    z-index: 999; /* Above other elements */
+							    justify-content: center; /* Center spinner horizontally */
+							    align-items: center; /* Center spinner vertically */
+							}
+
+							.spinner {
+								position: fixed;
+								z-index: 999;
+								top: 50%;
+								left: 50%;
+								transform: translate(-50%, -50%);
+								border: 5px solid #f3f3f3;
+								border-top: 5px solid #3498db;
+								border-radius: 50%;
+								width: 30px;
+								height: 30px;
+								animation: spin 1s linear infinite;
+							}
+
+							@keyframes spin {
+							    0% { transform: rotate(0deg); }
+							    100% { transform: rotate(360deg); }
+							}
 		.modal {
 		    display: none; /* Hidden by default */
 		    position: fixed;
@@ -390,12 +392,28 @@
 		    text-decoration: none;
 		    cursor: pointer;
 		}
+		.submenu {
+		            list-style: none;
+		            padding-left: 20px;
+		            display: none;
+		            
+		        }
+
+		        .submenu li {
+		            padding: 8px;
+					margin-bottom:10px;
+		           }
+
+		        .toggle-btn {
+		            float: right;
+		        }
     </style>
     
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<jsp:include page="url.jsp" />
 		<script>
 		    $(document).ready(function() {
+				$('.spinner-container').show();
 				$('#sidebar').hide();
 				$('.spinner-container').show();
 				$('#menubtn').on('click', function () {
@@ -403,7 +421,7 @@
 					$('#menubtn').hide();
 				});
 				$('#closeSideBar').on('click', function () {
-					 $('#sidebar').hide(); // Toggles with a sliding effect closeSideBar
+					 $('#sidebar').fadeOut(); // Toggles with a sliding effect closeSideBar
 					 $('#menubtn').show();
 				});
 				$.ajax({
@@ -420,6 +438,7 @@
 									   $("#unbilledTreeps").text(utils.unbilledTreeps);
 									   $("#diesel").text(utils.diesel + "(L)");
 									   $("#totalDivers").text(utils.totalDivers);
+									   $('.spinner-container').hide();
 					                },
 					                error: function(xhr, status, error) {
 					                    console.error("Error fetching customer data:", error);
@@ -456,7 +475,6 @@
 				   $('.user-section').on('click', function () {
 				       modal.show();
 				       $('.spinner-container').show();
-
 				       // Fetch user information
 				       $.ajax({
 				           url: prod_url+'/api/customers/get', // Adjust this endpoint as necessary
@@ -494,7 +512,19 @@
 				   closeModal.on('click', function () {
 				       modal.hide();
 				   });
-
+				   
+				   document.querySelectorAll(".toggle-btn").forEach(btn => {
+				           btn.addEventListener("click", function () {
+				               let submenu = this.parentElement.nextElementSibling;
+				               if (submenu.style.display === "block") {
+				                   submenu.style.display = "none";
+				                   this.textContent = "+";
+				               } else {
+				                   submenu.style.display = "block";
+				                   this.textContent = "-";
+				               }
+				           });
+				       });
 				   // Close modal when clicking outside
 				   $(window).on('click', function (event) {
 				       if ($(event.target).is(modal)) {
@@ -531,20 +561,61 @@
    <div class="dashboard-container">
 	   <div class="sidebar" id="sidebar">
 	              <div>
-					<span id="closeSideBar">&times;</span>
-	                  <h2>Transport</h2>
+					  <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+		                  <h2>Transport</h2>
+						  <span id="closeSideBar">&times;</span>
+					  </div>
 	                  <ul class="nav-links">
 	                      <li><a href="dashboard.jsp">Dashboard</a></li>
 	                      <li><a href="order.jsp">Orders</a></li>
-	                      <li><a href="vehicales.jsp">Vehicles</a></li>
-	                      <li><a href="drivers.jsp">Drivers</a></li>
-	                      <li><a href="reports.jsp">Reports</a></li>
+						  <li>
+						      <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+						          <a href="vehicales.jsp">Vehicles</a>
+						          <span class="toggle-btn">+</span>
+						      </div>
+						      <ul class="submenu" style="display: none;">
+						          <li><a href="addVehicale.jsp">Add Vehicle</a></li>
+						          <li><a href="reports.jsp">Vehicle Report</a></li>
+						      </ul>
+						  </li>
+	                      <!--<li><a href="vehicales.jsp">Vehicles</a></li>-->
+						  <li>
+						  						      <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+						  						          <a href="drivers.jsp">Drivers</a>
+						  						          <span class="toggle-btn">+</span>
+						  						      </div>
+						  						      <ul class="submenu" style="display: none;">
+						  						          <li><a href="addDriver.jsp">Add Driver</a></li>
+						  						      </ul>
+						  </li>						  						  
+
 	                      <li><a href="quatationGenerator.jsp">Quotation</a></li>
-	                      <li><a href="quotation.jsp">Treep Generator</a></li>
-	                     <!-- <li><a href="orderReport.jsp">Excavator Report</a></li> -->
-						 <!-- <li><a href="billedReadings.jsp">Billed Readings</a></li> -->
-	                      <li><a href="dumper.jsp">UnBilled Treeps</a></li>
-						  <li><a href="billedTreep.jsp">Billed Treeps</a></li>
+	                      
+						  
+						  <li>
+						  		<div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+						  			<a href="quotation.jsp">Generate Treep</a>
+						  			<span class="toggle-btn">+</span>
+						  		</div>
+						  		<ul class="submenu" style="display: none;">
+									<li><a href="dumper.jsp">UnBilled Treeps</a></li>
+									<li><a href="billedTreep.jsp">Billed Treeps</a></li>
+						  		</ul>
+						  </li>
+						  
+						  <li>
+						  		<div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+						  			<a href="">Machine Reading</a>
+						  			<span class="toggle-btn">+</span>
+						  		</div>
+						  		<ul class="submenu" style="display: none;">
+									<li><a href="orderReport.jsp">UnBilled Readings</a></li> 
+									<li><a href="billedReadings.jsp">Billed Readings</a></li> 
+						  		</ul>
+						   </li>
+						  
+	                     
+	                      
 	                      <li><a href="dieselReport.jsp">Diesel Report</a></li>
 	                      <li><a href="payments.jsp">Payments</a></li>
 						  <li><a href="genralVouchers.jsp">General Vouchers</a></li>
@@ -564,7 +635,7 @@
             <div class="header">
 				
 				<div style="display: flex;"> 
-					<span id="menubtn" style="margin-right=10px;margin-top=10px;padding=10px">&#9776;</span>
+					<span id="menubtn" style="margin-right:10px;">&#9776;</span>
 					
 					<div class="search-bar">
 						<input type="text" placeholder="Search...">

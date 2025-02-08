@@ -117,6 +117,38 @@
                 width: 100%;
             }
         }
+		.spinner-container {
+				    display: none; /* Hidden by default; show it when needed */
+				    position: fixed;
+				    top: 0;
+				    left: 0;
+				    width: 100%;
+				    height: 100%;
+				    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+				    backdrop-filter: blur(5px); /* Blur effect */
+				    z-index: 999; /* Above other elements */
+				    justify-content: center; /* Center spinner horizontally */
+				    align-items: center; /* Center spinner vertically */
+				}
+
+				.spinner {
+					position: fixed;
+					z-index: 999;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					border: 5px solid #f3f3f3;
+					border-top: 5px solid #3498db;
+					border-radius: 50%;
+					width: 30px;
+					height: 30px;
+					animation: spin 1s linear infinite;
+				}
+
+				@keyframes spin {
+				    0% { transform: rotate(0deg); }
+				    100% { transform: rotate(360deg); }
+				}
     </style>
 </head>
 <body>
@@ -161,7 +193,7 @@
     // Simple JavaScript to handle form submission (placeholder, adjust as needed)
     document.getElementById('addVehicleForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent form from submitting normally
-
+	$('.spinner-container').show();
     const machineNumber = document.getElementById('machine_number').value;
     const company = document.getElementById('company').value;
     const v_type =  $('#v_type option:selected').text();
@@ -185,6 +217,7 @@
                 document.getElementById('successMessage').style.display = 'none';
                 document.getElementById('errorMessage').style.display = 'block';
             }
+			$('.spinner-container').hide();
         },
         error: function(xhr, status, error) {
             console.error("Error adding vehicle:", error);

@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Lob;
+import jakarta.persistence.SequenceGenerator;
 
 @Entity
 @Table(name = "machinereading")
@@ -18,19 +19,24 @@ import jakarta.persistence.Lob;
 public class MachineReading {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-incrementing ID
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  
     private int id;
-	
-	private String date ;
+//	@Id
+//	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reading_seq")
+//	 @SequenceGenerator(name = "reading_seq", sequenceName = "reading_seq", allocationSize = 1)
+//	 private int id;
+//	
+	@Column(name = "reading_date")
+	private String reading_date ;
 	
 	@Lob  // Marking this as a large object
-    @Column(name = "startReadingImg", columnDefinition = "MEDIUMBLOB")
+   // @Column(name = "startReadingImg", columnDefinition = "MEDIUMBLOB")
     private byte[] startReadingImg;  // Field to store image data
 	
 	private String startReading;
 	
 	@Lob  // Marking this as a large object
-    @Column(name = "endReadingImg", columnDefinition = "MEDIUMBLOB")
+  //  @Column(name = "endReadingImg", columnDefinition = "MEDIUMBLOB")
     private byte[] endReadingImg;  // Field to store image data
 	
 	private String endReading;
@@ -38,7 +44,7 @@ public class MachineReading {
 	private String Maintenance;
 	
 	@Lob  // Marking this as a large object
-    @Column(name = "dieselImg", columnDefinition = "MEDIUMBLOB")
+  //  @Column(name = "dieselImg", columnDefinition = "MEDIUMBLOB")
     private byte[] dieselImg;  
 	
 	private String diesel;
@@ -77,11 +83,11 @@ public class MachineReading {
 	}
 
 	public String getDate() {
-		return date;
+		return reading_date;
 	}
 
 	public void setDate(String date) {
-		this.date = date;
+		this.reading_date = date;
 	}
 
 	public byte[] getStartReadingImg() {
@@ -199,7 +205,7 @@ public class MachineReading {
 			String isBilled) {
 		super();
 		this.id = id;
-		this.date = date;
+		this.reading_date = date;
 		this.startReadingImg = startReadingImg;
 		this.startReading = startReading;
 		this.endReadingImg = endReadingImg;

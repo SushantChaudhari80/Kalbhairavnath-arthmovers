@@ -191,7 +191,7 @@
 		            { title: "Invoice content" },
 		            { title: "Actions" }
 		        ],
-				order: [[1, 'desc']]
+				order: [[2, 'desc']]
 		    });
 
 		    $.ajax({

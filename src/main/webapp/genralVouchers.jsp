@@ -10,6 +10,38 @@
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <style>
         /* Modal Centering */
+		.spinner-container {
+				    display: none; /* Hidden by default; show it when needed */
+				    position: fixed;
+				    top: 0;
+				    left: 0;
+				    width: 100%;
+				    height: 100%;
+				    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+				    backdrop-filter: blur(5px); /* Blur effect */
+				    z-index: 999; /* Above other elements */
+				    justify-content: center; /* Center spinner horizontally */
+				    align-items: center; /* Center spinner vertically */
+				}
+
+				.spinner {
+					position: fixed;
+					z-index: 999;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					border: 5px solid #f3f3f3;
+					border-top: 5px solid #3498db;
+					border-radius: 50%;
+					width: 30px;
+					height: 30px;
+					animation: spin 1s linear infinite;
+				}
+
+				@keyframes spin {
+				    0% { transform: rotate(0deg); }
+				    100% { transform: rotate(360deg); }
+				}
 		.modal { 
 		    display: flex; /* Hidden by default */
 		    position: fixed; 
@@ -67,6 +99,9 @@
     </style>
 </head>
 <body>
+	<div class="spinner-container">
+			    <div class="spinner"></div>
+			</div>
     <div style="margin: 20px;">
         <h1>Voucher Management</h1>
         <button id="addVoucherBtn" style="margin-bottom: 20px; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
@@ -129,6 +164,7 @@
 	<jsp:include page="url.jsp" />
     <script>
         $(document).ready(function () {
+			$('.spinner-container').show();
 			$('#addVoucherModal').hide();
             const voucherTable = $('#voucherTable').DataTable({
 				columns:[
@@ -141,7 +177,7 @@
 						 { title: "Actions" }
 				             
 				      ],
-					order: [[1, 'desc']]
+					order: [[0, 'desc']]
 			});
 
             // Fetch and populate vouchers
@@ -164,6 +200,7 @@
 								                    </button>`
                             ]).draw();
                         });
+						$('.spinner-container').hide();
 						$('#voucherTable tbody').on('click', 'tr', function () {
 									    //const id = $(this).data('id'); // Retrieve the voucher ID
 										const data = voucherTable.row(this).data();

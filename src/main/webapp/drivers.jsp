@@ -231,6 +231,39 @@
                 width: 90%;
             }
         }
+		.spinner-container {
+				    display: none; /* Hidden by default; show it when needed */
+				    position: fixed;
+				    top: 0;
+				    left: 0;
+				    width: 100%;
+				    height: 100%;
+				    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+				    backdrop-filter: blur(5px); /* Blur effect */
+				    z-index: 999; /* Above other elements */
+				    justify-content: center; /* Center spinner horizontally */
+				    align-items: center; /* Center spinner vertically */
+				}
+
+				.spinner {
+					position: fixed;
+					z-index: 999;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					border: 5px solid #f3f3f3;
+					border-top: 5px solid #3498db;
+					border-radius: 50%;
+					width: 30px;
+					height: 30px;
+					animation: spin 1s linear infinite;
+				}
+
+				@keyframes spin {
+				    0% { transform: rotate(0deg); }
+				    100% { transform: rotate(360deg); }
+				}
+
     </style>
     	<!-- Include jQuery -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -243,7 +276,7 @@
 	<jsp:include page="url.jsp" />
 	<script>
 	    $(document).ready(function() {
-	       // $('.spinner-container').show();
+	        $('.spinner-container').show();
 
 	        // Initialize DataTable when the document is ready
 	        const table = $('#driverTable').DataTable({
@@ -287,10 +320,11 @@
                             const driverName = data[1];
                             window.location.href = 'driverPayment.jsp?driverId='+driverId+'&driverName='+driverName;
                         });
+						$('.spinner-container').hide();
 	                },
 	                error: function(xhr, status, error) {
 	                    console.error("Error fetching Driver data:", error);
-	                  //  $('.spinner-container').hide(); // Hide the spinner on error as well
+	                    $('.spinner-container').hide(); // Hide the spinner on error as well
 	                }
 	            });
 	        }
@@ -301,6 +335,9 @@
 	</script>
 </head>
 <body>
+	<div class="spinner-container">
+			    <div class="spinner"></div>
+			</div>
 
     <div class="container">
         <!-- Page Header -->

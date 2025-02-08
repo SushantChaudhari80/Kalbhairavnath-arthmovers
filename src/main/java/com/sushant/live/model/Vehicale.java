@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Column;
 
 @Entity
@@ -12,6 +13,10 @@ public class Vehicale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-incrementing ID
     private int id;
+//	@Id
+//	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vehicle_seq")
+//	 @SequenceGenerator(name = "vehicle_seq", sequenceName = "vehicle_seq", allocationSize = 1)
+//	 private int id;
 
     @Column(name = "machine_number", length = 10, nullable = false)
     private String machineNumber;

@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
@@ -13,6 +14,10 @@ public class Payments {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-incrementing ID
     private int id;
+//	 @Id
+//	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_seq")
+//	 @SequenceGenerator(name = "payment_seq", sequenceName = "payment_seq", allocationSize = 1)
+//	 private int id;
 	
 	private String payment_date;
 	

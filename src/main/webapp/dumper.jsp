@@ -248,40 +248,41 @@
 			    border-radius: 5px;         /* Rounded corners */
 			    text-align: center;         /* Center the text */
 			}
-			.spinner-container {
-											    display: none; /* Hidden by default; show it when needed */
-											    position: fixed;
-											    top: 0;
-											    left: 0;
-											    width: 100%;
-											    height: 100%;
-											    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-											    backdrop-filter: blur(5px); /* Blur effect */
-											    z-index: 999; /* Above other elements */
-											    justify-content: center; /* Center spinner horizontally */
-											    align-items: center; /* Center spinner vertically */
-											}
-
-											.spinner {
-												position: fixed;
-												z-index: 999;
-												top: 50%;
-												left: 50%;
-												transform: translate(-50%, -50%);
-												border: 5px solid #f3f3f3;
-												border-top: 5px solid #3498db;
-												border-radius: 50%;
-												width: 30px;
-												height: 30px;
-												animation: spin 1s linear infinite;
-											}
-
-											@keyframes spin {
-											    0% { transform: rotate(0deg); }
-											    100% { transform: rotate(360deg); }
-											}
+			
 
         }
+		.spinner-container {
+													    display: none; /* Hidden by default; show it when needed */
+													    position: fixed;
+													    top: 0;
+													    left: 0;
+													    width: 100%;
+													    height: 100%;
+													    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+													    backdrop-filter: blur(5px); /* Blur effect */
+													    z-index: 999; /* Above other elements */
+													    justify-content: center; /* Center spinner horizontally */
+													    align-items: center; /* Center spinner vertically */
+													}
+
+													.spinner {
+														position: fixed;
+														z-index: 999;
+														top: 50%;
+														left: 50%;
+														transform: translate(-50%, -50%);
+														border: 5px solid #f3f3f3;
+														border-top: 5px solid #3498db;
+														border-radius: 50%;
+														width: 30px;
+														height: 30px;
+														animation: spin 1s linear infinite;
+													}
+
+													@keyframes spin {
+													    0% { transform: rotate(0deg); }
+													    100% { transform: rotate(360deg); }
+													}
     </style>
 	<!-- Include jQuery -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -428,7 +429,7 @@
 
 		    // Generate PDF for selected rows
 			$('#printInvoiceBtn').on('click', function () {
-				  
+				$('.spinner-container').show();
 				$.ajax({
 								                url: prod_url+'/api/customers/get',  // URL for fetching the customer data
 								                type: 'GET',
@@ -760,7 +761,9 @@
 																	    data: JSON.stringify(dtoData),  // Convert dtoData to JSON if not already
 																	    success: function (msg) {
 																	        console.log("Response:", msg);
+																			$('.spinner-container').hide();
 																	        alert("Invoice saved successfully!");
+																			window.location.reload();
 																	    },
 																	    error: function (xhr, status, error) {
 																	        console.error("Error saving invoice:", error);

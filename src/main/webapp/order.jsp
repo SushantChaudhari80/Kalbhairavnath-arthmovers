@@ -286,39 +286,40 @@
             .modal-content {
                 width: 90%;
             }
-			.spinner-container {
-								    display: none; /* Hidden by default; show it when needed */
-								    position: fixed;
-								    top: 0;
-								    left: 0;
-								    width: 100%;
-								    height: 100%;
-								    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-								    backdrop-filter: blur(5px); /* Blur effect */
-								    z-index: 999; /* Above other elements */
-								    justify-content: center; /* Center spinner horizontally */
-								    align-items: center; /* Center spinner vertically */
-								}
-
-								.spinner {
-									position: fixed;
-									z-index: 999;
-									top: 50%;
-									left: 50%;
-									transform: translate(-50%, -50%);
-									border: 5px solid #f3f3f3;
-									border-top: 5px solid #3498db;
-									border-radius: 50%;
-									width: 30px;
-									height: 30px;
-									animation: spin 1s linear infinite;
-								}
-
-								@keyframes spin {
-								    0% { transform: rotate(0deg); }
-								    100% { transform: rotate(360deg); }
-								}
+			
         }
+		.spinner-container {
+										    display: none; /* Hidden by default; show it when needed */
+										    position: fixed;
+										    top: 0;
+										    left: 0;
+										    width: 100%;
+										    height: 100%;
+										    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+										    backdrop-filter: blur(5px); /* Blur effect */
+										    z-index: 999; /* Above other elements */
+										    justify-content: center; /* Center spinner horizontally */
+										    align-items: center; /* Center spinner vertically */
+										}
+
+										.spinner {
+											position: fixed;
+											z-index: 999;
+											top: 50%;
+											left: 50%;
+											transform: translate(-50%, -50%);
+											border: 5px solid #f3f3f3;
+											border-top: 5px solid #3498db;
+											border-radius: 50%;
+											width: 30px;
+											height: 30px;
+											animation: spin 1s linear infinite;
+										}
+
+										@keyframes spin {
+										    0% { transform: rotate(0deg); }
+										    100% { transform: rotate(360deg); }
+										}
     </style>
 	
 	   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -346,7 +347,7 @@
 		            { title: "Machines" },
 		            { title: "Actions" }
 		        ],
-				order: [[1, 'desc']]
+				order: [[0, 'desc']]
 		    });
 
 		    // Fetch orders when the page loads
@@ -414,7 +415,7 @@
 			
 			
 			$('#saveOrderBtn').on('click', function() {
-				
+				$('.spinner-container').show();
 				const selectedVehicles = $('input[name="vehicle"]:checked').map(function() {
 				        return this.value; // Get checked values
 				    }).get();
@@ -435,6 +436,7 @@
 			        contentType: 'application/json',
 			        data: JSON.stringify(updatedOrder),
 			        success: function(response) {
+						$('.spinner-container').hide();
 			            alert("Order updated successfully!");
 			            closeUpdateModal();  // Close the modal after a successful update
 			            fetchOrders();  // Reload the orders table

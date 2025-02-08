@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 
 @Entity
 public class Coustomer_order {
@@ -12,6 +13,10 @@ public class Coustomer_order {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-incrementing ID
     private int id;
+//	 @Id
+//	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "coustomer_order_seq")
+//	 @SequenceGenerator(name = "coustomer_order_seq", sequenceName = "coustomer_order_seq", allocationSize = 1)
+//	 private int id;
 	
 	 @Column(name = "customer_name", length = 50, nullable = false)
 	 private String customer_name;

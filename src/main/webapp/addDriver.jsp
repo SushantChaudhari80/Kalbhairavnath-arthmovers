@@ -6,6 +6,38 @@
     <title>Add Driver</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+		.spinner-container {
+				    display: none; /* Hidden by default; show it when needed */
+				    position: fixed;
+				    top: 0;
+				    left: 0;
+				    width: 100%;
+				    height: 100%;
+				    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+				    backdrop-filter: blur(5px); /* Blur effect */
+				    z-index: 999; /* Above other elements */
+				    justify-content: center; /* Center spinner horizontally */
+				    align-items: center; /* Center spinner vertically */
+				}
+
+				.spinner {
+					position: fixed;
+					z-index: 999;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					border: 5px solid #f3f3f3;
+					border-top: 5px solid #3498db;
+					border-radius: 50%;
+					width: 30px;
+					height: 30px;
+					animation: spin 1s linear infinite;
+				}
+
+				@keyframes spin {
+				    0% { transform: rotate(0deg); }
+				    100% { transform: rotate(360deg); }
+				}
         body, html {
             font-family: 'Poppins', sans-serif;
             background-color: #f0f4f8;
@@ -136,6 +168,9 @@
 <body>
 
 <div class="container">
+	<div class="spinner-container">
+			    <div class="spinner"></div>
+			</div>
     <div class="page-header">
         <h1>Add Driver</h1>
     </div>
@@ -189,7 +224,9 @@
 	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 	<jsp:include page="url.jsp" />
 <script>
+	$('.spinner-container').hide();
     document.getElementById('addDriverForm').addEventListener('submit', function(event) {
+		$('.spinner-container').show();
         event.preventDefault();
         
         // Clear previous errors
@@ -202,6 +239,7 @@
         const mobile = document.getElementById('driverMobile').value;
         if (!/^[0-9]{10}$/.test(mobile)) {
             document.getElementById('mobileError').textContent = 'Invalid mobile number. Must be 10 digits.';
+			$('.spinner-container').hide();
             isValid = false;
         }
         
@@ -209,6 +247,7 @@
         const aadhar = document.getElementById('driverAadhar').value;
         if (!/^[0-9]{12}$/.test(aadhar)) {
             document.getElementById('aadharError').textContent = 'Invalid Aadhar number. Must be 12 digits.';
+			$('.spinner-container').hide();
             isValid = false;
         }
         
@@ -234,10 +273,12 @@
                         // Display success message
                         document.getElementById('successMessage').style.display = 'block';
                         document.getElementById('errorMessage').style.display = 'none';
+						$('.spinner-container').hide();
                     } else {
                         // Display error message
                         document.getElementById('successMessage').style.display = 'none';
                         document.getElementById('errorMessage').style.display = 'block';
+						$('.spinner-container').hide();
                     }
                 },
                 error: function(xhr, status, error) {
@@ -245,6 +286,7 @@
                     // Display error message
                     document.getElementById('successMessage').style.display = 'none';
                     document.getElementById('errorMessage').style.display = 'block';
+					$('.spinner-container').hide();
                 }
             });
         }
