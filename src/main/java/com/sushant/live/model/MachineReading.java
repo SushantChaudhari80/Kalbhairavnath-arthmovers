@@ -30,13 +30,13 @@ public class MachineReading {
 	private String reading_date ;
 	
 	@Lob  // Marking this as a large object
-   // @Column(name = "startReadingImg", columnDefinition = "MEDIUMBLOB")
+    @Column(name = "startReadingImg", columnDefinition = "MEDIUMBLOB")
     private byte[] startReadingImg;  // Field to store image data
 	
 	private String startReading;
 	
 	@Lob  // Marking this as a large object
-  //  @Column(name = "endReadingImg", columnDefinition = "MEDIUMBLOB")
+    @Column(name = "endReadingImg", columnDefinition = "MEDIUMBLOB")
     private byte[] endReadingImg;  // Field to store image data
 	
 	private String endReading;
@@ -44,7 +44,7 @@ public class MachineReading {
 	private String Maintenance;
 	
 	@Lob  // Marking this as a large object
-  //  @Column(name = "dieselImg", columnDefinition = "MEDIUMBLOB")
+    @Column(name = "dieselImg", columnDefinition = "MEDIUMBLOB")
     private byte[] dieselImg;  
 	
 	private String diesel;

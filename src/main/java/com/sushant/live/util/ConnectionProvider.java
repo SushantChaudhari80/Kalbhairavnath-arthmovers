@@ -19,9 +19,9 @@ public class ConnectionProvider {
 		}
     	return con;
     }               
-    public static void main(String[] args) {
-		System.out.println(ConnectionProvider.getConnection());
-	}
-
+//    public static void main(String[] args) {
+//		System.out.println(ConnectionProvider.getConnection());
+//	}
+//
 
 }

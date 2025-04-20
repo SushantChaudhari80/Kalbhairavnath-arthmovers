@@ -357,7 +357,10 @@
 	            <p>Driver 1: <span id="driver1">.......</span> <button id="btn1" class="btn-submit" onclick="removeDriver(1)">Remove</button></p>
 	            <p>Driver 2: <span id="driver2">.......</span> <button id="btn2"  class="btn-submit" onclick="removeDriver(2)">Remove</button></p>
 	            <!-- Button to add a new driver -->
-	            <button id="drbtn" class="btn-submit" onclick="addDriver()">Add Driver</button>
+				<div id="actions">
+		            <button id="drbtn" class="btn-submit" onclick="addDriver()">Add Driver</button>
+					<!--<button id="diesel_report" class="btn-submit" onclick="">Diesel Report</button>-->
+				</div>
 	        </div>
 	    </div>
 

@@ -16,7 +16,7 @@ public interface ReadingRepository extends JpaRepository<MachineReading , Intege
 	
 	//select * from machinereading where date='21/10/2024'
 	
-	 @Query(value = "SELECT * FROM machinereading WHERE date = :date and machine_number= :machineNumber and onwer_mobile = :onwerMobile", nativeQuery = true)
+	 @Query(value = "SELECT * FROM machinereading WHERE reading_date = :date and machine_number= :machineNumber and onwer_mobile = :onwerMobile", nativeQuery = true)
 	 MachineReading checkRecords(@Param("date") String date, @Param("machineNumber") String machineNumber , @Param("onwerMobile") String onwerMobile);
 
 	 @Query(value = "SELECT * FROM machinereading WHERE onwer_mobile = :onwerMobile and machine_number= :machineNumber and order_name IS NOT NULL", nativeQuery = true)

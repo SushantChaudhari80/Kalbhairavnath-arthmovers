@@ -21,7 +21,7 @@ public class DriverPayment {
 //    private int id;
 	
 	@Column(name = "payment_date")
-	private String date ;
+	private String payment_date ;
 	
 	private String amount ;
 	
@@ -38,11 +38,11 @@ public class DriverPayment {
 	}
 
 	public String getDate() {
-		return date;
+		return payment_date;
 	}
 
 	public void setDate(String date) {
-		this.date = date;
+		this.payment_date = date;
 	}
 
 	public String getAmount() {
@@ -72,7 +72,7 @@ public class DriverPayment {
 	public DriverPayment(int id, String date, String amount, String driverName, String onwerMobile) {
 		super();
 		this.id = id;
-		this.date = date;
+		this.payment_date = date;
 		this.amount = amount;
 		this.driverName = driverName;
 		this.onwerMobile = onwerMobile;
