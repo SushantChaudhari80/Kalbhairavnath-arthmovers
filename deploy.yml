@@ -48,4 +48,4 @@ jobs:
           docker rm second-springboot || true
           docker rmi second-springboot-app || true
           docker build -t second-springboot-app .
-          docker run -d -p 8085:8085 --name second-springboot second-springboot-app
+          docker run -d -p 8081:8081 --name second-springboot second-springboot-app
