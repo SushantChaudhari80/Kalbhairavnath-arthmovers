@@ -1,0 +1,51 @@
+name: Deploy WAR to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Install Maven
+      run: sudo apt-get install maven -y
+
+    - name: Build WAR file
+      run: mvn clean package
+
+    - name: Upload project to server
+      uses: appleboy/scp-action@master
+      with:
+        host: 103.91.187.228
+        username: root
+        port: 2244
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "."
+        target: "/opt/apps/my-second-app"
+
+    - name: SSH and deploy second app
+      uses: appleboy/ssh-action@master
+      with:
+        host: 103.91.187.228
+        username: root
+        port: 2244
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /opt/apps/my-second-app
+          docker stop second-springboot || true
+          docker rm second-springboot || true
+          docker rmi second-springboot-app || true
+          docker build -t second-springboot-app .
+          docker run -d -p 8085:8085 --name second-springboot second-springboot-app
