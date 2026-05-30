@@ -29,22 +29,22 @@ public class MachineReading {
 	@Column(name = "reading_date")
 	private String reading_date ;
 	
-	@Lob  // Marking this as a large object
-    @Column(name = "startReadingImg", columnDefinition = "MEDIUMBLOB")
+	//@Lob  // Marking this as a large object
+   // @Column(name = "startReadingImg", columnDefinition = "MEDIUMBLOB")
     private byte[] startReadingImg;  // Field to store image data
 	
 	private String startReading;
 	
-	@Lob  // Marking this as a large object
-    @Column(name = "endReadingImg", columnDefinition = "MEDIUMBLOB")
+//	@Lob  // Marking this as a large object
+  //  @Column(name = "endReadingImg", columnDefinition = "MEDIUMBLOB")
     private byte[] endReadingImg;  // Field to store image data
 	
 	private String endReading;
 	
 	private String Maintenance;
 	
-	@Lob  // Marking this as a large object
-    @Column(name = "dieselImg", columnDefinition = "MEDIUMBLOB")
+	//@Lob  // Marking this as a large object
+  //  @Column(name = "dieselImg", columnDefinition = "MEDIUMBLOB")
     private byte[] dieselImg;  
 	
 	private String diesel;

@@ -12,7 +12,7 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("My REST API")
+                        .title("Tanvi Software Solution My REST API")
                         .version("1.0")
                         .description("This is the API documentation for my application"));
     }

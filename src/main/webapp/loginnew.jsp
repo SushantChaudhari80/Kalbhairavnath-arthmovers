@@ -5,6 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Expires" content="0">
     <title>Login - Transport Management System</title>
     <style>
 		.spinner-container {
@@ -113,13 +116,16 @@
 	            success: function(response) {
 	            	$('.spinner-container').hide();
 	                if(response.message === "success"){
+	                	$('.spinner-container').hide();
 						window.location.href = 'dashboard.jsp'; 
 						}else{
 							alert(response.message);
-							}
-					
+							$('.spinner-container').hide();
+						}
 	            },
 	            error: function(xhr, status, error) {
+	            	alert('Something went wrong ,please contact to Administrator.');
+	            	$('.spinner-container').hide();
 	                $('#result').html('Error: ' + error);
 	            }
 	        });

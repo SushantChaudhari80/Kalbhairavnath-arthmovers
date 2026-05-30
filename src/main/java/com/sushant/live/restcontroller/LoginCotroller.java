@@ -26,17 +26,16 @@ public class LoginCotroller {
 	        System.out.println("Mobile: " + email + ", Password: " + pass);
 	        
 	        Map<String, String> response = new HashMap<>();
-	        Customer c = customerService.getCustomerById(email);
-	        if (!(c.equals(null))) {	
-	        	System.out.println(c.getMobile() + c.getPassword());
-	        if(email.equals(c.getMobile()) & pass.equals(c.getPassword())) {
-	        response.put("message", "success");
-	        SessionManager session = SessionManager.getInstance();
-	        session.setUsername(email);
-			 }else {
-				 response.put("message", "Invalid Credentials , rertry");
-			 }
-	        }else {
+	        try {
+		        Customer c = customerService.getCustomerById(email);
+		        if(email.equals(c.getMobile()) & pass.equals(c.getPassword())) {
+			        response.put("message", "success");
+			        SessionManager session = SessionManager.getInstance();
+			        session.setUsername(email);
+				}else {
+					response.put("message", "Invalid Credentials , rertry");
+				}
+	        }catch(Exception e) {
 	        	response.put("message", "User not exist");
 	        }
 			        

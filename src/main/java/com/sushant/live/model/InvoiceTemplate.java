@@ -3,6 +3,7 @@ package com.sushant.live.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,7 +15,8 @@ public class InvoiceTemplate {
 	
 	String billedDate;
 	
-	@Column(name = "invoice", columnDefinition = "MEDIUMBLOB")
+	//@Lob
+	//@Column(name = "invoice", columnDefinition = "MEDIUMBLOB")
 	private String invoice;
 	
 	String omobile;
