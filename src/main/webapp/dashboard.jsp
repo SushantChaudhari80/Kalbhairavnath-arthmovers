@@ -6,6 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 	<meta http-equiv="Pragma" content="no-cache">
 	<meta http-equiv="Expires" content="0">
+	<link rel="icon" type="image/png" href="img/project_logo.png">
     <title>Transport Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -255,6 +256,7 @@
 
         /* Overview Section */
         .overview {
+            background: transparent;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
@@ -410,6 +412,15 @@
 		        .toggle-btn {
 		            float: right;
 		        }
+		        
+		  #main-body{
+		    background-color: white;
+		    margin-top: 2%;
+		    margin-bottom: 2%;
+		    border: 1px solid black;
+		    padding: 2%;
+		  }
+		  
     </style>
     
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

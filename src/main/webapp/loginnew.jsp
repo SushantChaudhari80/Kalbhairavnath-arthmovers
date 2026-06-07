@@ -8,6 +8,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 	<meta http-equiv="Pragma" content="no-cache">
 	<meta http-equiv="Expires" content="0">
+	<link rel="icon" type="image/png" href="img/project_logo.png">
     <title>Login - Transport Management System</title>
     <style>
 		.spinner-container {
@@ -61,6 +62,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 300px; /* Fixed width for the form */
             text-align: center; /* Center text inside the container */
+            align-items: center;
         }
 
         h2 {
@@ -75,15 +77,19 @@
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
         }
 
         input[type="submit"] {
             background-color: #5cb85c;
-            color: white;
-            border: none;
+            width: 100%;
             padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
             border-radius: 5px;
             cursor: pointer;
+            margin-left:10px;
         }
 
         input[type="submit"]:hover {
@@ -143,7 +149,7 @@
 	        <form style="background-image: url('img/bk4.jpg'); background-position: center;" action="" method="post" onsubmit="loginMeth(event)">
 	            <input type="text" name="email" placeholder="Username" required>
 	            <input type="password" name="password" placeholder="Password" required>
-	            <button type="submit">Login</button>
+	            <input type="submit" value="Login"></input>
 	        </form>
 	        <div id="result"></div>
 	    </div>

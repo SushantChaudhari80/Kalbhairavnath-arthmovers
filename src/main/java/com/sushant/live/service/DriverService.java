@@ -2,10 +2,13 @@ package com.sushant.live.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.sushant.live.dto.DriverLoginResponse;
 import com.sushant.live.mapper.VehicaleDriverProjection;
 import com.sushant.live.model.VehicaleDriver;
 import com.sushant.live.repository.DriverRepository;
@@ -16,6 +19,33 @@ public class DriverService {
 
 	@Autowired
 	private DriverRepository driverRepo;
+	
+	public Object login(String mobile , String password) {
+		
+		VehicaleDriver driver = driverRepo.findByDriverMobile(mobile);
+
+	    if (driver == null) {
+	        return new DriverLoginResponse(false,
+	                "Driver not found with provided mobile number.",
+	                null);
+	    }
+
+	    if (driver.getPassword() == null) {
+	        return new DriverLoginResponse(false,
+	                "Please generate a password first.",
+	                null);
+	    }
+
+	    if (!driver.getPassword().equals(password)) {
+	        return new DriverLoginResponse(false,
+	                "Invalid password. Please try again.",
+	                null);
+	    }
+
+	    return new DriverLoginResponse(true,
+	            "Login successful",
+	            driver);
+	}
 	
 	 public boolean addDriver(VehicaleDriver driver) {
 	        try {
@@ -78,5 +108,37 @@ public class DriverService {
 	    	return driverRepo.getById(id);
 	    }
 	    
+	    public Object changePassword(String driverMobile , String password) {
+	    	try {
+
+	            VehicaleDriver driver = driverRepo.findByDriverMobile(driverMobile);
+
+	            if (driver == null) {
+	                return ResponseEntity.badRequest()
+	                        .body(Map.of(
+	                                "success", false,
+	                                "message", "Driver not found."
+	                        ));
+	            }
+
+	            driver.setPassword(password);
+	            driverRepo.save(driver);
+
+	            return ResponseEntity.ok(
+	                    Map.of(
+	                            "success", true,
+	                            "message", "Password updated successfully."
+	                    )
+	            );
+
+	        } catch (Exception e) {
+
+	            return ResponseEntity.internalServerError()
+	                    .body(Map.of(
+	                            "success", false,
+	                            "message", e.getMessage()
+	                    ));
+	        }
+	    }
 	    
 }

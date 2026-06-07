@@ -31,7 +31,8 @@ public class MachineReadingController {
     	        @RequestParam("maintenanceNumber") String maintenance,
     	        @RequestParam("driverId") String driverId,
     	        @RequestParam("machineNumber") String machineNumber,
-    	        @RequestParam("selectedOwnerMobile") String selectedOwnerMobile) {
+    	        @RequestParam("selectedOwnerMobile") String selectedOwnerMobile,
+    	        @RequestParam(value ="actulReading", required = false) String actulReading) {
             try {
                 ReadingDTO dto = new ReadingDTO();
                 if(startReading != null )
@@ -47,6 +48,7 @@ public class MachineReadingController {
                 dto.setDriverId(driverId);
                 dto.setMachineNumber(machineNumber);
                 dto.setSelectedOwnerMobile(selectedOwnerMobile);
+                dto.setExtractedReading(actulReading);
 
                 return machineReadingService.saveReading(dto);
             } catch (Exception e) {
@@ -170,5 +172,11 @@ public class MachineReadingController {
 	    }
 	}
 
+    @PostMapping("/api/extract/reading")
+    public ResponseEntity<Object> upload(
+            @RequestParam("file") MultipartFile file) {
+            Object response = machineReadingService.extractReading(file);
+            return ResponseEntity.ok(response);
+    }
     
 }

@@ -1,9 +1,11 @@
 package com.sushant.live.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,6 +19,15 @@ import com.sushant.live.repository.DriverRepository;
 import com.sushant.live.repository.OrderRepository;
 import com.sushant.live.repository.ReadingRepository;
 import com.sushant.live.util.SessionManager;
+import java.io.IOException;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class ReadingService {
@@ -29,6 +40,9 @@ public class ReadingService {
 	
 	@Autowired
 	OrderRepository orderRepo;
+	
+	@Value(value = "ai.api")
+	private String REST_API;
 	
 	public String saveReading(ReadingDTO dto) {
 	    try {
@@ -50,6 +64,11 @@ public class ReadingService {
 	            newReading.setOnwerMobile(dto.getSelectedOwnerMobile());
 	            newReading.setDriverName(dto.getDriverId());
 	            newReading.setMachineNumber(dto.getMachineNumber());
+	            if(dto.getStartReading() != null) {
+	            	newReading.setStartReading(dto.getExtractedReading());
+	            }else {
+	            	newReading.setEndReading(dto.getExtractedReading());
+	            }
 
 	            // Fetch order details
 	            Coustomer_order order = orderRepo.findAllByMachine(dto.getSelectedOwnerMobile(), dto.getMachineNumber());
@@ -64,27 +83,22 @@ public class ReadingService {
 	            return "Reading Added Successfully.";
 
 	        } else {
-	         try {	
-               System.out.println("Updating Existing Reading with values : START READING :"+existingReading.getStartReadingImg().length);
-               System.out.println("DISEL  : "+existingReading.getDieselImg().length);
-               System.out.println("END REDAING : "+existingReading.getEndReadingImg().length);
-             }catch(Exception e) {
-	        	 System.out.println(e.getLocalizedMessage());
-	         }
 	            // Update existing record
 	            boolean isUpdated = false;
 
 	            // Update only if the DTO provides new data, otherwise keep the existing value
 	            if (dto.getStartReading() != null && existingReading.getStartReadingImg() == null) {
 	                existingReading.setStartReadingImg(dto.getStartReading());
+	                existingReading.setStartReading(dto.getExtractedReading());
 	                isUpdated = true;
 	            }
 	            if (dto.getEndReading() != null && existingReading.getEndReadingImg() == null) {
 	                existingReading.setEndReadingImg(dto.getEndReading());
+	                existingReading.setEndReading(dto.getExtractedReading());
 	                isUpdated = true;
 	            }
 	            try {
-	            if (dto.getDisel() != null && existingReading.getDieselImg() == null || existingReading.getDieselImg().length==0  ) {
+	            if (dto.getDisel().length != 0 && dto.getDisel() != null && existingReading.getDieselImg() == null) {
 	                existingReading.setDieselImg(dto.getDisel());
 	                isUpdated = true;
 	            }
@@ -105,14 +119,6 @@ public class ReadingService {
 	            } else {
 	                return "Order details not found for the given machine.";
 	            }
-
-	            try {	
-	                System.out.println("Updating Existing Reading with New values : START READING :"+existingReading.getStartReadingImg().length);
-	                System.out.println("END REDAING : "+existingReading.getEndReadingImg().length);
-	                System.out.println("DISEL  : "+existingReading.getDieselImg().length);
-	 	         }catch(Exception e) {
-	 	        	 System.out.println(e.getLocalizedMessage());
-	 	         }
 	            
 	            repo.save(existingReading);
 	            return "Reading Updated Successfully.";
@@ -192,6 +198,47 @@ public class ReadingService {
 	        throw new RuntimeException("Failed to update Treep. Please contact support.");
 	    }
 	}
+	
+	
+	   public Object extractReading(MultipartFile file) {
+
+	        try {
+
+	            RestTemplate restTemplate = new RestTemplate();
+
+	            ByteArrayResource resource = new ByteArrayResource(file.getBytes()) {
+	                @Override
+	                public String getFilename() {
+	                    return file.getOriginalFilename();
+	                }
+	            };
+
+	            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+	            body.add("file", resource);
+
+	            HttpHeaders headers = new HttpHeaders();
+	            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+	            HttpEntity<MultiValueMap<String, Object>> requestEntity =
+	                    new HttpEntity<>(body, headers);
+
+	            ResponseEntity<String> response =
+	                    restTemplate.postForEntity(
+	                            "http://localhost:8080/api/v1/extract-reading",
+	                            requestEntity,
+	                            String.class
+	                    );
+
+	            return response.getBody();
+
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            return "Failed to process file: " + e.getMessage();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return "Failed to call AI service: " + e.getMessage();
+	        }
+	    }
 	
 	
 }

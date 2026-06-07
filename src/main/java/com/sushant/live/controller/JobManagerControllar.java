@@ -20,7 +20,7 @@ public class JobManagerControllar {
 	}
 	@GetMapping("/reading")
 	public String addReading() {
-		return "captureReading";
+		return "readingNew";
 	}
 	@GetMapping("/login")
 	public String login() {

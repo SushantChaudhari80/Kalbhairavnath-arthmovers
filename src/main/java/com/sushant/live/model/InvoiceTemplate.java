@@ -15,8 +15,7 @@ public class InvoiceTemplate {
 	
 	String billedDate;
 	
-	//@Lob
-	//@Column(name = "invoice", columnDefinition = "MEDIUMBLOB")
+	@Column(columnDefinition = "TEXT")
 	private String invoice;
 	
 	String omobile;

@@ -104,5 +104,17 @@ public class DriverController {
 			 return ResponseEntity.ok(list);
 	    }
 		
+		@GetMapping("/login")
+		public ResponseEntity<Object> loginUser(@RequestParam String mobile , @RequestParam String password){
+			return ResponseEntity.ok(driverService.login(mobile , password));
+		}
+		
+		
+		@PostMapping("/changePassword")
+		public Object changePassword(
+		        @RequestParam String driverMobile,
+		        @RequestParam String password) {
+			return driverService.changePassword(driverMobile, password);
+		}
 
 }

@@ -38,6 +38,8 @@ public class VehicaleDriver {
     
     @Column(name = "onwerMobile", nullable = false)
     private String onwerMobile;
+    
+    private String password;
 
     // Constructors
     public VehicaleDriver() {
@@ -131,6 +133,16 @@ public class VehicaleDriver {
 
 	public void setOnwerMobile(String onwerMobile) {
 		this.onwerMobile = onwerMobile;
+	}
+	
+	
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Override
