@@ -17,7 +17,7 @@ public class DriverPaymentService {
 	@Autowired
 	private DriverPaymentRepository repo;
 	
-	public String savePayment(String drName , String amount) {
+	public String savePayment(String drName , String amount , String comment) {
 		try {
 			 LocalDate today = LocalDate.now();
 			    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -26,6 +26,8 @@ public class DriverPaymentService {
 			drp.setDate(formattedDate);
 			drp.setAmount(amount);
 			drp.setDriverName(drName);
+			drp.setComment(comment);
+			drp.setTransaction("Withdrow");
 			drp.setOnwerMobile(SessionManager.getInstance().getUsername());
 			repo.save(drp);
 			return "Payment Added Successfully.";

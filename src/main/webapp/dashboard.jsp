@@ -60,6 +60,11 @@
 		           font-family: 'Poppins', sans-serif;
 		           height: 100%;
 		           background-image: url('img/bk6.jpg');
+		           background-position: center;
+		           height: 100vh;
+		           background-position: center;
+		           background-size: cover;
+		           background-repeat: no-repeat;
 		       }
 
 		       .dashboard-container {
@@ -320,7 +325,7 @@
                 width: 100%;
                 height: auto;
                 display: flex;
-                flex-direction: row;
+                flex-direction: column;
                 justify-content: space-between;
             }
 
@@ -420,7 +425,20 @@
 		    border: 1px solid black;
 		    padding: 2%;
 		  }
+		  #logoutButton{
+		    padding: 10px 20px;
+            background-color: #2980b9;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+		  }
 		  
+		  @media (max-width: 768px) {
+			   #customer-name{
+			     display: none;
+			   }
+			   
+			}
     </style>
     
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -574,6 +592,7 @@
 	            <p><strong>Bank Name:</strong> <span id="user-bank-name"></span></p>
 	            <p><strong>Address:</strong> <span id="user-address"></span></p>
 	            <img id="user-picture" src="https://via.placeholder.com/150" alt="User Picture" style="max-width: 100px;">
+	            <input type="button" id="logoutButton" value="Logout" onclick="window.location.href='loginnew.jsp';">
 	        </div>
 	    </div>
 	</div>
@@ -583,7 +602,7 @@
 	              <div>
 					  <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
 		                  <h2>Transport</h2>
-						  <span id="closeSideBar">&times;</span>
+						  <span id="closeSideBar" style="height: 10%;width: 10%">&times;</span>
 					  </div>
 	                  <ul class="nav-links">
 	                      <li><a href="dashboard.jsp">Dashboard</a></li>
@@ -599,17 +618,17 @@
 						      </ul>
 						  </li>
 	                      <!--<li><a href="vehicales.jsp">Vehicles</a></li>-->
-						  <li>
-						  						      <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-						  						          <a href="drivers.jsp">Drivers</a>
-						  						          <span class="toggle-btn">+</span>
-						  						      </div>
-						  						      <ul class="submenu" style="display: none;">
-						  						          <li><a href="addDriver.jsp">Add Driver</a></li>
-						  						      </ul>
-						  </li>						  						  
+					<li>
+						<div
+							style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+							<a href="drivers.jsp">Drivers</a> <span class="toggle-btn">+</span>
+						</div>
+						<ul class="submenu" style="display: none;">
+							<li><a href="addDriver.jsp">Add Driver</a></li>
+						</ul>
+					</li>
 
-	                      <li><a href="quatationGenerator.jsp">Quotation</a></li>
+					<li><a href="quatationGenerator.jsp">Quotation</a></li>
 	                      
 						  
 						  <li>
@@ -657,14 +676,13 @@
 				<div style="display: flex;"> 
 					<span id="menubtn" style="margin-right:10px;">&#9776;</span>
 					
-					<div class="search-bar">
+					<!-- <div class="search-bar">
 						<input type="text" placeholder="Search...">
-					</div>
+					</div> -->
 				</div>
 			    <div class="user-section">
 			        <span id="customer-name">Loading....</span>
 			        <img id="customer-picture" src="https://via.placeholder.com/40" alt="User Profile">
-					<input type="button" id="logoutButton" value="Logout" onclick="window.location.href='loginnew.jsp';">
 			    </div>
 			</div>
 

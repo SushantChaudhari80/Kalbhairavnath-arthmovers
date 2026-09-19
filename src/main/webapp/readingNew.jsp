@@ -294,14 +294,36 @@ small {
 	                	$('#reading-container').show();
 	                	let driverName = response.data.driverName;
 	                    let machineNumber = response.data.machineNumber;
+	                    $('#customer-name').text('Customer : '+response.order.customer_name);
 	
 	                    $('#driver-info').text(
 	                        driverName + ' - ' +
 	                        (machineNumber ? machineNumber : 'Machine not Assigned, Contact Administrator.')
 	                    );
+	                    
 	                    if(!machineNumber){
 	                    	$('.form-feilds').hide();
+	                    	$('.treep-form-feilds').hide();
 	                    }
+	                    if(!response.order){
+	                    	$('#driver-info').html(
+	                    		    driverName + ' - ' +
+	                    		    (machineNumber
+	                    		        ? machineNumber
+	                    		        : 'Machine not Assigned, Contact Administrator.') +
+	                    		    '<br><h4 style="color:red;">Machine/Dumper Not Assigned to Order. Please assign a vehicle to the customer.</h4>'
+	                    		);
+	                    	 $('.form-feilds').hide();
+	                    	 $('.treep-form-feilds').hide();
+	                    }
+	                    if(response.vehicale && response.vehicale.v_type === 'Excavator'){
+	                    	$('.treep-form-feilds').hide();
+	                    }else{
+	                    	$('.form-feilds').hide();
+	                    	
+	                    	$('.form-title').text("Treep Entry");
+	                    }
+	                    
 	                    driverData=response;
 	                }else if(response.message === "Please generate a password first."){
 	                	$('#login-container').hide();
@@ -381,9 +403,9 @@ small {
 	        }
 	    });
 		  
-	    $('#vehicleReadingForm').on('submit', function (e) {
+	    $('#reading-submit-btn').on('click', function (e) {
 	        e.preventDefault(); // Prevent default form submission
-	
+	        console.log('entering in reading submit method');
 	        const selectedReadingType = $('input[name="readingType"]:checked').val();
 	       
 			const formData = new FormData(this);
@@ -439,6 +461,7 @@ small {
 	                
 	                
 	                formData.append('actulReading',response.reading);
+	                formData.append('driverName',driverData.data.driverName);
 	                $.ajax({
 	    	            url: prod_url+'/driver/reading/submit',  // REST endpoint
 	    	            type: 'POST',
@@ -470,7 +493,43 @@ small {
 	        
 	       
 	    });
-	
+	    
+	    
+	    //logic
+	    $('#save-btn').on('click', function () {
+	    	console.log('entering in Treep submit method');
+	    	const customerName = driverData.order.customer_name;
+	        const soilBrass = document.getElementById('soil-brass').value;
+	        const soilRate = document.getElementById('soil-rate').value;
+
+	        // Calculate total payment
+	        const selectedVehicleText = driverData.vehicale.machineNumber;
+			var selectedItems=document.getElementById('material').options[document.getElementById('material').selectedIndex].text;
+
+               const formData = {
+                   selectedVehicle: selectedVehicleText,
+                   customerName:customerName,
+                   soilBrass: soilBrass,
+                   soilRate: soilRate,
+                   item:selectedItems,
+				   isBilled:false
+               };
+               console.log(formData);
+               $.ajax({
+                   url: prod_url+'/api/treep/add?onwer='+driverData.vehicale.onwer_mobile, // Endpoint URL
+                   type: 'POST',
+                   contentType: 'application/json',
+                   data: JSON.stringify(formData),
+                   success: function (response) {
+					$('.spinner-container').hide();
+                       alert(response);
+                   },
+                   error: function (xhr, status, error) {
+                       alert('Error:', error);
+                   }
+               });
+			          
+		});
 	});
 	
 	 
@@ -554,23 +613,67 @@ small {
 
 						<td>
 							<div class="form-group">
-								<label for="disel">Diesel Bill Image</label> <input type="file"
-									id="disel" name="disel" accept="image/*"> <small>Upload
-									diesel bill image</small>
+								<label for="disel">Diesel Bill Image</label> 
+								<input type="file" id="disel" name="disel" accept="image/*">
+								<small>Upload diesel bill image</small>
 							</div>
 						</td>
 					</tr>
 
 					<tr class="form-feilds">
 						<td colspan="2" class="submit-row">
-							<button type="submit" class="btn-submit">Submit Reading
+							<button type="submit" id="reading-submit-btn" class="btn-submit">Submit Reading
 							</button>
 						</td>
 					</tr>
-
+					
 				</table>
 
 			</form>
+			 <table>
+			     <tr class="treep-form-feilds">
+					   <td>
+					      <div class="form-group">
+					       	 <span id="customer-name">Customer Name</span>
+					      </div>
+					   </td>
+					</tr>
+					<tr class="treep-form-feilds">
+					   <td>
+					        <div class="form-group">
+							    <label for="material">Select Material:</label>
+								<select id="material" name="material">
+									<option >Select</option>
+								    <option value="Soil">Soil</option>
+								    <option value="Bricks">Bricks</option>
+								    <option value="Crush Sand">Crush Sand</option>
+								    <option value="Sand">Sand</option>
+								</select>
+							</div>
+					   </td>
+					   <td>
+					        <div class="form-group">
+						      	<label for="soil-brass">Number of Brass/Treep Soil</label>
+	                          	<input type="number" id="soil-brass" placeholder="Enter number of brass" value="0">
+	                         </div>
+					   </td>
+					</tr>
+					<tr class="treep-form-feilds">
+					   <td >
+					       <div class="form-group">
+							   <label for="soil-rate">Soil Rate per Brass/Treep (â¹)</label>
+		                       <input type="number" id="soil-rate" placeholder="Enter rate per brass" value="0"> 
+		                   </div> 
+					   </td>
+					</tr>
+					<tr class="treep-form-feilds">
+						<td colspan="2" class="submit-row">
+						   <input type="button" id="save-btn" class="btn-submit" value="Save"></button>
+						</td>
+					</tr>
+			 
+			 </table>
+			 
 
 		</div>
 

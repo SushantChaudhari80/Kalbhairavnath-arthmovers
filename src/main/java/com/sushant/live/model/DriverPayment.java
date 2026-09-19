@@ -15,10 +15,6 @@ public class DriverPayment {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-incrementing ID
     private int id;
-//	@Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "driver_payment_seq")
-//    @SequenceGenerator(name = "driver_payment_seq", sequenceName = "driver_payment_seq", allocationSize = 1)
-//    private int id;
 	
 	@Column(name = "payment_date")
 	private String payment_date ;
@@ -26,6 +22,10 @@ public class DriverPayment {
 	private String amount ;
 	
 	private String driverName ;
+	
+	private String comment;
+	
+	private String transaction;
 	
 	private String onwerMobile ;
 
@@ -68,13 +68,47 @@ public class DriverPayment {
 	public void setOnwerMobile(String onwerMobile) {
 		this.onwerMobile = onwerMobile;
 	}
+	
+	
 
-	public DriverPayment(int id, String date, String amount, String driverName, String onwerMobile) {
+	public String getPayment_date() {
+		return payment_date;
+	}
+
+	public void setPayment_date(String payment_date) {
+		this.payment_date = payment_date;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	
+	
+
+	public String getTransaction() {
+		return transaction;
+	}
+
+	public void setTransaction(String transaction) {
+		this.transaction = transaction;
+	}
+
+	
+
+	public DriverPayment(int id, String payment_date, String amount, String driverName, String comment,
+			String transaction, String onwerMobile) {
 		super();
 		this.id = id;
-		this.payment_date = date;
+		this.payment_date = payment_date;
 		this.amount = amount;
 		this.driverName = driverName;
+		this.comment = comment;
+		this.transaction = transaction;
 		this.onwerMobile = onwerMobile;
 	}
 

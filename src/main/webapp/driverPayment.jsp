@@ -47,11 +47,15 @@
         }
 
         .page-header {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
+        .driver-meta-data{
+            display: flex;
+            justify-content: space-between;
+            flex: row;
+        }
+        
 
         .filters {
             display: flex;
@@ -110,6 +114,9 @@
         }
 
         .payment-summary {
+            display:flex;
+            flex-direction:row;
+            justify-content:space-between;
             margin-top: 30px;
             background-color: #eef2f7;
             padding: 20px;
@@ -126,8 +133,11 @@
             font-size: 16px;
             margin-bottom: 10px;
         }
+        .payment-summary div{
+          	width: 100%; 
+        }
 
-        #totalPayments, #totalAmount {
+        .payment-summary div p span {
             font-weight: bold;
             color: #27ae60;
         }
@@ -259,13 +269,35 @@
 		    const driverId = getQueryParameter('driverId');
 		    const driverName = getQueryParameter('driverName');
 		    console.log(driverId, driverName);
+		    let DOJ = null;
+		    //Load Driver Metadata
+             $.ajax({
+					url: prod_url+'/api/driver/getById?drId=' + driverId,
+					type: 'GET',
+					success: function (driver) {
+						DOJ = driver.createDate;
+						console.log(driver);
+						$('#driverDOJ').html('<b>' + driver.createDate + '</b>');
+						$('#driverMobile').html('<b>' + driver.driverMobile + '</b>');
+						$('#driverAv').html('<b>' + driver.machineNumber + '</b>');
+						$('#driverSalary').html('<b>' + driver.driverSalary + '</b>');
+					},
+					error: function (xhr, status, error) {
+					    console.error("Error fetching driver data:", error);
+					 }
+			});		    
+		        
+		    
+		    //---------------------------------
 			
 			const table = $('#paymenTable').DataTable({
 				        columns: [
 				            { title: "Payment ID" },
 				            { title: "Driver Name" },
 				            { title: "Date" },
-				            { title: "Amount" }
+				            { title: "Amount" },
+				            { title: "Comment" },
+				            { title: "Transaction" }
 				        ]
 				    });
 					
@@ -280,17 +312,39 @@
 										                    record.id,
 										                    record.driverName || '',
 										                    record.date || '',
-										                    record.amount || ''
+										                    record.amount || '',
+										                    record.comment || '',
+										                    record.transaction || ''
 										                ]);
 										            });
 
 										            // Draw the table after all rows are added
 										            table.draw();	
-													$('#totalPayments').text(records.length);	
-													const totalAmount = records.reduce((sum, record) => {
-													            return sum + (parseFloat(record.amount) || 0); // Convert amount to number
-													        }, 0);
-																$('#totalAmount').text(totalAmount);				
+										            $('#totalPayments').text(records.length);
+										            const totalPaidAmount = records.reduce((sum, record) => {
+										                if (record.transaction &&
+										                    record.transaction.toLowerCase() === 'withdrow' ) {
+										                    return sum + (parseFloat(record.amount) || 0);
+										                }
+										                return sum;
+										            }, 0);
+													$('#totalAmount').text(totalPaidAmount);
+													
+													const totalPayableAmount = records.reduce((sum, record) => {
+										                if (record.transaction &&
+										                    record.transaction.toLowerCase() === 'deposite') {
+										                    return sum + (parseFloat(record.amount) || 0);
+										                }
+										                return sum;
+										            }, 0);
+													$('#totalPayableAmount').text(totalPayableAmount);
+													const totalDue = totalPayableAmount - totalPaidAmount;
+													if(totalDue < 0){
+														$('#totalDue').text(totalDue).css('color', 'red');
+													}else{
+														$('#totalDue').text(totalDue);
+													}
+													
 						          },
 							      error: function(xhr, status, error) {
 								      console.error("Error removing driver:", error);
@@ -298,7 +352,7 @@
 					 });		
 
 		    // Update the driverInfo span with the driverName
-		    $('#driverInfo').text(driverName);
+		    $('#driverInfo').html('<b>' + driverName.toUpperCase() + '</b>');
 		    
 		    // Event listener for opening the modal
 		    $('#addPaymentBtn').on('click', function () {
@@ -320,11 +374,11 @@
 		    $('#paymentForm').on('submit', function (e) {
 		        e.preventDefault();
 		        const amount = $('#paymentAmount').val();
-		        
+		        const paymentCmt = $('#paymentCmt').val();
 		        // Log the data or perform AJAX request to save payment details
 		        console.log('Payment Submitted:', { driverName, amount });
 				$.ajax({
-					        url: prod_url+'/api/driver/payment/save?driverName='+driverName+'&amount='+amount, // Replace with your API endpoint for removal
+					        url: prod_url+'/api/driver/payment/save?driverName='+driverName+'&amount='+amount+'&comment='+paymentCmt, // Replace with your API endpoint for removal
 					        type: 'GET',
 					        success: function(response) {
 								alert(response);
@@ -346,19 +400,54 @@
         <h1>Driver Payment Management</h1>
 
         <div class="page-header">
-			<div>
-			    <label for="driverInfo">Driver Name :</label>
-			    <span id="driverInfo"></span>
+            <div class="driver-meta-data">
+				<div>
+				    <label for="driverInfo">Driver Name :</label>
+				    <span id="driverInfo"></span>
+				</div>
+				<button id="addPaymentBtn" class="btn btn-primary">Add Payment</button>
+			</div>
+			<div class="driver-meta-data">
+			    <div>
+				    <label for="driverSalary">Salary :</label>
+				    <span id="driverSalary"></span>
+				</div>
+			    <div>
+				    <label for="driverDOJ">Joining Date :</label>
+				    <span id="driverDOJ"></span>
+				</div>
+				<div>
+				    <label for="driverMobile">Driver Mobile :</label>
+				    <span id="driverMobile"></span>
+				</div>
+				<div>
+				    <label for="driverAv">Assigned Vehicle :</label>
+				    <span id="driverAv"></span>
+				</div>
 			</div>
 
-            <button id="addPaymentBtn" class="btn btn-primary">Add Payment</button>
+            
         </div>
 
-        <div class="filters">
+        <!-- <div class="filters">
             <input type="text" id="driverName" placeholder="Search by Driver Name">
             <input type="date" id="startDate" placeholder="Start Date">
             <input type="date" id="endDate" placeholder="End Date">
             <button class="btn-filter">Apply Filters</button>
+        </div> -->
+        
+        <div class="payment-summary">
+            <div>
+	            <h3>Payment Summary</h3>
+	            <p>Total Payments: <span id="totalPayments">0</span></p>
+	            <p>Total Paid Amount: <span id="totalAmount">$0.00</span></p>
+            </div>
+             <div>
+	            <h3> : </h3>
+	            <p>Total Payable Amount: <span id="totalPayableAmount">0</span></p>
+	            <p>Total Due: <span id="totalDue">$0.00</span></p>
+            </div>
+            
         </div>
 
         <div class="payment-table">
@@ -369,6 +458,8 @@
                         <th>Driver Name</th>
                         <th>Date</th>
                         <th>Amount</th>
+                        <th>Comment</th>
+                        <th>Transaction</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -377,11 +468,7 @@
             </table>
         </div>
 
-        <div class="payment-summary">
-            <h3>Payment Summary</h3>
-            <p>Total Payments: <span id="totalPayments">0</span></p>
-            <p>Total Amount: <span id="totalAmount">$0.00</span></p>
-        </div>
+        
     </div>
 	<div id="addPaymentModal" class="modal">
 	        <div class="modal-content">
@@ -394,6 +481,11 @@
 	                <div class="form-group">
 	                    <label for="paymentAmount">Amount</label>
 	                    <input type="number" id="paymentAmount" name="paymentAmount" required>
+	                </div>
+	                
+	                <div class="form-group">
+	                    <label for="paymentCmt">Comment</label>
+	                    <input type="text" id="paymentCmt" name="paymentCmt">
 	                </div>
 
 	                <div class="modal-footer">

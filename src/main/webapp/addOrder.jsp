@@ -209,13 +209,13 @@
 	                    const checkbox = document.createElement('input');
 	                    checkbox.type = 'checkbox';
 	                    checkbox.name = 'vehicle';
-	                    checkbox.value = vehicle.machineNumber;
+	                    checkbox.value = vehicle.machine_number;
 
 	                    // Append the checkbox to the label
 	                    label.appendChild(checkbox);
 
 	                    // Add the text after the checkbox
-	                    const textNode = document.createTextNode(vehicle.machineNumber);
+	                    const textNode = document.createTextNode(vehicle.machine_number);
 	                    label.appendChild(textNode);
 
 	                    // Create a <br> element for line break

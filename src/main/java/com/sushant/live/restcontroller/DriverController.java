@@ -46,7 +46,8 @@ public class DriverController {
 	        driver.setDriverAadhar(driverDTO.getDriverAadhar());
 	        driver.setDriverLiencense(driverDTO.getDriverLiecense());
 	        driver.setOwnerMobile(SessionManager.getInstance().getUsername());
-	       boolean isAdded = driverService.addDriver(driver);
+	        driver.setDriverSalary(driverDTO.getDriverSalary());
+	        boolean isAdded = driverService.addDriver(driver);
 
 	        if (isAdded) {
 	            return ResponseEntity.ok("Driver added successfully!");
@@ -93,8 +94,8 @@ public class DriverController {
 		//---------/payment/getAll---------------------------------------------------------------------------------------------------------
 		
 		@GetMapping("/payment/save")
-		public String addDriverPayment(@RequestParam  String driverName ,@RequestParam String amount) {
-			return paymentService.savePayment(driverName, amount);
+		public String addDriverPayment(@RequestParam  String driverName ,@RequestParam String amount , @RequestParam String comment) {
+			return paymentService.savePayment(driverName, amount , comment);
 	    }
 		
 		

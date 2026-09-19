@@ -32,7 +32,8 @@ public class MachineReadingController {
     	        @RequestParam("driverId") String driverId,
     	        @RequestParam("machineNumber") String machineNumber,
     	        @RequestParam("selectedOwnerMobile") String selectedOwnerMobile,
-    	        @RequestParam(value ="actulReading", required = false) String actulReading) {
+    	        @RequestParam(value ="actulReading", required = false) String actulReading,
+    	        @RequestParam("driverName")  String driverName) {
             try {
                 ReadingDTO dto = new ReadingDTO();
                 if(startReading != null )
@@ -49,7 +50,7 @@ public class MachineReadingController {
                 dto.setMachineNumber(machineNumber);
                 dto.setSelectedOwnerMobile(selectedOwnerMobile);
                 dto.setExtractedReading(actulReading);
-
+                dto.setDriverName(driverName);
                 return machineReadingService.saveReading(dto);
             } catch (Exception e) {
                 return "Error processing the form: " + e.getMessage();

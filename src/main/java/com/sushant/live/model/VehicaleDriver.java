@@ -1,5 +1,7 @@
 package com.sushant.live.model;
 
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,10 +15,6 @@ public class VehicaleDriver {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-incrementing ID
     private int id;
-//	@Id
-//	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "driver_seq")
-//	 @SequenceGenerator(name = "driver_seq", sequenceName = "driver_seq", allocationSize = 1)
-//	 private int id;
 
     @Column(name = "driverName", length = 255, nullable = false)
     private String driverName;
@@ -40,25 +38,49 @@ public class VehicaleDriver {
     private String onwerMobile;
     
     private String password;
-
-    // Constructors
+    
+    private String createDate;
+    
+    private String driverSalary;
+    
+    
     public VehicaleDriver() {
         super();
     }
+    
+    public VehicaleDriver(int id, String driverName, String driverMobile, String driverAddress, String driverAadhar,
+			String driverLiencense, String machineNumber, String onwerMobile, String password, String createDate,
+			String driverSalary) {
+		super();
+		this.id = id;
+		this.driverName = driverName;
+		this.driverMobile = driverMobile;
+		this.driverAddress = driverAddress;
+		this.driverAadhar = driverAadhar;
+		this.driverLiencense = driverLiencense;
+		this.machineNumber = machineNumber;
+		this.onwerMobile = onwerMobile;
+		this.password = password;
+		this.createDate = createDate;
+		this.driverSalary = driverSalary;
+	}
 
-    public VehicaleDriver(int id, String driverName, String driverMobile, String driverAddress, 
-                         String driverAadhar, String ownerMobile, String machineNumber , String driverLiencense) {
-        this.id = id;
-        this.driverName = driverName;
-        this.driverMobile = driverMobile;
-        this.driverAddress = driverAddress;
-        this.driverAadhar = driverAadhar;
-        this.onwerMobile = ownerMobile;
-        this.machineNumber = machineNumber;
-        this.driverLiencense = driverLiencense;
-    }
+	public String getDriverSalary() {
+		return driverSalary;
+	}
 
-    // Getters and Setters
+	public void setDriverSalary(String driverSalary) {
+		this.driverSalary = driverSalary;
+	}
+
+	public String getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+	// Getters and Setters
     public int getId() {
         return id;
     }

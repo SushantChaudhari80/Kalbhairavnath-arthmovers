@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sushant.live.dto.VehicalDTO;
 import com.sushant.live.model.Customer;
 import com.sushant.live.model.Vehicale;
+import com.sushant.live.response.VehicleResponse;
 import com.sushant.live.service.VehicaleService;
 import com.sushant.live.util.SessionManager;
 
@@ -45,9 +46,9 @@ public class VehicaleController {
     
     
     @GetMapping("/getAll")
-    public ResponseEntity<List<Vehicale>> getVehicaleList() {
+    public ResponseEntity<List<VehicleResponse>> getVehicaleList() {
     	System.out.println("VehicaleController : getVehicaleList()");
-    	List<Vehicale> list = vehicaleService.getAllVehical();
+    	List<VehicleResponse> list = vehicaleService.getAllVehical();
         return ResponseEntity.ok(list);
     }
     

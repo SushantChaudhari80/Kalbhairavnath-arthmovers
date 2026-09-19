@@ -166,4 +166,14 @@ public class DumperTreep {
 		this.isBilled = isBilled;
 	}
 
+	@Override
+	public String toString() {
+		return "DumperTreep [id=" + id + ", selectedVehicle=" + selectedVehicle + ", customerName=" + customerName
+				+ ", diesel=" + diesel + ", advance=" + advance + ", soilBrass=" + soilBrass + ", soilRate=" + soilRate
+				+ ", totalPayment=" + totalPayment + ", createDate=" + createDate + ", omobile=" + omobile + ", item="
+				+ item + ", isBilled=" + isBilled + "]";
+	}
+	
+	
+
 }

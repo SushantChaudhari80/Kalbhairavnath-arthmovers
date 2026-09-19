@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sushant.live.dto.DumperTreepDTO;
@@ -27,8 +28,9 @@ public class DumperTreepController {
 	DumperTreepService service;
 	
 	@PostMapping("/add")
-	public ResponseEntity<String> addTreep(@RequestBody DumperTreepDTO dto){
-		System.out.println(dto.toString());
+	public ResponseEntity<String> addTreep(@RequestBody DumperTreepDTO dto , @RequestParam(value = "onwer" , required = false) String onwer){
+		System.out.println("DTO Object"+dto.toString());
+		System.out.println("Owner Mobile "+ onwer);
 		DumperTreep treep = new DumperTreep();
 		treep.setCustomerName(dto.getCustomerName());
 		treep.setAdvance(dto.getAdvance());
@@ -39,7 +41,7 @@ public class DumperTreepController {
 		treep.setTotalPayment((""+Integer.parseInt(dto.getSoilRate())*Integer.parseInt(dto.getSoilBrass())));
 		treep.setItem(dto.getItem());
 		treep.setCreateDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-		treep.setOmobile(SessionManager.getInstance().getUsername());
+		treep.setOmobile(onwer!=null ? onwer : SessionManager.getInstance().getUsername());
 		System.out.println(treep.toString());
 	  return ResponseEntity.ok(service.addTreep(treep));
 	}

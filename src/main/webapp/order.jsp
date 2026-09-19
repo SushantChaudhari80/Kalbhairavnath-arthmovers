@@ -482,9 +482,8 @@
 							order.address || '',
 					        order.deliveryDate || '',
 					        order.machins || '',
-					        `<button class="view-details-btn" data-id="${orderId}">View</button>
-					         <button class="delete-order-btn" data-id="${orderId}"></button>
-					         <button class="update-order-btn" data-id="${orderId}">Update</button>`
+					        `<button class="delete-order-btn" data-id="${orderId}"></button>
+					         <button class="update-order-btn btn" data-id="${orderId}">Update</button>`
 					    ]).draw();
 					});
 
@@ -533,13 +532,13 @@
 		                    const checkbox = document.createElement('input');
 		                    checkbox.type = 'checkbox';
 		                    checkbox.name = 'vehicle';
-		                    checkbox.value = vehicle.machineNumber;
+		                    checkbox.value = vehicle.machine_number;
 
 		                    // Append the checkbox to the label
 		                    label.appendChild(checkbox);
 
 		                    // Add the text after the checkbox
-		                    const textNode = document.createTextNode(vehicle.machineNumber);
+		                    const textNode = document.createTextNode(vehicle.machine_number);
 		                    label.appendChild(textNode);
 
 		                    // Create a <br> element for line break
@@ -572,7 +571,7 @@
         </div>
 
         <!-- Filters Section -->
-        <div class="filters">
+        <!-- <div class="filters">
             <select>
                 <option value="">Filter by Status</option>
                 <option value="delivered">Delivered</option>
@@ -582,7 +581,7 @@
             <input type="date" placeholder="From Date">
             <input type="date" placeholder="To Date">
             <button>Apply Filters</button>
-        </div>
+        </div> -->
 
         <!-- Orders Table -->
         <table id="orderTable" class="display">

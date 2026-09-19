@@ -62,7 +62,7 @@ public class ReadingService {
 	            newReading.setMaintenance(dto.getMaintenance());
 	            newReading.setDieselImg(dto.getDisel());
 	            newReading.setOnwerMobile(dto.getSelectedOwnerMobile());
-	            newReading.setDriverName(dto.getDriverId());
+	            newReading.setDriverName(dto.getDriverName());
 	            newReading.setMachineNumber(dto.getMachineNumber());
 	            if(dto.getStartReading() != null) {
 	            	newReading.setStartReading(dto.getExtractedReading());

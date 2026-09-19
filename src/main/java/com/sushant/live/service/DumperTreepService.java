@@ -19,6 +19,7 @@ public class DumperTreepService {
 	public String addTreep(DumperTreep treep) {
 		try {
 			repo.save(treep);
+			System.out.println("Treep Treep Added Successfully."+treep.toString());
 			return "Treep Added Successfully.";
 		}catch(Exception e) {
 			return e.getLocalizedMessage();

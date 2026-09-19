@@ -316,11 +316,11 @@
 	                    // Loop through each vehicle and add it to the DataTable
 	                    vehicles.forEach(function(vehicle) {
 	                        table.row.add([
-	                            vehicle.id || '',              // Ensure fallback value if undefined
-	                            vehicle.machineNumber || '',   // Replace with the correct property name if different
+	                            vehicle.vehicle_id || '',              // Ensure fallback value if undefined
+	                            vehicle.machine_number || '',   // Replace with the correct property name if different
 	                            vehicle.company || '',
 								vehicle.v_type || '',
-	                             'N/A'       // Use 'N/A' or another placeholder if undefined
+								vehicle.driver_names || ''       // Use 'N/A' or another placeholder if undefined
 	                        ]);
 	                    });
 

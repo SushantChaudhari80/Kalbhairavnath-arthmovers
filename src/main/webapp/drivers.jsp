@@ -286,11 +286,11 @@
 	                { title: "Driver Mobile" },
 	                { title: "Driver Address" },
 	                { title: "Driver Aadhar" },
-					{ title: "Driver DL Number"}
-	                
+					{ title: "Driver DL Number"},
+					{ title: "Assigned Vehicle"},
+					{ title: "Salary"}
 	            ]
 	        });
-
 	        // Function to fetch vehicle data from server using AJAX
 	        function fetchVehiclesList() {
 	            $.ajax({
@@ -308,7 +308,9 @@
 	                            driver.driverMobile || '',
 	                            driver.driverAddress || '',
 	                            driver.driverAadhar || '',
-								driver.driverLiencense || 'N/A'// Use 'N/A' or another placeholder if undefined
+								driver.driverLiencense || 'N/A',
+								driver.machineNumber || '',
+								driver.driverSalary || ''
 	                        ]);
 	                    });
 
@@ -368,6 +370,8 @@
 		            <th>Driver Address</th>
 		            <th>Driver Aadhar</th>
 					<th>Driver DL Number</th>
+					<th>Assigned Vehicle</th>
+					<th>Salary</th>
 		        </tr>
 		    </thead>
 		    <tbody>

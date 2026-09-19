@@ -7,6 +7,15 @@ public class DriverDTO {
 	private String driverAddress ; 
 	private String driverAadhar ;
 	private String driverLiecense;
+	private String driverSalary;
+	
+	
+	public String getDriverSalary() {
+		return driverSalary;
+	}
+	public void setDriverSalary(String driverSalary) {
+		this.driverSalary = driverSalary;
+	}
 	public String getDriverName() {
 		return driverName;
 	}
@@ -38,13 +47,16 @@ public class DriverDTO {
 	public void setDriverLiecense(String driverLiecense) {
 		this.driverLiecense = driverLiecense;
 	}
-	public DriverDTO(String driverName, String driverMobile, String driverAddress, String driverAadhar , String driverLiecense) {
+	
+	public DriverDTO(String driverName, String driverMobile, String driverAddress, String driverAadhar,
+			String driverLiecense, String driverSalary) {
 		super();
 		this.driverName = driverName;
 		this.driverMobile = driverMobile;
 		this.driverAddress = driverAddress;
 		this.driverAadhar = driverAadhar;
 		this.driverLiecense = driverLiecense;
+		this.driverSalary = driverSalary;
 	}
 	public DriverDTO() {
 		super();

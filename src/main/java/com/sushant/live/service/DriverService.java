@@ -1,5 +1,7 @@
 package com.sushant.live.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +12,12 @@ import org.springframework.stereotype.Service;
 
 import com.sushant.live.dto.DriverLoginResponse;
 import com.sushant.live.mapper.VehicaleDriverProjection;
+import com.sushant.live.model.Coustomer_order;
+import com.sushant.live.model.Vehicale;
 import com.sushant.live.model.VehicaleDriver;
 import com.sushant.live.repository.DriverRepository;
+import com.sushant.live.repository.OrderRepository;
+import com.sushant.live.repository.VehicaleRepository;
 import com.sushant.live.util.SessionManager;
 
 @Service
@@ -20,35 +26,52 @@ public class DriverService {
 	@Autowired
 	private DriverRepository driverRepo;
 	
+	@Autowired
+	private VehicaleRepository vehicleRepo;
+	
+	@Autowired 
+	private OrderRepository orderRepository;
+	
 	public Object login(String mobile , String password) {
 		
+		System.out.println(mobile);
 		VehicaleDriver driver = driverRepo.findByDriverMobile(mobile);
 
 	    if (driver == null) {
 	        return new DriverLoginResponse(false,
 	                "Driver not found with provided mobile number.",
-	                null);
+	                null,null,null);
 	    }
 
 	    if (driver.getPassword() == null) {
 	        return new DriverLoginResponse(false,
 	                "Please generate a password first.",
-	                null);
+	                null,null,null);
 	    }
 
 	    if (!driver.getPassword().equals(password)) {
 	        return new DriverLoginResponse(false,
 	                "Invalid password. Please try again.",
-	                null);
+	                null,null,null);
 	    }
+	    
+	    Vehicale vehicle = vehicleRepo.findByMachineNumber(driver.getMachineNumber());
+	    
+	    Coustomer_order order = orderRepository.findAllByMachine(driver.getOnwerMobile(), driver.getMachineNumber());
 
 	    return new DriverLoginResponse(true,
 	            "Login successful",
-	            driver);
+	            driver,
+	            vehicle,
+	            order);
 	}
 	
 	 public boolean addDriver(VehicaleDriver driver) {
 	        try {
+	        	LocalDate today = LocalDate.now();
+		  	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		  	    String formattedDate = today.format(formatter);
+		  	    driver.setCreateDate(formattedDate);
 	            driverRepo.save(driver);
 	            return true;
 	        } catch (Exception e) {

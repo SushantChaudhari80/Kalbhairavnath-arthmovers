@@ -141,10 +141,10 @@
 
 	    // Retrieve the driverId from the URL
 	    const vType = getQueryParameter('vType');
-	    const driverName = getQueryParameter('driverName');
+	    const mNumber = getQueryParameter('driverName');
 		
-		console.log(vType , driverName);
-		$('#machin-number').text(driverName || 'No Name Provided'); 
+		console.log(vType , mNumber);
+		$('#machin-number').text(mNumber || 'No Name Provided'); 
 		
 		$(document).ready(function() {
 		    // Initialize the modal and backdrop
@@ -152,11 +152,11 @@
 		    $('.modal-backdrop').hide();
 
 		    // Display machine name
-		    $('#machin-number').text(driverName || 'No Name Provided');
+		    $('#machin-number').text(mNumber || 'No Name Provided');
 
 		    // Fetch drivers and display them
 		    $.ajax({
-		        url: prod_url+'/api/driver/getByMachineNumber?i=' + driverName,
+		        url: prod_url+'/api/driver/getByMachineNumber?i=' + mNumber,
 		        type: 'GET',
 		        success: function(drivers) {
 		            if (drivers.length > 0) {
@@ -178,7 +178,7 @@
 
 		// Show the modal
 		function addDriver() {
-		    $('#machineNumber').val(driverName); // Set the machine number
+		    $('#machineNumber').val(mNumber); // Set the machine number
 		    $('#drModel').show(); // Show the modal
 		    $('.modal-backdrop').show(); // Show the backdrop
 
