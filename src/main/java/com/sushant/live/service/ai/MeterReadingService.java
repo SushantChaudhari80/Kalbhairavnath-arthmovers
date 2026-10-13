@@ -11,17 +11,19 @@ import com.google.gson.Gson;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
+
 
 public class MeterReadingService {
     public record MeterExtraction(double reading) {}
 
     private final Client client;
     private final Gson gson;
-
-    public MeterReadingService() {
+    
+    public MeterReadingService(@Value("${AI_API_KEY}") String apiKey) {	
         // The client natively searches for the GOOGLE_API_KEY environment variable.
         // Or you can configure explicitly: Client.builder().apiKey("YOUR_KEY").build();
-        this.client = new Builder().apiKey("AQ.Ab8RN6KLgpYR0VhWlzV4F0RLtR0I-QT6cTXgBrQwoNnEqlR2Rw").build();
+        this.client = new Builder().apiKey(apiKey).build();
         this.gson = new Gson();
     }
 
