@@ -5,6 +5,8 @@ public class InvoiceDTO {
 	String billedDate;
 	
 	String invoice;
+	
+	String customerName;
 
 
 	public String getBilledDate() {
@@ -23,16 +25,27 @@ public class InvoiceDTO {
 		this.invoice = invoice;
 	}
 
-	public InvoiceDTO( String billedDate, String invoice) {
-		super();
-		this.billedDate = billedDate;
-		this.invoice = invoice;
+	
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
 	}
 
 	public InvoiceDTO() {
 		super();
 	}
-	
+
+	public InvoiceDTO(String billedDate, String invoice, String customerName) {
+		super();
+		this.billedDate = billedDate;
+		this.invoice = invoice;
+		this.customerName = customerName;
+	}
+
 	
 
 }

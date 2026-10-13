@@ -3,6 +3,7 @@ package com.sushant.live.service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,10 +14,15 @@ import org.springframework.stereotype.Service;
 import com.sushant.live.dto.DriverLoginResponse;
 import com.sushant.live.mapper.VehicaleDriverProjection;
 import com.sushant.live.model.Coustomer_order;
+import com.sushant.live.model.DriverPayment;
+import com.sushant.live.model.MachineReading;
 import com.sushant.live.model.Vehicale;
 import com.sushant.live.model.VehicaleDriver;
+import com.sushant.live.repository.DriverPaymentRepository;
 import com.sushant.live.repository.DriverRepository;
+import com.sushant.live.repository.DumperTreepRepository;
 import com.sushant.live.repository.OrderRepository;
+import com.sushant.live.repository.ReadingRepository;
 import com.sushant.live.repository.VehicaleRepository;
 import com.sushant.live.util.SessionManager;
 
@@ -27,43 +33,62 @@ public class DriverService {
 	private DriverRepository driverRepo;
 	
 	@Autowired
+	private DriverPaymentRepository driverPaymentRepo;
+	
+	@Autowired
 	private VehicaleRepository vehicleRepo;
 	
 	@Autowired 
 	private OrderRepository orderRepository;
 	
-	public Object login(String mobile , String password) {
+	@Autowired
+	private ReadingRepository readingRepository;
+	
+	@Autowired
+	private DumperTreepRepository dumperTreepRepository;
+	
+	public Object  login(String mobile , String password) {
+		
+		Map<String , Object >  response= new HashMap<>();
 		
 		System.out.println(mobile);
 		VehicaleDriver driver = driverRepo.findByDriverMobile(mobile);
 
 	    if (driver == null) {
-	        return new DriverLoginResponse(false,
-	                "Driver not found with provided mobile number.",
-	                null,null,null);
+	    	response.put("success", false);
+	    	response.put("message","Driver not found with provided mobile number.");
+	        return response;
 	    }
 
 	    if (driver.getPassword() == null) {
-	        return new DriverLoginResponse(false,
-	                "Please generate a password first.",
-	                null,null,null);
+	    	response.put("success", false);
+	    	response.put("message","Please generate a password first.");
+	        return response;
 	    }
 
 	    if (!driver.getPassword().equals(password)) {
-	        return new DriverLoginResponse(false,
-	                "Invalid password. Please try again.",
-	                null,null,null);
+	    	response.put("success", false);
+	    	response.put("message","Invalid password. Please try again.");
+	        return response;
 	    }
 	    
 	    Vehicale vehicle = vehicleRepo.findByMachineNumber(driver.getMachineNumber());
-	    
 	    Coustomer_order order = orderRepository.findAllByMachine(driver.getOnwerMobile(), driver.getMachineNumber());
-
+	    List<DriverPayment> driverPaymentList = driverPaymentRepo.getAll(driver.getDriverName(), driver.getOwnerMobile());
+	    Object data = new Object();
+	    if(vehicle.getV_type().equals("Excavator")) {
+	    	data =  readingRepository.getAllByDriver(driver.getOwnerMobile() , driver.getDriverName());
+	    }else {
+	    	data = dumperTreepRepository.getBySubmitted(driver.getDriverName(), driver.getOwnerMobile());
+	    }
+	    
 	    return new DriverLoginResponse(true,
 	            "Login successful",
 	            driver,
 	            vehicle,
-	            order);
+	            order ,
+	            driverPaymentList, 
+	            data);
 	}
 	
 	 public boolean addDriver(VehicaleDriver driver) {

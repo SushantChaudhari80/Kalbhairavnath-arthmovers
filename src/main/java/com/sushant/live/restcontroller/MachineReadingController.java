@@ -25,10 +25,10 @@ public class MachineReadingController {
 
     @PostMapping(value = "/driver/reading/submit",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String handleFormSubmit(
-    		  @RequestParam(value = "startReading", required = false) MultipartFile startReading,
-    	        @RequestParam(value = "endReading", required = false) MultipartFile endReading,
-    	        @RequestParam(value = "disel", required = false) MultipartFile disel,
-    	        @RequestParam("maintenanceNumber") String maintenance,
+    		  @RequestParam(value = "startReadingImg", required = false) MultipartFile startReading,
+    	        @RequestParam(value = "endReadingImg", required = false) MultipartFile endReading,
+    	        @RequestParam(value = "diselReceiptImg", required = false) MultipartFile disel,
+    	        @RequestParam("maintenance") String maintenance,
     	        @RequestParam("driverId") String driverId,
     	        @RequestParam("machineNumber") String machineNumber,
     	        @RequestParam("selectedOwnerMobile") String selectedOwnerMobile,
@@ -94,6 +94,8 @@ public class MachineReadingController {
         dto.setStartReading(reading.getStartReadingImg());
         dto.setEndReading(reading.getEndReadingImg());
         dto.setDisel(reading.getDieselImg());
+        dto.setStartReadingCount(reading.getStartReading());
+        dto.setEndReadingCount(reading.getEndReading());
        System.out.println(dto.toString());
         return ResponseEntity.ok(dto);
     }
@@ -176,6 +178,7 @@ public class MachineReadingController {
     @PostMapping("/api/extract/reading")
     public ResponseEntity<Object> upload(
             @RequestParam("file") MultipartFile file) {
+    	  System.out.println("Extracting reading");
             Object response = machineReadingService.extractReading(file);
             return ResponseEntity.ok(response);
     }

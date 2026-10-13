@@ -144,6 +144,8 @@ public class Coustomer_order {
 					+ ", status=" + status + ", order_date=" + order_date + ", deliveryDate=" + deliveryDate
 					+ ", machins=" + machins + ", address=" + address + ", onwerMobile=" + onwerMobile + "]";
 		}
+
+		
 	    
 	    
 	    

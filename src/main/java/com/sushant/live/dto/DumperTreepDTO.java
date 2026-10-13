@@ -17,6 +17,8 @@ public class DumperTreepDTO {
 	 String	totalPayment;
 	 
 	 String item;
+	 
+	 String submittedBy;
 
 	public DumperTreepDTO(String selectedVehicle, String customerName, String diesel, String advance, String soilBrass,
 			String soilRate, String totalPayment, String item) {
@@ -106,5 +108,15 @@ public class DumperTreepDTO {
 	public void setTotalPayment(String totalPayment) {
 		this.totalPayment = totalPayment;
 	}
+
+	public String getSubmittedBy() {
+		return submittedBy;
+	}
+
+	public void setSubmittedBy(String submittedBy) {
+		this.submittedBy = submittedBy;
+	}
+	
+	
 	
 }

@@ -98,7 +98,7 @@ public class OrderController {
 	          existingOrder.setAddress(updatedOrder.getAddress());
 	          existingOrder.setMachins(updatedOrder.getMachins());
 	          existingOrder.setOnwerMobile(SessionManager.getInstance().getUsername());
-	      
+	          System.out.println("Machines : "+updatedOrder.getMachins());
 	          // Save the updated order
 	          orderService.updateOrder(existingOrder);
 	          return ResponseEntity.ok(existingOrder);

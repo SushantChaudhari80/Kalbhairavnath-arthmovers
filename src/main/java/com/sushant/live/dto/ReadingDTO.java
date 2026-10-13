@@ -20,6 +20,8 @@ public class ReadingDTO {
     private String selectedOwnerMobile;
     private String extractedReading;
     private String driverName;
+    private String startReadingCount;
+    private String endReadingCount;
     
     
     
@@ -80,8 +82,23 @@ public class ReadingDTO {
 	
 	
 	
+	
+	public String getStartReadingCount() {
+		return startReadingCount;
+	}
+	public void setStartReadingCount(String startReadingCount) {
+		this.startReadingCount = startReadingCount;
+	}
+	public String getEndReadingCount() {
+		return endReadingCount;
+	}
+	public void setEndReadingCount(String endReadingCount) {
+		this.endReadingCount = endReadingCount;
+	}
+	
 	public ReadingDTO(byte[] startReading, byte[] endReading, byte[] disel, String maintenance, String driverId,
-			String machineNumber, String selectedOwnerMobile, String extractedReading, String driverName) {
+			String machineNumber, String selectedOwnerMobile, String extractedReading, String driverName,
+			String startReadingCount, String endReadingCount) {
 		super();
 		this.startReading = startReading;
 		this.endReading = endReading;
@@ -92,6 +109,8 @@ public class ReadingDTO {
 		this.selectedOwnerMobile = selectedOwnerMobile;
 		this.extractedReading = extractedReading;
 		this.driverName = driverName;
+		this.startReadingCount = startReadingCount;
+		this.endReadingCount = endReadingCount;
 	}
 	public ReadingDTO() {
 		super();

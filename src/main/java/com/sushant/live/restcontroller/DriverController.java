@@ -1,5 +1,6 @@
 package com.sushant.live.restcontroller;
 
+import java.time.YearMonth;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sushant.live.dto.DriverDTO;
 import com.sushant.live.model.DriverPayment;
 import com.sushant.live.model.VehicaleDriver;
+import com.sushant.live.scheduler.DriverPaymentSchedulerService;
 import com.sushant.live.service.DriverPaymentService;
 import com.sushant.live.service.DriverService;
 import com.sushant.live.util.SessionManager;
@@ -28,6 +30,9 @@ public class DriverController {
 	
 	@Autowired
 	private DriverPaymentService paymentService;
+	
+	@Autowired
+	private DriverPaymentSchedulerService driverPaymentSchedulerService;
 	
 	@GetMapping("/getAll")
 	public ResponseEntity<List<VehicaleDriver>> getVehicaleList() {
@@ -116,6 +121,15 @@ public class DriverController {
 		        @RequestParam String driverMobile,
 		        @RequestParam String password) {
 			return driverService.changePassword(driverMobile, password);
+		}
+		
+		@GetMapping("/driver/salary/credit")
+		public Object triggerSalary() {
+			System.out.println("inside triggerSalary() : ");
+			driverPaymentSchedulerService.creditSalary();
+			String salaryMonth = YearMonth.now().toString();
+			return String.format("Salary credited for month %s", salaryMonth);
+			
 		}
 
 }

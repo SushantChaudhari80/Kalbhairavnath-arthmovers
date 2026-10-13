@@ -18,6 +18,8 @@ public class InvoiceTemplate {
 	@Column(columnDefinition = "TEXT")
 	private String invoice;
 	
+	String customerName;
+	
 	String omobile;
 
 	public String getID() {
@@ -54,12 +56,25 @@ public class InvoiceTemplate {
 		this.omobile = omobile;
 	}
 	
+    
+	
 
-	public InvoiceTemplate(String iD, String billedDate, String invoice, String omobile) {
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+	
+	
+
+	public InvoiceTemplate(String iD, String billedDate, String invoice, String customerName, String omobile) {
 		super();
 		ID = iD;
 		this.billedDate = billedDate;
 		this.invoice = invoice;
+		this.customerName = customerName;
 		this.omobile = omobile;
 	}
 

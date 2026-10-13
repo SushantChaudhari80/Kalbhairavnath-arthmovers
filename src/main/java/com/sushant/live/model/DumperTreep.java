@@ -39,6 +39,8 @@ public class DumperTreep {
 	
 	private String isBilled;
 	
+	private String submittedBy;
+	
 	
 
 	public String getIsBilled() {
@@ -147,10 +149,20 @@ public class DumperTreep {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	
+
+	public String getSubmittedBy() {
+		return submittedBy;
+	}
+
+	public void setSubmittedBy(String submittedBy) {
+		this.submittedBy = submittedBy;
+	}
 
 	public DumperTreep(int id, String selectedVehicle, String customerName, String diesel, String advance,
 			String soilBrass, String soilRate, String totalPayment, String createDate, String omobile, String item,
-			String isBilled) {
+			String isBilled, String submittedBy) {
 		super();
 		this.id = id;
 		this.selectedVehicle = selectedVehicle;
@@ -164,6 +176,7 @@ public class DumperTreep {
 		this.omobile = omobile;
 		this.item = item;
 		this.isBilled = isBilled;
+		this.submittedBy = submittedBy;
 	}
 
 	@Override
@@ -171,8 +184,11 @@ public class DumperTreep {
 		return "DumperTreep [id=" + id + ", selectedVehicle=" + selectedVehicle + ", customerName=" + customerName
 				+ ", diesel=" + diesel + ", advance=" + advance + ", soilBrass=" + soilBrass + ", soilRate=" + soilRate
 				+ ", totalPayment=" + totalPayment + ", createDate=" + createDate + ", omobile=" + omobile + ", item="
-				+ item + ", isBilled=" + isBilled + "]";
+				+ item + ", isBilled=" + isBilled + ", submittedBy=" + submittedBy + "]";
 	}
+
+
+
 	
 	
 

@@ -46,6 +46,7 @@ public class InvoiceService {
 	    template.setID(getInvoiceNumber());
 	    template.setBilledDate(dto.getBilledDate());
 	    template.setInvoice(dto.getInvoice());
+	    template.setCustomerName(dto.getCustomerName());
 	    template.setOmobile(SessionManager.getInstance().getUsername());
 
 	    repo.save(template);

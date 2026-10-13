@@ -18,6 +18,7 @@ import com.sushant.live.model.MachineReading;
 import com.sushant.live.repository.DriverRepository;
 import com.sushant.live.repository.OrderRepository;
 import com.sushant.live.repository.ReadingRepository;
+import com.sushant.live.service.ai.MeterReadingService;
 import com.sushant.live.util.SessionManager;
 import java.io.IOException;
 import org.springframework.core.io.ByteArrayResource;
@@ -177,6 +178,10 @@ public class ReadingService {
 			reading.setFuelRate(dto.getRate());
 			reading.setOnwerMobile(SessionManager.getInstance().getUsername());
 			
+			Coustomer_order order = orderRepo.findAllByMachine(SessionManager.getInstance().getUsername(), dto.getVehicleNumber());
+			if(order != null)
+			reading.setOrderName(order.getCustomer_name());
+			
 			repo.save(reading);
 			return "Diesel added successfully for Vehicle "+dto.getVehicleNumber();
 		}catch(Exception e) {
@@ -200,46 +205,70 @@ public class ReadingService {
 	}
 	
 	
-	   public Object extractReading(MultipartFile file) {
-
-	        try {
-
-	            RestTemplate restTemplate = new RestTemplate();
-
-	            ByteArrayResource resource = new ByteArrayResource(file.getBytes()) {
-	                @Override
-	                public String getFilename() {
-	                    return file.getOriginalFilename();
-	                }
-	            };
-
-	            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-	            body.add("file", resource);
-
-	            HttpHeaders headers = new HttpHeaders();
-	            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-	            HttpEntity<MultiValueMap<String, Object>> requestEntity =
-	                    new HttpEntity<>(body, headers);
-
-	            ResponseEntity<String> response =
-	                    restTemplate.postForEntity(
-	                            "http://localhost:8080/api/v1/extract-reading",
-	                            requestEntity,
-	                            String.class
-	                    );
-
-	            return response.getBody();
-
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	            return "Failed to process file: " + e.getMessage();
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            return "Failed to call AI service: " + e.getMessage();
-	        }
+//	   public Object extractReading(MultipartFile file) {
+//
+//	        try {
+//
+//	            RestTemplate restTemplate = new RestTemplate();
+//
+//	            ByteArrayResource resource = new ByteArrayResource(file.getBytes()) {
+//	                @Override
+//	                public String getFilename() {
+//	                    return file.getOriginalFilename();
+//	                }
+//	            };
+//
+//	            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+//	            body.add("file", resource);
+//
+//	            HttpHeaders headers = new HttpHeaders();
+//	            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+//
+//	            HttpEntity<MultiValueMap<String, Object>> requestEntity =
+//	                    new HttpEntity<>(body, headers);
+//
+//	            ResponseEntity<String> response =
+//	                    restTemplate.postForEntity(
+//	                            "http://localhost:8080/api/v1/extract-reading",
+//	                            requestEntity,
+//	                            String.class
+//	                    );
+//
+//	            return response.getBody();
+//
+//	        } catch (IOException e) {
+//	            e.printStackTrace();
+//	            return "Failed to process file: " + e.getMessage();
+//	        } catch (Exception e) {
+//	            e.printStackTrace();
+//	            return "Failed to call AI service: " + e.getMessage();
+//	        }
+//	    }
+	
+	public record MeterResponse(boolean success, double reading) {}
+	
+	public Object extractReading(MultipartFile file) {
+	    if (file == null || file.isEmpty()) {
+	    	System.out.println("Failed to process file: File is empty or missing.");
+	        return "Failed to process file: File is empty or missing.";
 	    }
-	
-	
+	    try {
+	        byte[] imageBytes = file.getBytes();
+	        String mimeType = file.getContentType();
+	        if (mimeType == null) {
+	            mimeType = "image/jpeg"; 
+	        }
+	        MeterReadingService meterReadingService=new MeterReadingService();
+	        double reading = meterReadingService.extractMeterReading(imageBytes, mimeType);
+	        return new MeterResponse(true, reading);
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        return "Failed to process file: " + e.getMessage();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return "Failed to call AI service: " + e.getMessage();
+	    }
+	}
 }
 

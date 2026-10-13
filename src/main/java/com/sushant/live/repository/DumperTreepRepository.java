@@ -25,6 +25,9 @@ public interface DumperTreepRepository extends JpaRepository<DumperTreep, Intege
 	
 	@Query("SELECT v FROM DumperTreep v WHERE v.omobile = :mobile AND v.customerName = :cName")
     List<DumperTreep> getByName(@Param("mobile") String mobile,@Param("cName") String cName);
+	
+	@Query("SELECT v FROM DumperTreep v WHERE v.submittedBy = :submittedBy AND v.omobile = :mobile")
+    List<DumperTreep> getBySubmitted(@Param("submittedBy") String submittedBy , @Param("mobile") String mobile);
 
 }
 

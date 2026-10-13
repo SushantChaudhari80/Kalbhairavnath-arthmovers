@@ -19,8 +19,11 @@ public interface ReadingRepository extends JpaRepository<MachineReading , Intege
 	 @Query(value = "SELECT * FROM machinereading WHERE reading_date = :date and machine_number= :machineNumber and onwer_mobile = :onwerMobile", nativeQuery = true)
 	 MachineReading checkRecords(@Param("date") String date, @Param("machineNumber") String machineNumber , @Param("onwerMobile") String onwerMobile);
 
-	 @Query(value = "SELECT * FROM machinereading WHERE onwer_mobile = :onwerMobile and machine_number= :machineNumber and order_name IS NOT NULL", nativeQuery = true)
+	 @Query(value = "SELECT * FROM machinereading WHERE onwer_mobile = :onwerMobile and machine_number= :machineNumber and order_name IS NOT NULL and driver_name IS NOT NULL", nativeQuery = true)
 	    List<MachineReading> getAllByM(@Param("onwerMobile") String onwerMobile, @Param("machineNumber") String machineNumber);
+	 
+	 @Query(value = "SELECT * FROM machinereading WHERE onwer_mobile = :onwerMobile and driver_name= :driverName and order_name IS NOT NULL", nativeQuery = true)
+	    List<MachineReading> getAllByDriver(@Param("onwerMobile") String onwerMobile, @Param("driverName") String driverName);
 	 
 //	 @Query(value = """
 //		          SELECT
@@ -70,6 +73,8 @@ public interface ReadingRepository extends JpaRepository<MachineReading , Intege
 			      AND (m.billed IS NULL OR m.billed ='')
 			      AND m.onwer_mobile = :onwerMobile
 			      AND v.v_type != 'Dumper'
+			      AND m.petrol_pump IS NULL
+			      AND driver_name IS NOT NULL
 			     """, nativeQuery = true)
 			List<MachineReading> getAll(@Param("onwerMobile") String onwerMobile);
 
