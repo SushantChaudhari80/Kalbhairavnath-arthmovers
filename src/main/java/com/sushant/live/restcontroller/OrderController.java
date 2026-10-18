@@ -76,8 +76,9 @@ public class OrderController {
 	  	    String formattedDate = today.format(formatter);
 	  	    
 	  	    newOrder.setOrder_date(formattedDate);
-	       // System.out.println("Machine Number"+orderDTO.getCompany());
-	       boolean isAdded = orderService.addOrder(newOrder);
+	  	    newOrder.setPhone_no(orderDTO.getPhone_no());
+	  	    // System.out.println("Machine Number"+orderDTO.getCompany());
+	  	    boolean isAdded = orderService.addOrder(newOrder);
 
 	        if (isAdded) {
 	            return ResponseEntity.ok("Order added successfully!");

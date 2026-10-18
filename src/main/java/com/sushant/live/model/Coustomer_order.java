@@ -43,6 +43,9 @@ public class Coustomer_order {
 	    @Column(name = "onwerMobile", nullable = false)
 	    private String onwerMobile;
 	    
+	    @Column(name = "phone_no")
+	    private String phone_no;
+	    
 
 		public String getAddress() {
 			return address;
@@ -120,8 +123,19 @@ public class Coustomer_order {
 
 		
 
+		
+		public String getPhone_no() {
+			return phone_no;
+		}
+
+		public void setPhone_no(String phone_no) {
+			this.phone_no = phone_no;
+		}
+		
+		
+
 		public Coustomer_order(int id, String customer_name, String advance, String status, String order_date,
-				String deliveryDate, String machins, String address, String onwerMobile) {
+				String deliveryDate, String machins, String address, String onwerMobile, String phone_no) {
 			super();
 			this.id = id;
 			this.customer_name = customer_name;
@@ -132,6 +146,7 @@ public class Coustomer_order {
 			this.machins = machins;
 			this.address = address;
 			this.onwerMobile = onwerMobile;
+			this.phone_no = phone_no;
 		}
 
 		public Coustomer_order() {

@@ -20,10 +20,10 @@ public class MeterReadingService {
     private final Client client;
     private final Gson gson;
     
-    public MeterReadingService(@Value("${AI_API_KEY}") String apiKey) {	
+    public MeterReadingService() {	
         // The client natively searches for the GOOGLE_API_KEY environment variable.
         // Or you can configure explicitly: Client.builder().apiKey("YOUR_KEY").build();
-        this.client = new Builder().apiKey(apiKey).build();
+        this.client = new Builder().apiKey("AQ.Ab8RN6KLgpYR0VhWlzV4F0RLtR0I-QT6cTXgBrQwoNnEqlR2Rw").build();
         this.gson = new Gson();
     }
 

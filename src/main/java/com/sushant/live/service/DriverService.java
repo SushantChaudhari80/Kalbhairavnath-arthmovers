@@ -71,12 +71,14 @@ public class DriverService {
 	    	response.put("message","Invalid password. Please try again.");
 	        return response;
 	    }
-	    
+	    Coustomer_order order = null;
 	    Vehicale vehicle = vehicleRepo.findByMachineNumber(driver.getMachineNumber());
-	    Coustomer_order order = orderRepository.findAllByMachine(driver.getOnwerMobile(), driver.getMachineNumber());
+	    if(driver.getMachineNumber()!= null && !driver.getMachineNumber().equals("")) {
+	    	order = orderRepository.findAllByMachine(driver.getOnwerMobile(), driver.getMachineNumber());
+	    }
 	    List<DriverPayment> driverPaymentList = driverPaymentRepo.getAll(driver.getDriverName(), driver.getOwnerMobile());
 	    Object data = new Object();
-	    if(vehicle.getV_type().equals("Excavator")) {
+	    if(vehicle != null && vehicle.getV_type().equals("Excavator")) {
 	    	data =  readingRepository.getAllByDriver(driver.getOwnerMobile() , driver.getDriverName());
 	    }else {
 	    	data = dumperTreepRepository.getBySubmitted(driver.getDriverName(), driver.getOwnerMobile());

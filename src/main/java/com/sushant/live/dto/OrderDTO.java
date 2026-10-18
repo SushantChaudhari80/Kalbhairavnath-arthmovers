@@ -9,6 +9,8 @@ public class OrderDTO {
 	String address;
 	
 	String advance;
+	
+	String phone_no;
 
 	public String getCustomer_name() {
 		return customer_name;
@@ -48,17 +50,24 @@ public class OrderDTO {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 
-	public OrderDTO(String customer_name, String machine_numbers, String address, String advance) {
+	public String getPhone_no() {
+		return phone_no;
+	}
+
+	public void setPhone_no(String phone_no) {
+		this.phone_no = phone_no;
+	}
+
+	public OrderDTO(String customer_name, String machine_numbers, String address, String advance, String phone_no) {
 		super();
 		this.customer_name = customer_name;
 		this.machine_numbers = machine_numbers;
 		this.address = address;
 		this.advance = advance;
+		this.phone_no = phone_no;
 	}
-
 	
-	
-	
-
 }
