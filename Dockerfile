@@ -12,4 +12,4 @@ WORKDIR /app
 
 COPY --from=build /app/target/*.war app.war
 
-ENTRYPOINT ["java", "-Xmx300m", "-Xms150m", "-jar", "app.war"]
+ENTRYPOINT ["java", "-Xmx300m", "-Xms150m", "-Dserver.port=${PORT:8080}", "-jar", "app.war"]
