@@ -12,6 +12,4 @@ WORKDIR /app
 
 COPY --from=build /app/target/*.war app.war
 
-EXPOSE 8081
-
 ENTRYPOINT ["java", "-Xmx300m", "-Xms150m", "-jar", "app.war"]
