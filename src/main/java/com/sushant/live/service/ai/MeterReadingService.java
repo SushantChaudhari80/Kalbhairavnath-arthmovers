@@ -27,6 +27,7 @@ public class MeterReadingService {
         // The client natively searches for the GOOGLE_API_KEY environment variable.
         // Or you can configure explicitly: Client.builder().apiKey("YOUR_KEY").build();
         this.client = new Builder().apiKey(api_key).build();
+
         this.gson = new Gson();
     }
 
