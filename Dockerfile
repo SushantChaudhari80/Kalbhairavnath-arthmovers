@@ -1,9 +1,15 @@
-FROM eclipse-temurin:17-jdk-jammy
-
+FROM maven:3.8.4-openjdk-17 AS build
 WORKDIR /app
 
-COPY target/*.war app.war
+COPY pom.xml .
+COPY src ./src
 
-EXPOSE 8081
+RUN mvn clean package -DskipTests
 
-ENTRYPOINT ["java","-jar","app.war"]
+
+FROM eclipse-temurin:17-jdk-jammy
+WORKDIR /app
+
+COPY --from=build /app/target/*.war app.war
+
+ENTRYPOINT ["java", "-Xmx300m", "-Xms150m", "-Dserver.port=${PORT:8080}", "-jar", "app.war"]
