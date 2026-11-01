@@ -18,7 +18,8 @@ public class CorsConfig {
 
                 registry
                     .addMapping("/**")
-                    .allowedOrigins("http://localhost:4200")
+                    .allowedOrigins("http://localhost:4200",
+                            "https://trans11tanvi.netlify.app")
                     .allowedMethods(
                         "GET",
                         "POST",
