@@ -42,6 +42,9 @@ public class ReadingService {
 	@Autowired
 	OrderRepository orderRepo;
 	
+	@Autowired
+	MeterReadingService meterReadingService;
+	
 	@Value(value = "ai.api")
 	private String REST_API;
 	
@@ -258,7 +261,7 @@ public class ReadingService {
 	        if (mimeType == null) {
 	            mimeType = "image/jpeg"; 
 	        }
-	        MeterReadingService meterReadingService=new MeterReadingService();
+	        
 	        double reading = meterReadingService.extractMeterReading(imageBytes, mimeType);
 	        return new MeterResponse(true, reading);
 
