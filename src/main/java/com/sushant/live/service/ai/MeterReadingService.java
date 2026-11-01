@@ -23,11 +23,10 @@ public class MeterReadingService {
     @Value("${google.ai.api-key}")
     String api_key;
     
-    public MeterReadingService() {	
+    public MeterReadingService(Client client) {	
         // The client natively searches for the GOOGLE_API_KEY environment variable.
         // Or you can configure explicitly: Client.builder().apiKey("YOUR_KEY").build();
-        this.client = new Builder().apiKey(api_key).build();
-
+        this.client = client;
         this.gson = new Gson();
     }
 
@@ -65,7 +64,7 @@ public class MeterReadingService {
 
         try {
             GenerateContentResponse response = client.models.generateContent(
-                "gemini-2.5-flash",
+                "gemini-3.5-flash-lite",
                 contentPayload,
                 config
             );
